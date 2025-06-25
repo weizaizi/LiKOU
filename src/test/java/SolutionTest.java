@@ -52,4 +52,21 @@ public class SolutionTest {
         Assert.assertEquals(0 ,solution.reverse(0));
     }
 
+    @Test
+    public void myAtoiTest(){
+        Assert.assertEquals(42 ,solution.myAtoi("42"));
+        Assert.assertEquals(-42 , solution.myAtoi("-042"));
+        Assert.assertEquals(1337 , solution.myAtoi("1337c0d3"));
+        Assert.assertEquals(0 ,solution.myAtoi("0-1"));
+        Assert.assertEquals(0 , solution.myAtoi("words and 987"));
+        Assert.assertEquals(Integer.MIN_VALUE ,solution.myAtoi("-2147483649"));
+    }
+
+    @Test
+    public void isPalindromeTest(){
+        Assert.assertTrue(solution.isPalindrome(121));
+        Assert.assertFalse(solution.isPalindrome(-121));
+        Assert.assertFalse(solution.isPalindrome(10));
+    }
+
 }

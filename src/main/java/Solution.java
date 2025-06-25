@@ -1,4 +1,5 @@
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 class Solution {
@@ -120,9 +121,45 @@ class Solution {
             num /= 10;
         }
         if (x < 0) result = -result;
-        if(result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) return 0;
-        return (int)result;
+        if (result > Integer.MAX_VALUE || result < Integer.MIN_VALUE) return 0;
+        return (int) result;
     }
 
+    public int myAtoi(String s) {
+        char[] charArray = s.toCharArray();
+        boolean minus = false;
+        int i = 0;
 
+        while (i < charArray.length && charArray[i] == ' ') i++;
+
+        if (i < charArray.length && charArray[i] == '-') {
+            minus = true;
+            i++;
+        } else if (i < charArray.length && charArray[i] == '+') i++;
+
+        long result = 0;
+
+        while (i < charArray.length && charArray[i] >= '0' && charArray[i] <= '9') {
+            result = result * 10 + charArray[i] - '0';
+            if (result >= Integer.MAX_VALUE && !minus) return Integer.MAX_VALUE;
+            else if (result >= 2147483648L) return Integer.MIN_VALUE;
+            i++;
+        }
+
+        return minus ? -(int) result : (int) result;
+    }
+
+    public boolean isPalindrome(int x) {
+        char[] s = String.valueOf(x).toCharArray();
+        int i = 0;
+        int j = s.length - 1;
+        while (i <= j) {
+            if (s[i] != s[j]) return false;
+            i++;
+            j--;
+        }
+
+        return true;
+
+    }
 }
