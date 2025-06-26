@@ -45,28 +45,48 @@ public class SolutionTest {
     }
 
     @Test
-    public void reverseTest(){
-        Assert.assertEquals(321 ,solution.reverse(123));
-        Assert.assertEquals(-321 ,solution.reverse(-123));
-        Assert.assertEquals(21 ,solution.reverse(120));
-        Assert.assertEquals(0 ,solution.reverse(0));
+    public void reverseTest() {
+        Assert.assertEquals(321, solution.reverse(123));
+        Assert.assertEquals(-321, solution.reverse(-123));
+        Assert.assertEquals(21, solution.reverse(120));
+        Assert.assertEquals(0, solution.reverse(0));
     }
 
     @Test
-    public void myAtoiTest(){
-        Assert.assertEquals(42 ,solution.myAtoi("42"));
-        Assert.assertEquals(-42 , solution.myAtoi("-042"));
-        Assert.assertEquals(1337 , solution.myAtoi("1337c0d3"));
-        Assert.assertEquals(0 ,solution.myAtoi("0-1"));
-        Assert.assertEquals(0 , solution.myAtoi("words and 987"));
-        Assert.assertEquals(Integer.MIN_VALUE ,solution.myAtoi("-2147483649"));
+    public void myAtoiTest() {
+        Assert.assertEquals(42, solution.myAtoi("42"));
+        Assert.assertEquals(-42, solution.myAtoi("-042"));
+        Assert.assertEquals(1337, solution.myAtoi("1337c0d3"));
+        Assert.assertEquals(0, solution.myAtoi("0-1"));
+        Assert.assertEquals(0, solution.myAtoi("words and 987"));
+        Assert.assertEquals(Integer.MIN_VALUE, solution.myAtoi("-2147483649"));
     }
 
     @Test
-    public void isPalindromeTest(){
+    public void isPalindromeTest() {
         Assert.assertTrue(solution.isPalindrome(121));
         Assert.assertFalse(solution.isPalindrome(-121));
         Assert.assertFalse(solution.isPalindrome(10));
+    }
+
+    @Test
+    public void isMatchTest() {
+        Assert.assertFalse(solution.isMatch("aa", "a"));
+        Assert.assertTrue(solution.isMatch("aa", "a*"));
+        Assert.assertTrue(solution.isMatch("ab", ".*"));
+    }
+
+    @Test
+    public void maxAreaTest() {
+        Assert.assertEquals(49, solution.maxArea(new int[]{1, 8, 6, 2, 5, 4, 8, 3, 7}));
+        Assert.assertEquals(1, solution.maxArea(new int[]{1, 1}));
+    }
+
+    @Test
+    public void intToRomanTest(){
+        Assert.assertEquals("MMMDCCXLIX" , solution.intToRoman(3749));
+        Assert.assertEquals("LVIII" , solution.intToRoman(58));
+        Assert.assertEquals("MCMXCIV" ,solution.intToRoman(1994));
     }
 
 }

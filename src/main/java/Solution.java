@@ -1,5 +1,3 @@
-
-import java.util.Arrays;
 import java.util.HashMap;
 
 class Solution {
@@ -85,7 +83,6 @@ class Solution {
                 }
             }
         }
-
         return s.substring(start, end + 1);
     }
 
@@ -158,8 +155,72 @@ class Solution {
             i++;
             j--;
         }
-
         return true;
+    }
 
+    public boolean isMatch(String s, String p) {
+        char[] sCharArray = s.toCharArray();
+        char[] pCharArray = p.toCharArray();
+        boolean[][] dp = new boolean[sCharArray.length + 1][pCharArray.length + 1];
+        dp[0][0] = true;
+        for (int i = 2; i <= pCharArray.length; i += 2) {
+            if (pCharArray[i - 1] == '*') dp[0][i] = dp[0][i - 2];
+            else break;
+        }
+
+        for (int i = 1; i <= sCharArray.length; i++) {
+            for (int j = 1; j <= pCharArray.length; j++) {
+                if (pCharArray[j - 1] == '*')
+                    dp[i][j] = dp[i - 1][j] && (pCharArray[j - 2] == sCharArray[i - 1] || pCharArray[j - 2] == '.') || dp[i][j - 2];
+                else
+                    dp[i][j] = dp[i - 1][j - 1] && (pCharArray[j - 1] == sCharArray[i - 1] || pCharArray[j - 1] == '.');
+            }
+        }
+
+        return dp[sCharArray.length][pCharArray.length];
+    }
+
+    public int maxArea(int[] height) {
+        int i = 0;
+        int j = height.length - 1;
+        int max = 0;
+
+        while (i < j) {
+            max = Integer.max(max, (j - i) * Integer.min(height[i], height[j]));
+            if (height[i] > height[j]) {
+                int last = height[j];
+                while (i < j && height[j] <= last) j--;
+            } else {
+                int last = height[i];
+                while (i < j && height[i] <= last) i++;
+            }
+        }
+
+        return max;
+    }
+
+    char[] intToRomanArray1 = {'I', 'X', 'C', 'M'};
+    char[] intToRomanArray2 = {'V', 'L', 'D'};
+
+    public String intToRoman(int num) {
+        StringBuilder sb = new StringBuilder();
+        char[] charArray = String.valueOf(num).toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[i] == '4') {
+                sb.append(intToRomanArray1[charArray.length - i - 1]).append(intToRomanArray2[charArray.length - i - 1]);
+                continue;
+            } else if (charArray[i] == '9') {
+                sb.append(intToRomanArray1[charArray.length - i - 1]).append(intToRomanArray1[charArray.length - i]);
+                continue;
+            }
+            if (charArray[i] >= '5') {
+                charArray[i] -= 5;
+                sb.append(intToRomanArray2[charArray.length - i - 1]);
+            }
+
+            sb.append(String.valueOf(intToRomanArray1[charArray.length - i - 1]).repeat(Math.max(0, charArray[i] - '0')));
+        }
+
+        return sb.toString();
     }
 }
