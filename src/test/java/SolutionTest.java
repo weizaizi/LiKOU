@@ -83,10 +83,22 @@ public class SolutionTest {
     }
 
     @Test
-    public void intToRomanTest(){
-        Assert.assertEquals("MMMDCCXLIX" , solution.intToRoman(3749));
-        Assert.assertEquals("LVIII" , solution.intToRoman(58));
-        Assert.assertEquals("MCMXCIV" ,solution.intToRoman(1994));
+    public void intToRomanTest() {
+        Assert.assertEquals("MMMDCCXLIX", solution.intToRoman(3749));
+        Assert.assertEquals("LVIII", solution.intToRoman(58));
+        Assert.assertEquals("MCMXCIV", solution.intToRoman(1994));
+    }
+
+    @Test
+    public void longestCommonPrefixTest() {
+        Assert.assertEquals("fl", solution.longestCommonPrefix(new String[]{"flower", "flow", "flight"}));
+        Assert.assertEquals("", solution.longestCommonPrefix(new String[]{"dog", "racecar", "car"}));
+    }
+
+    @Test
+    public void threeSumClosestTest() {
+        Assert.assertEquals(2, solution.threeSumClosest(new int[]{-1, 2, 1, -4}, 1));
+        Assert.assertEquals(0, solution.threeSumClosest(new int[]{0, 0, 0}, 0));
     }
 
 }

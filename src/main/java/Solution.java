@@ -1,4 +1,4 @@
-import java.util.HashMap;
+import java.util.*;
 
 class Solution {
 
@@ -223,4 +223,139 @@ class Solution {
 
         return sb.toString();
     }
+
+
+    static char[] romanToIntArray1 = {'I', 'X', 'C', 'M'};
+    static char[] romanToIntArray2 = {'V', 'L', 'D'};
+
+    @SuppressWarnings("all")
+    public int romanToInt(String s) {
+        char[] charArray = s.toCharArray();
+        int result;
+        result = add(charArray[charArray.length - 1], 0);
+        for (int i = charArray.length - 2; i >= 0; i--) {
+            char c = charArray[i];
+            char last = charArray[i + 1];
+            if (getIndex(romanToIntArray1, c) == getIndex(romanToIntArray2, last)
+                    && getIndex(romanToIntArray1, c) != Integer.MAX_VALUE
+                    || getIndex(romanToIntArray1, c) < getIndex(romanToIntArray1, last)
+                    && getIndex(romanToIntArray1, last) != Integer.MAX_VALUE) {
+                result = 2 * result - add(c, result);
+            } else {
+                result = add(c, result);
+            }
+        }
+        return result;
+    }
+
+    public int getIndex(char[] array, char r) {
+        for (int i = 0; i < array.length; i++) {
+            if (r == array[i]) {
+                return i;
+            }
+        }
+        return Integer.MAX_VALUE;
+    }
+
+    public int add(char c, int i) {
+        if (c == 'I') {
+            i += 1;
+        } else if (c == 'X') {
+            i += 10;
+        } else if (c == 'C') {
+            i += 100;
+        } else if (c == 'M') {
+            i += 1000;
+        } else if (c == 'V') {
+            i += 5;
+        } else if (c == 'L') {
+            i += 50;
+        } else if (c == 'D') {
+            i += 500;
+        }
+        return i;
+    }
+
+
+    public String longestCommonPrefix(String[] strs) {
+        return getCommonPrefix(strs, 0, strs.length - 1);
+    }
+
+    private String getCommonPrefix(String[] strs, int num1, int num2) {
+        if (num1 == num2) {
+            return strs[num1];
+        }
+        if (num2 - num1 == 1) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < Integer.min(strs[num1].length(), strs[num2].length()); i++) {
+                if (strs[num1].charAt(i) == strs[num2].charAt(i)) sb.append(strs[num1].charAt(i));
+                else break;
+            }
+            return sb.toString();
+        }
+
+        String str1 = getCommonPrefix(strs, num1, (num2 + num1) / 2);
+        String str2 = getCommonPrefix(strs, (num1 + num2) / 2 + 1, num2);
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < Integer.min(str1.length(), str2.length()); i++) {
+            if (str1.charAt(i) == str2.charAt(i)) sb.append(str1.charAt(i));
+            else break;
+        }
+        return sb.toString();
+    }
+
+    @SuppressWarnings("all")
+    public List<List<Integer>> threeSum(int[] nums) {
+        if (nums == null || nums.length == 0) return new ArrayList<>();
+        Arrays.sort(nums);
+        List<List<Integer>> result = new ArrayList<>();
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+            List<Integer> list = new ArrayList<>(4);
+
+            int start = i + 1;
+            int end = nums.length - 1;
+
+            while (start < end) {
+                if (nums[start] + nums[end] == -nums[i]) {
+                    list.add(nums[start]);
+                    list.add(nums[end]);
+                    list.add(nums[i]);
+                    result.add(list);
+                    list = new ArrayList<>(4);
+                    int n = nums[start];
+                    while (start < end && nums[start] == n) start++;
+                    n = nums[end];
+                    while (start < end && nums[end] == n) end--;
+                } else if (nums[start] + nums[end] > -nums[i]) end--;
+                else start++;
+            }
+        }
+        return result;
+    }
+
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);
+        int result = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+
+            int start = i + 1;
+            int end = nums.length - 1;
+
+            while (start < end) {
+                int add = nums[start] + nums[end] + nums[i];
+                if (add == target) return target;
+                else if (add > target) end--;
+                else start++;
+                result = Math.abs(result - target) > Math.abs(add - target) ? add : result;
+            }
+        }
+
+        return result;
+    }
+
+
 }
