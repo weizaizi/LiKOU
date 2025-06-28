@@ -2,6 +2,8 @@ import java.util.*;
 
 class Solution {
 
+
+    //1. 两数之和
     public int[] twoSum(int[] nums, int target) {
         HashMap<Integer, Integer> hashMap = new HashMap<>();
 
@@ -16,7 +18,7 @@ class Solution {
         return new int[2];
     }
 
-
+    //2. 两数相加
     @SuppressWarnings("all")
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         if (l1 == null && l2 == null) return null;
@@ -32,6 +34,7 @@ class Solution {
         return new ListNode(sum % 10, addTwoNumbers(l1 != null ? l1.next : null, l2 != null ? l2.next : null));
     }
 
+    //3. 无重复字符的最长子串
     public int lengthOfLongestSubstring(String s) {
         int result = 0;
         HashMap<Character, Integer> hashMap = new HashMap<>();
@@ -48,7 +51,7 @@ class Solution {
         return Integer.max(result, j - i);
     }
 
-
+    //4. 寻找两个正序数组的中位数
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
         int i = 0;
         int j = 0;
@@ -64,7 +67,7 @@ class Solution {
         else return now;
     }
 
-
+    //5. 最长回文子串
     public String longestPalindrome(String s) {
         char[] charArray = s.toCharArray();
         boolean[][] dp = new boolean[charArray.length + 2][charArray.length + 2];
@@ -86,6 +89,7 @@ class Solution {
         return s.substring(start, end + 1);
     }
 
+    //6. Z 字形变换
     public String convert(String s, int numRows) {
         StringBuilder result = new StringBuilder();
         char[] charArray = s.toCharArray();
@@ -108,6 +112,7 @@ class Solution {
         return result.toString();
     }
 
+    //7. 整数反转
     public int reverse(int x) {
         long num = x;
         num = Math.abs(num);
@@ -122,6 +127,7 @@ class Solution {
         return (int) result;
     }
 
+    //8. 字符串转换整数 (atoi)
     public int myAtoi(String s) {
         char[] charArray = s.toCharArray();
         boolean minus = false;
@@ -146,6 +152,7 @@ class Solution {
         return minus ? -(int) result : (int) result;
     }
 
+    //9. 回文数
     public boolean isPalindrome(int x) {
         char[] s = String.valueOf(x).toCharArray();
         int i = 0;
@@ -158,6 +165,7 @@ class Solution {
         return true;
     }
 
+    //10. 正则表达式匹配
     public boolean isMatch(String s, String p) {
         char[] sCharArray = s.toCharArray();
         char[] pCharArray = p.toCharArray();
@@ -180,6 +188,7 @@ class Solution {
         return dp[sCharArray.length][pCharArray.length];
     }
 
+    //11. 盛最多水的容器
     public int maxArea(int[] height) {
         int i = 0;
         int j = height.length - 1;
@@ -202,6 +211,7 @@ class Solution {
     char[] intToRomanArray1 = {'I', 'X', 'C', 'M'};
     char[] intToRomanArray2 = {'V', 'L', 'D'};
 
+    //12. 整数转罗马数字
     public String intToRoman(int num) {
         StringBuilder sb = new StringBuilder();
         char[] charArray = String.valueOf(num).toCharArray();
@@ -225,6 +235,7 @@ class Solution {
     }
 
 
+    //13. 罗马数字转整数
     static char[] romanToIntArray1 = {'I', 'X', 'C', 'M'};
     static char[] romanToIntArray2 = {'V', 'L', 'D'};
 
@@ -236,10 +247,7 @@ class Solution {
         for (int i = charArray.length - 2; i >= 0; i--) {
             char c = charArray[i];
             char last = charArray[i + 1];
-            if (getIndex(romanToIntArray1, c) == getIndex(romanToIntArray2, last)
-                    && getIndex(romanToIntArray1, c) != Integer.MAX_VALUE
-                    || getIndex(romanToIntArray1, c) < getIndex(romanToIntArray1, last)
-                    && getIndex(romanToIntArray1, last) != Integer.MAX_VALUE) {
+            if (getIndex(romanToIntArray1, c) == getIndex(romanToIntArray2, last) && getIndex(romanToIntArray1, c) != Integer.MAX_VALUE || getIndex(romanToIntArray1, c) < getIndex(romanToIntArray1, last) && getIndex(romanToIntArray1, last) != Integer.MAX_VALUE) {
                 result = 2 * result - add(c, result);
             } else {
                 result = add(c, result);
@@ -248,7 +256,7 @@ class Solution {
         return result;
     }
 
-    public int getIndex(char[] array, char r) {
+    private int getIndex(char[] array, char r) {
         for (int i = 0; i < array.length; i++) {
             if (r == array[i]) {
                 return i;
@@ -257,7 +265,7 @@ class Solution {
         return Integer.MAX_VALUE;
     }
 
-    public int add(char c, int i) {
+    private int add(char c, int i) {
         if (c == 'I') {
             i += 1;
         } else if (c == 'X') {
@@ -276,7 +284,7 @@ class Solution {
         return i;
     }
 
-
+    //14. 最长公共前缀
     public String longestCommonPrefix(String[] strs) {
         return getCommonPrefix(strs, 0, strs.length - 1);
     }
@@ -305,6 +313,7 @@ class Solution {
         return sb.toString();
     }
 
+    //15. 三数之和
     @SuppressWarnings("all")
     public List<List<Integer>> threeSum(int[] nums) {
         if (nums == null || nums.length == 0) return new ArrayList<>();
@@ -336,6 +345,7 @@ class Solution {
         return result;
     }
 
+    //16. 最接近的三数之和
     public int threeSumClosest(int[] nums, int target) {
         Arrays.sort(nums);
         int result = Integer.MAX_VALUE;
@@ -357,5 +367,128 @@ class Solution {
         return result;
     }
 
+    //17. 电话号码的字母组合
+    @SuppressWarnings("all")
+    public List<String> letterCombinations(String digits) {
+        if (digits == null || digits.isEmpty()) return new ArrayList<>();
+        char[][] chars = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}, {'m', 'n', 'o'}, {'p', 'q', 'r', 's'}, {'t', 'u', 'v'}, {'w', 'x', 'y', 'z'}};
+        char[] charArray = digits.toCharArray();
+        List<String> result = new ArrayList<>();
+        letterCombinationsDfs(result, new StringBuilder(), charArray, 0, chars);
+        return result;
+    }
 
+    private void letterCombinationsDfs(List<String> result, StringBuilder sb, char[] charArray, int index, char[][] chars) {
+        if (index == charArray.length) {
+            result.add(sb.toString());
+            return;
+        }
+
+        int n = charArray[index] - '0' - 2;
+
+        for (char c : chars[n]) {
+            sb.append(c);
+            letterCombinationsDfs(result, sb, charArray, index + 1, chars);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+    }
+
+    @SuppressWarnings("all")
+    //18. 四数之和
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        if (nums == null || nums.length < 4) {
+            return new ArrayList<>();
+        }
+
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        int length = nums.length;
+        for (int i = 0; i < nums.length - 3; i++) {
+            if (i != 0 && nums[i] == nums[i - 1]) continue;
+            if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
+                break;
+            }
+
+            if ((long) nums[i] + nums[length - 3] + nums[length - 2] + nums[length - 1] < target) {
+                continue;
+            }
+            for (int j = i + 1; j < nums.length - 2; j++) {
+
+                if (j != i + 1 && nums[j] == nums[j - 1]) continue;
+                if ((long) nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) {
+                    break;
+                }
+
+                if ((long) nums[i] + nums[j] + nums[length - 2] + nums[length - 1] < target) {
+                    continue;
+                }
+                int start = j + 1;
+                int end = nums.length - 1;
+                while (start < end) {
+                    long t = (long) nums[start] + nums[end] + nums[i] + nums[j];
+                    if (t >= Integer.MAX_VALUE) {
+                        end--;
+                        continue;
+                    }
+                    if (t <= Integer.MIN_VALUE) {
+                        start++;
+                        continue;
+                    }
+                    if (t == target) {
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[start]);
+                        temp.add(nums[end]);
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        result.add(temp);
+                        int n = nums[start];
+                        while (start < end && nums[start] == n) start++;
+                    } else if (t > target) end--;
+                    else start++;
+                }
+
+            }
+        }
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //19. 删除链表的倒数第 N 个结点
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode p = head;
+        int now = 1;
+
+        while (now < n) {
+            if (p.next == null) return head;
+            p = p.next;
+            now++;
+        }
+        ListNode delete = head;
+        if (p.next == null) return head.next;
+
+        ListNode last = delete;
+        while (p.next != null) {
+            p = p.next;
+            last = delete;
+            delete = delete.next;
+        }
+        last.next = delete.next;
+        return head;
+    }
+
+    //20. 有效的括号
+    public boolean isValid(String s) {
+        Stack<Character> queue = new Stack<>();
+
+        char[] charArray = s.toCharArray();
+
+        for (char c : charArray) {
+            if (c == '(' || c == '{' || c == '[') queue.add(c);
+            else if (c == ')' && (queue.isEmpty() || !(queue.pop() == '('))) return false;
+            else if (c == '}' && (queue.isEmpty() || !(queue.pop() == '{'))) return false;
+            else if (c == ']' && (queue.isEmpty() || !(queue.pop() == '['))) return false;
+        }
+        return queue.isEmpty();
+    }
 }

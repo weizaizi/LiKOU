@@ -2,6 +2,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
+@SuppressWarnings("all")
 public class SolutionTest {
 
     Solution solution = new Solution();
@@ -13,9 +14,6 @@ public class SolutionTest {
         Assert.assertArrayEquals(new int[]{0, 1}, solution.twoSum(new int[]{3, 3}, 6));
     }
 
-    @Test
-    public void addTwoNumbersTest() {
-    }
 
     @Test
     public void lengthOfLongestSubstringTest() {
@@ -101,4 +99,11 @@ public class SolutionTest {
         Assert.assertEquals(0, solution.threeSumClosest(new int[]{0, 0, 0}, 0));
     }
 
+    @Test
+    public void isValidTest(){
+        Assert.assertTrue(solution.isValid("()"));
+        Assert.assertTrue(solution.isValid("(){}[]"));
+        Assert.assertFalse(solution.isValid("(]"));
+        Assert.assertTrue(solution.isValid("([])"));
+    }
 }
