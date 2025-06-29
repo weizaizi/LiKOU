@@ -100,10 +100,11 @@ public class SolutionTest {
     }
 
     @Test
-    public void isValidTest(){
+    public void isValidTest() {
         Assert.assertTrue(solution.isValid("()"));
         Assert.assertTrue(solution.isValid("(){}[]"));
         Assert.assertFalse(solution.isValid("(]"));
         Assert.assertTrue(solution.isValid("([])"));
     }
+
 }

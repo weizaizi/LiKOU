@@ -491,4 +491,110 @@ class Solution {
         }
         return queue.isEmpty();
     }
+
+    //21. 合并两个有序链表
+    @SuppressWarnings("all")
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+        ListNode p = list1;
+        ListNode last = new ListNode(-1, list1);
+        list1 = last;
+        while (true) {
+            if (p == null) {
+                last.next = list2;
+                break;
+            }
+            if (list2 == null) break;
+
+            if (list2.val < p.val) {
+                ListNode next = list2.next;
+
+                last.next = list2;
+
+                last = list2;
+                list2.next = p;
+                list2 = next;
+            } else {
+                last = p;
+                p = p.next;
+            }
+        }
+        return list1.next;
+    }
+
+    @SuppressWarnings("all")
+    //22. 括号生成
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        generateParenthesisDfs(result, new StringBuilder(), n, 0);
+        return result;
+    }
+
+    private void generateParenthesisDfs(List<String> result, StringBuilder sb, int n, int add) {
+        if (n == 0) {
+            sb.append(")".repeat(Math.max(0, add)));
+            result.add(sb.toString());
+            sb.delete(sb.length() - Math.max(0, add), sb.length());
+            return;
+        }
+
+        if (add > 0) {
+            sb.append(')');
+            generateParenthesisDfs(result, sb, n, add - 1);
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        sb.append('(');
+        generateParenthesisDfs(result, sb, n - 1, add + 1);
+        sb.deleteCharAt(sb.length() - 1);
+    }
+
+
+    @SuppressWarnings("all")
+    //23. 合并 K 个升序链表
+    public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) return null;
+        int count = 0;
+        int now = 0;
+        int length = lists.length;
+        while (true) {
+            while (now < length) {
+                ListNode left = lists[now++];
+                ListNode right = now < length ? lists[now++] : null;
+                lists[count++] = mergeTwoLists(left, right);
+            }
+            now = 0;
+            length = count;
+            if (count == 1) break;
+            else count = 0;
+        }
+
+        return lists[0];
+    }
+
+    @SuppressWarnings("all")
+    //24. 两两交换链表中的节点
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode last = new ListNode(-1, head);
+        head = last;
+        ListNode left = head.next;
+
+        ListNode right = left.next;
+
+        while (true) {
+            last.next = right;
+            left.next = right.next;
+            right.next = left;
+
+            last = left;
+            left = left.next;
+            if (left == null || left.next == null) break;
+            right = left.next;
+        }
+
+        return head.next;
+    }
+
 }
