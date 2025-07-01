@@ -107,4 +107,25 @@ public class SolutionTest {
         Assert.assertTrue(solution.isValid("([])"));
     }
 
+    @Test
+    public void removeDuplicatesTest() {
+        Assert.assertEquals(2, solution.removeDuplicates(new int[]{1, 1, 2}));
+        Assert.assertEquals(5, solution.removeDuplicates(new int[]{0, 0, 1, 1, 1, 2, 2, 3, 3, 4}));
+    }
+
+    @Test
+    public void removeElementTest() {
+        Assert.assertEquals(2, solution.removeElement(new int[]{3, 2, 2, 3}, 3));
+        Assert.assertEquals(5, solution.removeElement(new int[]{0, 1, 2, 2, 3, 0, 4, 2}, 2));
+    }
+
+    @Test
+    public void strStrTest() {
+        Assert.assertEquals(0, solution.strStr("sadbutsad", "sad"));
+        Assert.assertEquals(-1, solution.strStr("leetcode", "leeto"));
+        Assert.assertEquals(4, solution.strStr("mississippi", "issip"));
+        Assert.assertEquals(9 , solution.strStr("mississippi" , "pi"));
+        Assert.assertEquals(4 , solution.strStr("aabaaabaaac" , "aabaaac"));
+        Assert.assertEquals(-1 , solution.strStr("adcadcaddcadde" , "adcadde"));
+    }
 }

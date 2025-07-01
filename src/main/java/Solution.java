@@ -597,4 +597,106 @@ class Solution {
         return head.next;
     }
 
+
+    @SuppressWarnings("all")
+    //25. K 个一组翻转链表
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if (head == null || k == 0 || k == 1) return head;
+        head = new ListNode(-1, head);
+        ListNode p = head;
+        while (p != null) {
+            ListNode t = p;
+            ListNode temp = p.next;
+            int i = 0;
+            while (i != k) {
+                i++;
+                p = p.next;
+                if (p == null) return head.next;
+            }
+
+            reverseGroup(t, p);
+
+            p = temp;
+        }
+
+        return head.next;
+
+    }
+
+    private void reverseGroup(ListNode head, ListNode tail) {
+        ListNode end = tail.next;
+        ListNode t = head.next;
+        ListNode last = head.next;
+        ListNode p = last.next;
+
+        while (p != end) {
+            ListNode next = p.next;
+
+            p.next = last;
+            last = p;
+            p = next;
+        }
+
+        head.next = last;
+        t.next = end;
+    }
+
+    //26. 删除有序数组中的重复项
+    public int removeDuplicates(int[] nums) {
+        int j = 1;
+        int num = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != num) {
+                nums[j++] = nums[i];
+                num = nums[i];
+            }
+        }
+
+        return j;
+    }
+
+    //27. 移除元素
+    public int removeElement(int[] nums, int val) {
+        int i = 0;
+        for (int num : nums) if (val != num) nums[i++] = num;
+        return i;
+    }
+
+    //28. 找出字符串中第一个匹配项的下标
+    public int strStr(String haystack, String needle) {
+        char[] needleCharArray = needle.toCharArray();
+        char[] haystackCharArray = haystack.toCharArray();
+        int[] kmpNext = strStrKmpNext(needleCharArray);
+
+        int i = 0;
+        int j = 0;
+
+        while (i < haystackCharArray.length) {
+
+            if (needleCharArray[j] == haystackCharArray[i]) {
+                j++;
+                i++;
+            } else {
+                if (j > 0) j = kmpNext[j - 1];
+                else i++;
+            }
+
+            if (j == needleCharArray.length) return i - needleCharArray.length;
+        }
+
+        return -1;
+    }
+
+    private int[] strStrKmpNext(char[] charArray) {
+        int[] result = new int[charArray.length];
+        int j = 0;
+        for (int i = 1; i < charArray.length - 1; i++) {
+            while (j > 0 && charArray[i] != charArray[j]) j = result[j - 1];
+
+            if (charArray[i] == charArray[j]) j++;
+
+            result[i] = j;
+        }
+        return result;
+    }
 }
