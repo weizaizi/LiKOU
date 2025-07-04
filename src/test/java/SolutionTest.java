@@ -124,8 +124,79 @@ public class SolutionTest {
         Assert.assertEquals(0, solution.strStr("sadbutsad", "sad"));
         Assert.assertEquals(-1, solution.strStr("leetcode", "leeto"));
         Assert.assertEquals(4, solution.strStr("mississippi", "issip"));
-        Assert.assertEquals(9 , solution.strStr("mississippi" , "pi"));
-        Assert.assertEquals(4 , solution.strStr("aabaaabaaac" , "aabaaac"));
-        Assert.assertEquals(-1 , solution.strStr("adcadcaddcadde" , "adcadde"));
+        Assert.assertEquals(9, solution.strStr("mississippi", "pi"));
+        Assert.assertEquals(4, solution.strStr("aabaaabaaac", "aabaaac"));
+        Assert.assertEquals(-1, solution.strStr("adcadcaddcadde", "adcadde"));
+    }
+
+    @Test
+    public void divideTest() {
+        Assert.assertEquals(3, solution.divide(10, 3));
+        Assert.assertEquals(-2, solution.divide(7, -3));
+        Assert.assertEquals(1, solution.divide(2, 2));
+        Assert.assertEquals(-1073741824, solution.divide(-2147483648, 2));
+    }
+
+    @Test
+    public void longestValidParenthesesTest() {
+        Assert.assertEquals(2, solution.longestValidParentheses("(()"));
+        Assert.assertEquals(4, solution.longestValidParentheses(")()())"));
+        Assert.assertEquals(0, solution.longestValidParentheses(""));
+        Assert.assertEquals(2, solution.longestValidParentheses("())"));
+        Assert.assertEquals(6, solution.longestValidParentheses("()(())"));
+    }
+
+    @Test
+    public void searchTest() {
+        Assert.assertEquals(4, solution.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 0));
+        Assert.assertEquals(-1, solution.search(new int[]{4, 5, 6, 7, 0, 1, 2}, 3));
+        Assert.assertEquals(-1, solution.search(new int[]{1}, 0));
+        Assert.assertEquals(1, solution.search(new int[]{1, 3, 5}, 3));
+        Assert.assertEquals(1, solution.search(new int[]{1, 3}, 3));
+        Assert.assertEquals(2, solution.search(new int[]{5, 1, 3}, 3));
+    }
+
+    @Test
+    public void searchRangeTest() {
+        Assert.assertArrayEquals(new int[]{3, 4}, solution.searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8));
+        Assert.assertArrayEquals(new int[]{-1, -1}, solution.searchRange(new int[]{5, 7, 7, 8, 8, 10}, 6));
+        Assert.assertArrayEquals(new int[]{-1, -1}, solution.searchRange(new int[]{}, 0));
+        Assert.assertArrayEquals(new int[]{1, 1}, solution.searchRange(new int[]{1, 4}, 4));
+        Assert.assertArrayEquals(new int[]{0, 1}, solution.searchRange(new int[]{2, 2}, 2));
+    }
+
+    @Test
+    public void searchInsertTest() {
+        Assert.assertEquals(2, solution.searchInsert(new int[]{1, 3, 5, 6}, 5));
+        Assert.assertEquals(1, solution.searchInsert(new int[]{1, 3, 5, 6}, 2));
+        Assert.assertEquals(4, solution.searchInsert(new int[]{1, 3, 5, 6}, 7));
+        Assert.assertEquals(0, solution.searchInsert(new int[]{1, 3, 5, 6}, 0));
+    }
+
+    @Test
+    public void isValidSudokuTest() {
+        Assert.assertTrue(solution.isValidSudoku(new char[][]{
+                {'5', '3', '.', '.', '7', '.', '.', '.', '.'}
+                , {'6', '.', '.', '1', '9', '5', '.', '.', '.'}
+                , {'.', '9', '8', '.', '.', '.', '.', '6', '.'}
+                , {'8', '.', '.', '.', '6', '.', '.', '.', '3'}
+                , {'4', '.', '.', '8', '.', '3', '.', '.', '1'}
+                , {'7', '.', '.', '.', '2', '.', '.', '.', '6'}
+                , {'.', '6', '.', '.', '.', '.', '2', '8', '.'}
+                , {'.', '.', '.', '4', '1', '9', '.', '.', '5'}
+                , {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        }));
+
+        Assert.assertFalse(solution.isValidSudoku(new char[][]{
+                {'8', '3', '.', '.', '7', '.', '.', '.', '.'},
+                {'6', '.', '.', '1', '9', '5', '.', '.', '.'},
+                {'.', '9', '8', '.', '.', '.', '.', '6', '.'},
+                {'8', '.', '.', '.', '6', '.', '.', '.', '3'},
+                {'4', '.', '.', '8', '.', '3', '.', '.', '1'},
+                {'7', '.', '.', '.', '2', '.', '.', '.', '6'},
+                {'.', '6', '.', '.', '.', '.', '2', '8', '.'},
+                {'.', '.', '.', '4', '1', '9', '.', '.', '5'},
+                {'.', '.', '.', '.', '8', '.', '.', '7', '9'}
+        }));
     }
 }

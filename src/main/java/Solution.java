@@ -699,4 +699,277 @@ class Solution {
         }
         return result;
     }
+
+    //29. 两数相除
+    public int divide(int dividend, int divisor) {
+        if (dividend == 0) return 0;
+        if (divisor == 1) return dividend;
+
+        if (divisor == -1) {
+            if (dividend == Integer.MIN_VALUE) return Integer.MAX_VALUE;
+            else return -dividend;
+        }
+
+        if (divisor == Integer.MIN_VALUE) {
+            if (dividend == Integer.MIN_VALUE) return 1;
+            else return 0;
+        }
+
+        if (divisor == Integer.MAX_VALUE) {
+            if (dividend == Integer.MIN_VALUE) return -1;
+            else if (dividend == Integer.MAX_VALUE) return 1;
+            else return 0;
+        }
+        boolean f = false;
+        if (dividend > 0) dividend = -dividend;
+        else f = true;
+        if (divisor > 0) divisor = -divisor;
+        else f = !f;
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        arrayList.add(divisor);
+        int index = 0;
+
+        while (arrayList.get(index) >= dividend - arrayList.get(index)) arrayList.add(arrayList.get(index++) << 1);
+        int result = 0;
+        for (int size = arrayList.size() - 1; size >= 0; size--) {
+            if (dividend > divisor) break;
+
+            int num = arrayList.get(size);
+
+            if (num >= dividend) {
+                dividend = dividend - num;
+                result += (1 << size);
+            }
+        }
+
+        return f ? -result : result;
+    }
+
+    @SuppressWarnings("all")
+    //30. 串联所有单词的子串
+    public List<Integer> findSubstring(String s, String[] words) {
+        int n = words.length;
+        int m = words[0].length();
+
+        List<Integer> result = new ArrayList<>();
+
+        for (int i = 0; i < m; i++) {
+            if (n * m + i > s.length()) break;
+            HashMap<String, Integer> hashMap = new HashMap<>();
+            for (int j = 0; j < n; j++) {
+                String word = s.substring(j * m + i, i + j * m + m);
+                hashMap.put(word, hashMap.getOrDefault(word, 0) + 1);
+            }
+
+            for (String word : words) {
+                hashMap.put(word, hashMap.getOrDefault(word, 0) - 1);
+                if (hashMap.get(word) == 0) hashMap.remove(word);
+            }
+
+            for (int start = i; start <= s.length() - n * m; start += m) {
+                if (start != i) {
+                    String word = s.substring(n * m + start - m, start + n * m);
+                    hashMap.put(word, hashMap.getOrDefault(word, 0) + 1);
+                    if (hashMap.get(word) == 0) hashMap.remove(word);
+
+                    word = s.substring(start - m, start);
+                    hashMap.put(word, hashMap.getOrDefault(word, 0) - 1);
+                    if (hashMap.get(word) == 0) hashMap.remove(word);
+                }
+
+                if (hashMap.isEmpty()) result.add(start);
+            }
+
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //31. 下一个排列
+    public void nextPermutation(int[] nums) {
+        if (nums.length == 0 || nums.length == 1) return;
+        int i;
+        for (i = nums.length - 2; i >= 0; i--) {
+            if (nums[i] < nums[i + 1]) break;
+            if (i == 0) {
+                Arrays.sort(nums);
+                return;
+            }
+        }
+
+        int j;
+        for (j = nums.length - 1; j > i; j--) {
+            if (nums[j] > nums[i]) break;
+        }
+
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+        j = nums.length - 1;
+        i++;
+
+        while (i < j) {
+            t = nums[i];
+            nums[i] = nums[j];
+            nums[j] = t;
+            i++;
+            j--;
+        }
+    }
+
+    //32. 最长有效括号
+    public int longestValidParentheses(String s) {
+        if (s == null || s.isEmpty() || s.length() == 1) return 0;
+        char[] charArray = s.toCharArray();
+        int[] dp = new int[charArray.length + 1];
+
+        int result = 0;
+        for (int i = 2; i < dp.length; i++) {
+            if (charArray[i - 1] == ')') {
+                if (charArray[i - 2] == '(') dp[i] = dp[i - 2] + 2;
+                else if (i - 2 - dp[i - 1] >= 0 && charArray[i - 2 - dp[i - 1]] == '(')
+                    dp[i] = dp[i - 1] + dp[i - 2 - dp[i - 1]] + 2;
+            }
+            result = Integer.max(result, dp[i]);
+        }
+
+        return result;
+    }
+
+    //33. 搜索旋转排序数组
+    public int search(int[] nums, int target) {
+        if (nums[0] == target) return 0;
+        if (nums.length == 1) return -1;
+        int n = nums.length;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1]) {
+                n = i;
+                break;
+            }
+        }
+        int i;
+        int j;
+        if (n == nums.length) {
+            i = 0;
+            j = nums.length - 1;
+        } else if (target <= nums[0]) {
+            j = nums.length - 1;
+            i = n;
+        } else {
+            i = 0;
+            j = n - 1;
+        }
+        int mid;
+        while (i <= j) {
+            mid = (i + j) / 2;
+            if (target == nums[mid]) return mid;
+            if (target < nums[mid]) j = mid - 1;
+            else i = mid + 1;
+        }
+
+        return -1;
+    }
+
+    //34. 在排序数组中查找元素的第一个和最后一个位置
+    public int[] searchRange(int[] nums, int target) {
+        if (nums.length == 0 || target > nums[nums.length - 1] || target < nums[0]) return new int[]{-1, -1};
+        int[] result = new int[2];
+        int start = 0;
+        int end = nums.length - 1;
+        int i = start;
+        int j = end;
+        int mid = 0;
+        while (i <= j) {
+            mid = (i + j) / 2;
+            if (nums[mid] == target) {
+                break;
+            } else if (nums[mid] > target) {
+                end = j;
+                j = mid - 1;
+            } else {
+                start = i;
+                i = mid + 1;
+            }
+        }
+        if (i > j) return new int[]{-1, -1};
+
+        int f = start;
+        int l = mid;
+
+        while (f <= l) {
+            mid = (f + l) / 2;
+            if (nums[mid] == target && (mid == 0 || nums[mid] > nums[mid - 1])) {
+                result[0] = mid;
+                break;
+            } else if (nums[mid] >= target) {
+                l = mid - 1;
+            } else {
+                f = mid + 1;
+            }
+        }
+
+        f = mid;
+        l = end;
+        while (f <= l) {
+            mid = (f + l) / 2;
+            if (nums[mid] == target && (mid == nums.length - 1 || nums[mid] < nums[mid + 1])) {
+                result[1] = mid;
+                break;
+            } else if (nums[mid] > target) {
+                l = mid - 1;
+            } else {
+                f = mid + 1;
+            }
+        }
+
+        return result;
+    }
+
+    //35. 搜索插入位置
+    public int searchInsert(int[] nums, int target) {
+        int i = 0;
+        int j = nums.length - 1;
+        int mid = 0;
+
+        while (i <= j) {
+            mid = (i + j) / 2;
+
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) j = mid - 1;
+            else i = mid + 1;
+        }
+
+        return target > nums[mid] ? mid + 1 : mid;
+    }
+
+    //36. 有效的数独
+    public boolean isValidSudoku(char[][] board) {
+        boolean[][] row = new boolean[9][9];
+        boolean[][] block = new boolean[9][9];
+        boolean[][] column = new boolean[9][9];
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                int num = board[i][j] - 1 - '0';
+
+                if (row[i][num]) return false;
+                else row[i][num] = true;
+
+                if (column[num][j]) return false;
+                else column[num][j] = true;
+
+                int indexRow = i / 3 * 3 + num / 3;
+                int indexColumn = j / 3 * 3 + num % 3;
+                if (block[indexRow][indexColumn]) return false;
+                else block[indexRow][indexColumn] = true;
+            }
+        }
+
+        return true;
+    }
+
+
 }
