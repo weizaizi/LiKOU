@@ -208,8 +208,8 @@ class Solution {
         return max;
     }
 
-    char[] intToRomanArray1 = {'I', 'X', 'C', 'M'};
-    char[] intToRomanArray2 = {'V', 'L', 'D'};
+    private final char[] intToRomanArray1 = {'I', 'X', 'C', 'M'};
+    private final char[] intToRomanArray2 = {'V', 'L', 'D'};
 
     //12. 整数转罗马数字
     public String intToRoman(int num) {
@@ -236,8 +236,8 @@ class Solution {
 
 
     //13. 罗马数字转整数
-    static char[] romanToIntArray1 = {'I', 'X', 'C', 'M'};
-    static char[] romanToIntArray2 = {'V', 'L', 'D'};
+    private final char[] romanToIntArray1 = {'I', 'X', 'C', 'M'};
+    private final char[] romanToIntArray2 = {'V', 'L', 'D'};
 
     @SuppressWarnings("all")
     public int romanToInt(String s) {
@@ -946,7 +946,7 @@ class Solution {
 
     //36. 有效的数独
     public boolean isValidSudoku(char[][] board) {
-        boolean[][] row = new boolean[9][9];
+        boolean[][] line = new boolean[9][9];
         boolean[][] block = new boolean[9][9];
         boolean[][] column = new boolean[9][9];
 
@@ -955,8 +955,8 @@ class Solution {
                 if (board[i][j] == '.') continue;
                 int num = board[i][j] - 1 - '0';
 
-                if (row[i][num]) return false;
-                else row[i][num] = true;
+                if (line[i][num]) return false;
+                else line[i][num] = true;
 
                 if (column[num][j]) return false;
                 else column[num][j] = true;
@@ -971,5 +971,147 @@ class Solution {
         return true;
     }
 
+    //37.解数独
+    private final int[] solveSudokuLine = new int[9];
+    private final int[] solveSudokuColumn = new int[9];
+    private final int[][] solveSudokuBlock = new int[3][3];
+    private final ArrayList<int[]> solveSudokuList = new ArrayList<>();
+    private boolean solveSudokuValid = false;
+
+    @SuppressWarnings("all")
+    public void solveSudoku(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') solveSudokuList.add(new int[]{i, j});
+                else solveSudokuFlip(board[i][j] - '0' - 1, i, j);
+            }
+        }
+
+        solveSudokuDfs(board, 0);
+    }
+
+    private void solveSudokuDfs(char[][] board, int pos) {
+        if (solveSudokuList.size() == pos) {
+            solveSudokuValid = true;
+            return;
+        }
+
+        int[] space = solveSudokuList.get(pos);
+
+        int i = space[0];
+        int j = space[1];
+
+        int mask = ~(solveSudokuLine[i] | solveSudokuColumn[j] | solveSudokuBlock[i / 3][j / 3]) & 0x1ff;
+
+        for (; !solveSudokuValid && mask != 0; mask &= (mask - 1)) {
+            int digitMask = mask & (-mask);
+            int digit = Integer.bitCount(digitMask - 1);
+
+            solveSudokuFlip(digit, i, j);
+
+            board[i][j] = (char) (digit + '0' + 1);
+
+            solveSudokuDfs(board, pos + 1);
+
+            solveSudokuFlip(digit, i, j);
+        }
+    }
+
+    private void solveSudokuFlip(int num, int i, int j) {
+        solveSudokuLine[i] ^= 1 << num;
+        solveSudokuColumn[j] ^= 1 << num;
+        solveSudokuBlock[i / 3][j / 3] ^= 1 << num;
+    }
+
+    //38. 外观数列
+    public String countAndSay(int n) {
+        return countAndSayDfs(n, new StringBuilder("1"));
+    }
+
+    private String countAndSayDfs(int n, StringBuilder last) {
+        if (n == 1) return last.toString();
+
+        char[] charArray = last.toString().toCharArray();
+
+        last = new StringBuilder();
+
+        char chars = charArray[0];
+        int num = 1;
+        for (int i = 1; i < charArray.length; i++) {
+            if (charArray[i] != chars) {
+                last.append(num);
+                last.append(chars);
+
+                chars = charArray[i];
+                num = 1;
+                continue;
+            }
+            num++;
+        }
+
+        last.append(num);
+        last.append(chars);
+        return countAndSayDfs(n - 1, last);
+    }
+
+    //39. 组合总和
+    private final List<List<Integer>> combinationSumList = new ArrayList<>();
+
+    @SuppressWarnings("all")
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        combinationSumDfs(candidates, target, 0, 0, new ArrayList<>());
+        return combinationSumList;
+    }
+
+    private void combinationSumDfs(int[] candidates, int target, int index, int last, List<Integer> list) {
+        if (last == target) {
+            combinationSumList.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = index; i < candidates.length; i++) {
+            int num = candidates[i];
+
+            last += num;
+            if (last > target) return;
+            list.add(num);
+            combinationSumDfs(candidates, target, i, last, list);
+            list.removeLast();
+            last -= num;
+        }
+    }
+
+    //40. 组合总和 II
+    private final List<List<Integer>> combinationSum2List = new ArrayList<>();
+
+    @SuppressWarnings("all")
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        combinationSum2Dfs(candidates, target, 0, 0, new ArrayList<>());
+        return combinationSum2List;
+    }
+
+    private void combinationSum2Dfs(int[] candidates, int target, int index, int last, List<Integer> list) {
+        if (target == last) {
+            combinationSum2List.add(new ArrayList<>(list));
+            return;
+        }
+
+        int l = -1;
+        for (int i = index; i < candidates.length; i++) {
+            int num = candidates[i];
+            if (num == l) continue;
+
+            l = num;
+            last += num;
+            if (last > target) return;
+            list.add(num);
+            combinationSum2Dfs(candidates, target, i + 1, last, list);
+            list.removeLast();
+            last -= num;
+        }
+
+    }
 
 }
