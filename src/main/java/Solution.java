@@ -1114,4 +1114,53 @@ class Solution {
 
     }
 
+    //41. 缺失的第一个正数
+    public int firstMissingPositive(int[] nums) {
+        if (nums.length == 1 && nums[0] == 1) return 2;
+        if (nums.length == 1) return 1;
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] <= 0 || nums[i] > nums.length || i == nums[i] - 1 || nums[nums[i] - 1] == nums[i]) continue;
+
+            firstMissingPositiveSwap(nums, i, nums[i] - 1);
+            i--;
+
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] != i + 1) return i + 1;
+        }
+
+        return nums.length + 1;
+    }
+
+    private void firstMissingPositiveSwap(int[] num, int i, int j) {
+        int temp = num[i];
+        num[i] = num[j];
+        num[j] = temp;
+    }
+
+    //42. 接雨水
+    public int trap(int[] height) {
+        int left = 0;
+        int right = height.length - 1;
+        int leftMax = 0;
+        int rightMax = 0;
+        int ans = 0;
+        while (left <= right) {
+            leftMax = Integer.max(leftMax, height[left]);
+            rightMax = Integer.max(rightMax, height[right]);
+
+            if (leftMax < rightMax) {
+                ans += (leftMax - height[left]);
+                left++;
+            } else {
+                ans += (rightMax - height[right]);
+                right--;
+            }
+        }
+
+        return ans;
+    }
+
 }
