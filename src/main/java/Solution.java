@@ -1163,4 +1163,216 @@ class Solution {
         return ans;
     }
 
+    //43. 字符串相乘
+    public String multiply(String num1, String num2) {
+        if (num1.length() == 1) {
+            if (num1.equals("0")) return "0";
+            if (num1.equals("1")) return num2;
+        }
+        if (num2.length() == 1) {
+            if (num2.equals("0")) return "0";
+            if (num2.equals("1")) return num1;
+        }
+        int[] result = new int[num1.length() + num2.length()];
+
+        char[] num1CharArray = num1.toCharArray();
+        char[] num2CharArray = num2.toCharArray();
+
+        for (int i = num1CharArray.length - 1; i >= 0; i--) {
+            int charNum1 = num1CharArray[i] - '0';
+            for (int j = num2CharArray.length - 1; j >= 0; j--) {
+                int charNum2 = num2CharArray[j] - '0';
+                multiplyAdd(result.length - 1 - i - j, result, charNum1 * charNum2);
+            }
+        }
+        if (result[0] == 0) result = Arrays.copyOfRange(result, 1, result.length);
+        StringBuilder builder = new StringBuilder();
+        for (int i : result) builder.append(i);
+        return builder.toString();
+
+    }
+
+    private void multiplyAdd(int start, int[] result, int add) {
+
+        result[result.length - start] += add;
+        for (int j = result.length - start - 1; j > 0; j--) {
+            if (result[j + 1] < 10) return;
+
+            result[j] += (result[j + 1] / 10);
+            result[j + 1] %= 10;
+        }
+    }
+
+    //44. 通配符匹配
+    public boolean isMatch44(String s, String p) {
+        if (p.equals("*")) return true;
+        if (p.isEmpty() && !s.isEmpty()) return false;
+        if (p.isEmpty()) return true;
+
+        String[] split = p.split("\\*");
+        if (split.length == 0) return true;
+        if (split.length == 1 && p.charAt(0) != '*' && p.charAt(p.length() - 1) != '*') {
+
+            if (split[0].length() != s.length()) return false;
+            for (int i = 0; i < s.length(); i++)
+                if (split[0].charAt(i) != s.charAt(i) && split[0].charAt(i) != '?') return false;
+
+            return true;
+        }
+
+        int first = 0;
+        int last = split.length;
+
+        int start = 0;
+        int end = s.length();
+
+        if (p.charAt(0) != '*') {
+            String p1 = split[0];
+            if (p1.length() > s.length()) return false;
+            for (int i = 0; i < p1.length(); i++) {
+                if (p1.charAt(i) != s.charAt(i) && p1.charAt(i) != '?') return false;
+            }
+            first++;
+            start = p1.length();
+        }
+
+
+        if (p.charAt(p.length() - 1) != '*' && first < last) {
+            String pLast = split[split.length - 1];
+            if (pLast.length() > s.length()) return false;
+            for (int i = 0; i < pLast.length(); i++) {
+                if (s.length() - i - 1 < start) return false;
+                char c = s.charAt(s.length() - i - 1);
+                char c1 = pLast.charAt(pLast.length() - i - 1);
+
+                if (c1 != c && c1 != '?') return false;
+            }
+            last--;
+            end = s.length() - pLast.length();
+        }
+
+        while (first < last) {
+            int n = start;
+            int i = 0;
+            int j = start;
+            String p1 = split[first];
+            while (i < p1.length()) {
+                if (j == end) return false;
+                if (p1.charAt(i) == s.charAt(j) || p1.charAt(i) == '?') {
+                    i++;
+                    j++;
+                    continue;
+                }
+
+                j = n + 1;
+                n++;
+                i = 0;
+
+            }
+            start = j;
+
+            first++;
+
+            if (start > end) return false;
+        }
+        return true;
+    }
+
+
+    //45. 跳跃游戏 II
+    public int jump(int[] nums) {
+        int end = 0;
+        int max = 0;
+        int step = 0;
+        for (int i = 0; i < nums.length - 1; i++) {
+            max = Integer.max(max, i + nums[i]);
+            if (end == i) {
+                step++;
+                end = max;
+            }
+        }
+        return step;
+    }
+
+
+    @SuppressWarnings("all")
+    //46. 全排列
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        for (int num : nums) {
+            list.add(num);
+        }
+
+        permuteDfs(nums, result, list, nums.length);
+        return result;
+    }
+
+    private void permuteDfs(int[] nums, List<List<Integer>> result, List<Integer> list, int n) {
+        if (n == 0) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = nums.length - n; i < nums.length; i++) {
+            Collections.swap(list, nums.length - n, i);
+
+            permuteDfs(nums, result, list, n - 1);
+
+            Collections.swap(list, nums.length - n, i);
+        }
+    }
+
+    @SuppressWarnings("all")
+    //47. 全排列 II
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        Arrays.sort(nums);
+        permuteUniqueDfs(result, new ArrayList<>(), nums, 0, new boolean[nums.length]);
+        return result;
+    }
+
+    private void permuteUniqueDfs(List<List<Integer>> result, List<Integer> list, int[] nums, int index, boolean[] visit) {
+        if (index == nums.length) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (visit[i] || (i > 0 && nums[i] == nums[i - 1] && !visit[i - 1])) continue;
+
+            list.add(nums[i]);
+
+            visit[i] = true;
+            permuteUniqueDfs(result, list, nums, index + 1, visit);
+            visit[i] = false;
+
+            list.removeLast();
+        }
+    }
+
+    @SuppressWarnings("all")
+    //48. 旋转图像
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - 1 - i; j++) {
+                rotateSwap(matrix, i, j, n - j - 1, n - i - 1);
+            }
+        }
+
+        for (int i = 0; i < n / 2; i++) {
+            for (int j = 0; j < n; j++) {
+                rotateSwap(matrix, i, j, n - i - 1, j);
+            }
+        }
+    }
+
+    private void rotateSwap(int[][] matrix, int x1, int y1, int x2, int y2) {
+        int t = matrix[x1][y1];
+        matrix[x1][y1] = matrix[x2][y2];
+        matrix[x2][y2] = t;
+    }
 }

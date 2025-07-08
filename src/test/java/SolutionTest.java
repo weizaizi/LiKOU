@@ -201,4 +201,31 @@ public class SolutionTest {
         Assert.assertEquals(9, solution.trap(new int[]{4, 2, 0, 3, 2, 5}));
     }
 
+    @Test
+    public void multiplyTest() {
+        Assert.assertEquals("6", solution.multiply("2", "3"));
+        Assert.assertEquals("56088", solution.multiply("123", "456"));
+    }
+
+    @Test
+    public void isMatch44Test() {
+        Assert.assertFalse(solution.isMatch44("aa", "a"));
+        Assert.assertTrue(solution.isMatch44("aa", "a*"));
+        Assert.assertFalse(solution.isMatch44("cb", "?a"));
+        Assert.assertFalse(solution.isMatch44("mississippi", "m??*ss*?i*pi"));
+        Assert.assertTrue(solution.isMatch44("aa", "aa"));
+        Assert.assertTrue(solution.isMatch44("", "*******"));
+        Assert.assertTrue(solution.isMatch44("abcabczzzde", "*abc???de*"));
+        Assert.assertFalse(solution.isMatch44("zacabz", "*a?b*"));
+        Assert.assertFalse(solution.isMatch44("b", "*?*?*"));
+        Assert.assertTrue(solution.isMatch44("hi", "*?"));
+        Assert.assertFalse(solution.isMatch44("b", "?*?"));
+    }
+
+    @Test
+    public void jumpTest() {
+        Assert.assertEquals(2, solution.jump(new int[]{2, 3, 1, 1, 4}));
+        Assert.assertEquals(2, solution.jump(new int[]{2, 3, 0, 1, 4}));
+    }
+
 }
