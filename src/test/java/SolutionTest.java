@@ -228,4 +228,17 @@ public class SolutionTest {
         Assert.assertEquals(2, solution.jump(new int[]{2, 3, 0, 1, 4}));
     }
 
+    @Test
+    public void myPowTest() {
+        Assert.assertEquals(1024, solution.myPow(2, 10), 0.0001);
+        Assert.assertEquals(9.261, solution.myPow(2.1, 3), 0.0001);
+        Assert.assertEquals(0.25, solution.myPow(2, -2), 0.0001);
+    }
+
+    @Test
+    public void solveNQueensTest() {
+        Assert.assertEquals(2, solution.totalNQueens(4));
+        Assert.assertEquals(1, solution.totalNQueens(1));
+    }
+
 }

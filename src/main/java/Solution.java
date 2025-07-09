@@ -1375,4 +1375,128 @@ class Solution {
         matrix[x1][y1] = matrix[x2][y2];
         matrix[x2][y2] = t;
     }
+
+    //49. 字母异位词分组
+    @SuppressWarnings("all")
+    public List<List<String>> groupAnagrams(String[] strs) {
+        List<List<String>> result = new ArrayList<>();
+        HashMap<String, List<String>> re = new HashMap<>();
+
+        for (String str : strs) {
+            char[] charArray = str.toCharArray();
+            Arrays.sort(charArray);
+            String s = new String(charArray);
+
+            List<String> list = re.get(s);
+            if (list == null) {
+                list = new ArrayList<>();
+
+                result.add(list);
+            }
+
+            re.put(s, list);
+            list.add(str);
+        }
+        return result;
+    }
+
+    //50. Pow(x, n)
+    public double myPow(double x, int n) {
+        return n >= 0 ? myPowPow(x, n) : 1 / myPowPow(x, n);
+    }
+
+    private double myPowPow(double x, int n) {
+        long m = Math.abs((long) n);
+
+        if (m == 0) return 1;
+        if (m == 1) return x;
+
+        double pow = myPowPow(x, n / 2);
+
+        return m % 2 == 0 ? pow * pow : pow * pow * x;
+    }
+
+    //51. N 皇后
+    @SuppressWarnings("all")
+    public List<List<String>> solveNQueens(int n) {
+        List<List<String>> result = new ArrayList<>();
+        List<String> list = new ArrayList<>();
+        solveNQueensDfs(result, list, n, new boolean[n], new boolean[n * 2 - 1], new boolean[n * 2 - 1]);
+        return result;
+    }
+
+    private void solveNQueensDfs(List<List<String>> result, List<String> list, int n, boolean[] chosen, boolean[] z, boolean[] f) {
+        if (list.size() == n) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        char[] s = new char[n];
+        s[0] = 'Q';
+        for (int i = 1; i < n; i++) s[i] = '.';
+
+        for (int i = 0; i < n; i++) {
+            if (chosen[i]) continue;
+
+            if (z[i + list.size()] || f[i - list.size() + n - 1]) continue;
+            else {
+                z[i + list.size()] = true;
+                f[i - list.size() + n - 1] = true;
+            }
+
+            chosen[i] = true;
+
+            solveNQueensSwap(s, i);
+            list.add(new String(s));
+
+            solveNQueensDfs(result, list, n, chosen, z, f);
+
+            list.removeLast();
+            z[i + list.size()] = false;
+            f[i - list.size() + n - 1] = false;
+            solveNQueensSwap(s, i);
+            chosen[i] = false;
+        }
+    }
+
+    private void solveNQueensSwap(char[] s, int j) {
+        char t = s[0];
+        s[0] = s[j];
+        s[j] = t;
+    }
+
+    //51. N 皇后
+    private int totalNQueensResult;
+
+    public int totalNQueens(int n) {
+        totalNQueensResult = 0;
+        totalNQueensDfs(0, n, new boolean[n], new boolean[n * 2 - 1], new boolean[n * 2 - 1]);
+        return totalNQueensResult;
+    }
+
+    private void totalNQueensDfs(int num, int n, boolean[] chosen, boolean[] z, boolean[] f) {
+        if (num == n) {
+            totalNQueensResult++;
+            return;
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (chosen[i]) continue;
+            if (z[i + num] || f[i - num + n - 1]) continue;
+            else {
+                z[i + num] = true;
+                f[i - num + n - 1] = true;
+            }
+            chosen[i] = true;
+            num++;
+            totalNQueensDfs(num, n, chosen, z, f);
+            num--;
+            z[i + num] = false;
+            f[i - num + n - 1] = false;
+            chosen[i] = false;
+        }
+    }
+
+
+
 }
