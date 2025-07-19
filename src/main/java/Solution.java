@@ -1465,7 +1465,7 @@ class Solution {
         s[j] = t;
     }
 
-    //51. N 皇后
+    //52. N 皇后 II
     private int totalNQueensResult;
 
     public int totalNQueens(int n) {
@@ -1497,6 +1497,112 @@ class Solution {
         }
     }
 
+    //53. 最大子数组和
+    public int maxSubArray(int[] nums) {
+        int ans = Integer.MIN_VALUE;
+        int sum = 0;
+
+        for (int num : nums) {
+            sum += num;
+            ans = Math.max(ans, sum);
+            if (sum < 0) sum = 0;
+        }
+
+        return ans;
+    }
+
+    @SuppressWarnings("all")
+    //54. 螺旋矩阵
+    public List<Integer> spiralOrder(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        ArrayList<Integer> result = new ArrayList<>();
+        for (int i = 0; i < Integer.min(m / 2, n / 2); i++) {
+            for (int j = i; j < n - i; j++) result.add(matrix[i][j]);
+
+            for (int j = i + 1; j < m - i; j++) result.add(matrix[j][n - i - 1]);
+
+            for (int j = n - i - 2; j >= i; j--) result.add(matrix[m - i - 1][j]);
+
+            if (i != n / 2) for (int j = m - i - 2; j > i; j--) result.add(matrix[j][i]);
+        }
+
+        if (m % 2 == 1 && n >= m) for (int i = m / 2; i < n - m / 2; i++) result.add(matrix[m / 2][i]);
 
 
+        if (n % 2 == 1 && n < m) for (int i = n / 2; i < m - n / 2; i++) result.add(matrix[i][n / 2]);
+
+        return result;
+    }
+
+    //55. 跳跃游戏
+    public boolean canJump(int[] nums) {
+        int maxLength = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (maxLength >= nums.length - 1) return true;
+
+
+            int n = nums[i];
+
+            if (maxLength == i && n == 0) return false;
+
+            maxLength = Integer.max(maxLength, n + i);
+        }
+
+        return true;
+    }
+
+    //56. 合并区间
+    public int[][] merge(int[][] intervals) {
+        mergeQuickSort(intervals, 0, intervals.length - 1);
+        int j = 0;
+        int[] last = intervals[0];
+
+        for (int i = 1; i < intervals.length; i++) {
+            if (intervals[i][0] > last[1]) {
+                intervals[j] = last;
+                j++;
+                last = intervals[i];
+                continue;
+            }
+
+            last = new int[]{last[0], Integer.max(last[1], intervals[i][1])};
+        }
+
+        intervals[j] = last;
+        j++;
+
+        return Arrays.copyOfRange(intervals, 0, j);
+    }
+
+    private void mergeQuickSort(int[][] intervals, int start, int end) {
+        if (end <= start) return;
+        int i = start + 1;
+        int j = end;
+
+        int n = intervals[start][0];
+        while (i <= j) {
+            while (i <= j && intervals[i][0] <= n) i++;
+
+            while (i <= j && intervals[j][0] > n) j--;
+
+            if (i < j) {
+                mergeShift(intervals, i, j);
+                i++;
+                j--;
+            }
+        }
+
+        mergeShift(intervals, start, j);
+
+        mergeQuickSort(intervals, start, j - 1);
+        mergeQuickSort(intervals, j + 1, end);
+    }
+
+    private void mergeShift(int[][] intervals, int i, int j) {
+        int[] t = intervals[i];
+        intervals[i] = intervals[j];
+        intervals[j] = t;
+    }
 }
