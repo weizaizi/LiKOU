@@ -262,6 +262,36 @@ public class SolutionTest {
     }
 
     @Test
+    public void insertTest() {
+        Assert.assertArrayEquals(new int[][]{{1, 5}, {6, 9}}, solution.insert(new int[][]{{1, 3}, {6, 9}}, new int[]{2, 5}));
+        Assert.assertArrayEquals(new int[][]{{1, 2}, {3, 10}, {12, 16}}, solution.insert(new int[][]{{1, 2}, {3, 5}, {6, 7}, {8, 10}, {12, 16}}, new int[]{4, 8}));
+        Assert.assertArrayEquals(new int[][]{{1, 5}, {6, 8}}, solution.insert(new int[][]{{1, 5}}, new int[]{6, 8}));
+        Assert.assertArrayEquals(new int[][]{{0, 0}, {1, 5}}, solution.insert(new int[][]{{1, 5}}, new int[]{0, 0}));
+    }
+
+    @Test
+    public void lengthOfLastWordTest() {
+        Assert.assertEquals(5, solution.lengthOfLastWord("Hello World"));
+        Assert.assertEquals(4, solution.lengthOfLastWord(" fly me   to   the moon  "));
+        Assert.assertEquals(6, solution.lengthOfLastWord("luffy is still joyboy"));
+    }
+
+    @Test
+    public void generateMatrixTest() {
+        Assert.assertArrayEquals(new int[][]{{1, 2, 3}, {8, 9, 4}, {7, 6, 5}}, solution.generateMatrix(3));
+        Assert.assertArrayEquals(new int[][]{{1}}, solution.generateMatrix(1));
+    }
+
+    @Test
+    public void getPermutationTest() {
+        Assert.assertEquals("213", solution.getPermutation(3, 3));
+        Assert.assertEquals("2314", solution.getPermutation(4, 9));
+        Assert.assertEquals("123", solution.getPermutation(3, 1));
+        Assert.assertEquals("21", solution.getPermutation(2, 2));
+        Assert.assertEquals("132", solution.getPermutation(3, 2));
+    }
+
+    @Test
     public void debug() {
 
     }

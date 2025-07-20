@@ -1605,4 +1605,97 @@ class Solution {
         intervals[i] = intervals[j];
         intervals[j] = t;
     }
+
+    //57. 插入区间
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        if (intervals.length == 0) return new int[][]{newInterval};
+
+        int i = 0;
+        int j = 0;
+        for (int[] interval : intervals) {
+            if (interval[1] < newInterval[0]) i++;
+            if (interval[0] <= newInterval[1]) j++;
+        }
+        if (i >= intervals.length) {
+            int[][] result = new int[intervals.length + 1][];
+            System.arraycopy(intervals, 0, result, 0, intervals.length);
+            result[intervals.length] = newInterval;
+            return result;
+        }
+        if (j == 0) {
+            int[][] result = new int[intervals.length + 1][];
+            System.arraycopy(intervals, 0, result, 1, intervals.length);
+            result[0] = newInterval;
+            return result;
+        }
+        int[] array = new int[]{Integer.min(intervals[i][0], newInterval[0]), Integer.max(intervals[j - 1][1], newInterval[1])};
+
+        int[][] result = new int[intervals.length - j + i + 1][];
+        System.arraycopy(intervals, 0, result, 0, i);
+        result[i] = array;
+        System.arraycopy(intervals, j, result, i + 1, result.length - i - 1);
+        return result;
+    }
+
+    //58. 最后一个单词的长度
+    public int lengthOfLastWord(String s) {
+        char[] charArray = s.toCharArray();
+        int result = 0;
+        boolean end = true;
+        for (int i = charArray.length - 1; i >= 0; i--) {
+            if (charArray[i] != ' ') {
+                end = false;
+                result++;
+            }
+
+            if (charArray[i] == ' ' && end) continue;
+            if (charArray[i] == ' ') break;
+        }
+
+        return result;
+    }
+
+    //59. 螺旋矩阵 II
+    public int[][] generateMatrix(int n) {
+        int[][] result = new int[n][n];
+        int end = n * n;
+
+        int direction = 0;
+
+        int m = n;
+
+        int row = 0;
+        int column = 0;
+
+        int k = 0;
+
+        for (int i = 1; i <= end; i++) {
+            k++;
+            if (k == m) {
+                if (direction == 3) {
+                    column++;
+                    row++;
+                    m -= 2;
+                }
+                direction = (direction + 1) % 4;
+                k = 1;
+            }
+
+            result[row][column] = i;
+
+            if (direction == 0) column++;
+            if (direction == 1) row++;
+            if (direction == 2) column--;
+            if (direction == 3) row--;
+
+
+        }
+
+        return result;
+    }
+
+    //60. 排列序列
+    public String getPermutation(int n, int k) {
+        return null;
+    }
 }
