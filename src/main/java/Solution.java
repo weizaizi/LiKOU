@@ -1696,6 +1696,802 @@ class Solution {
 
     //60. 排列序列
     public String getPermutation(int n, int k) {
-        return null;
+        List<Integer> list = new ArrayList<>();
+        int num = 1;
+        for (int i = 1; i <= n; i++) {
+            list.add(i);
+            num *= i;
+        }
+
+        num /= n;
+        StringBuilder sb = new StringBuilder();
+        k--;
+
+        for (int i = n - 1; i >= 1; i--) {
+            if (k == 0) break;
+            if (num > k) {
+                sb.append(list.removeFirst());
+                num /= i;
+                continue;
+            }
+
+            sb.append(list.remove(k / num));
+            k = k - (k / num) * num;
+            num /= i;
+        }
+
+        for (Integer i : list) {
+            sb.append(i);
+        }
+
+
+        return sb.toString();
     }
+
+    @SuppressWarnings("all")
+    //61. 旋转链表
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null) return null;
+        if (k == 0) return head;
+        int len = 0;
+        ListNode p = head;
+        while (p.next != null) {
+            len++;
+            p = p.next;
+        }
+        ListNode end = p;
+        len++;
+        k = k % len;
+        if (k == 0) return head;
+
+        int l = len - k;
+        p = head;
+        for (int i = 0; i < l - 1; i++) p = p.next;
+        end.next = head;
+        head = p.next;
+        p.next = null;
+        return head;
+    }
+
+    //62. 不同路径
+    public int uniquePaths(int m, int n) {
+        int sum = m + n - 2;
+        int c = Integer.min(m, n) - 1;
+        ArrayList<Integer> list = new ArrayList<>();
+        for (int i = 2; i <= c; i++) {
+            list.add(i);
+        }
+        int result = 1;
+        for (int i = sum; i > sum - c; i--) {
+            result *= i;
+            int len = list.size();
+
+            for (int j = len - 1; j >= 0; j--) {
+                int num = list.get(j);
+
+                if (result % num == 0) {
+                    result /= num;
+                    list.remove(j);
+                }
+            }
+        }
+
+        return result;
+    }
+
+    //63. 不同路径 II
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        int[] dp = new int[n];
+        dp[0] = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    dp[j] = 0;
+                    continue;
+                }
+
+                if (i > 0 && obstacleGrid[i - 1][j] == 1) dp[j] = 0;
+
+                if (j > 0 && obstacleGrid[i][j - 1] == 0) dp[j] += dp[j - 1];
+            }
+        }
+
+        return dp[n - 1];
+
+    }
+
+    //64. 最小路径和
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] dp = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            dp[i + 1] = dp[i] + grid[0][i];
+        }
+        for (int i = 2; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (j > 1) dp[j] = Integer.min(dp[j], dp[j - 1]) + grid[i - 1][j - 1];
+                else dp[j] = dp[j] + grid[i - 1][j - 1];
+            }
+        }
+
+        return dp[n];
+    }
+
+    //65. 有效数字
+    public boolean isNumber(String s) {
+
+        char[] charArray = s.toCharArray();
+
+        int start = 0;
+        boolean point = false;
+        boolean e = false;
+        boolean needNumber = true;
+        boolean number = false;
+        if (charArray[0] == '+' || charArray[0] == '-') {
+            start++;
+        }
+        if (start < charArray.length && (charArray[start] == 'e' || charArray[start] == 'E')) return false;
+
+        for (int i = start; i < charArray.length; i++) {
+            char c = charArray[i];
+
+            if (c >= '0' && c <= '9') {
+                needNumber = false;
+                number = true;
+                continue;
+            } else if (c == '.' && !point) {
+                point = true;
+                continue;
+            } else if ((c == 'e' || c == 'E') && !e) {
+                if ((charArray[i - 1] < '0' || charArray[i - 1] > '9') && !number) return false;
+                if (i == charArray.length - 1) return false;
+                if (charArray[i + 1] == '+' || charArray[i + 1] == '-') {
+                    if (i == charArray.length - 2) return false;
+                    i++;
+                }
+                needNumber = true;
+                e = true;
+                point = true;
+                continue;
+            }
+            return false;
+        }
+
+        if (point && !number) return false;
+        return !needNumber;
+    }
+
+    //66. 加一
+    public int[] plusOne(int[] digits) {
+        int i = digits.length - 1;
+        while (true) {
+            digits[i] += 1;
+            if (digits[i] == 10) {
+                digits[i] = 0;
+                i--;
+            } else break;
+            if (i == -1) {
+                int[] result = new int[digits.length + 1];
+                result[0] = 1;
+                System.arraycopy(digits, 0, result, 1, digits.length);
+                return result;
+            }
+        }
+
+        return digits;
+    }
+
+    //67. 二进制求和
+    public String addBinary(String a, String b) {
+
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+
+        StringBuilder sb = new StringBuilder();
+        int add = 0;
+
+        while (i >= 0 || j >= 0) {
+            if (i >= 0) add += (a.charAt(i--) - '0');
+            if (j >= 0) add += (b.charAt(j--) - '0');
+            sb.append(add % 2);
+            add /= 2;
+        }
+
+        if (add == 1) sb.append(1);
+
+        return sb.reverse().toString();
+    }
+
+    @SuppressWarnings("all")
+    //68. 文本左右对齐
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> result = new ArrayList<>();
+        Queue<String> queue = new ArrayDeque<>();
+        int len = 0;
+        for (String word : words) {
+            if (word.length() + len > maxWidth) {
+                //单词个数
+                int size = queue.size();
+                if (size == 1) {
+                    String remove = queue.remove();
+                    int space = maxWidth - remove.length();
+                    result.add(remove + " ".repeat(space));
+                } else {
+                    //空格总数
+                    int spaceNum = maxWidth - (len - size);
+                    //前几个需要比别人多一个空格
+                    int one = spaceNum % (size - 1);
+                    //每个单词需要的字母数量
+                    int singleCharSpace = spaceNum / (size - 1);
+                    StringBuilder sb = new StringBuilder();
+                    String space = " ".repeat(Math.max(0, singleCharSpace));
+                    sb.append(queue.remove());
+                    for (int i = 0; i < one; i++) {
+                        sb.append(" ").append(space).append(queue.remove());
+                    }
+
+                    for (String s : queue) {
+                        sb.append(space).append(s);
+                    }
+                    queue.clear();
+                    result.add(sb.toString());
+                }
+                len = 0;
+            }
+
+            len += word.length() + 1;
+            queue.add(word);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (!queue.isEmpty()) {
+            if (queue.size() == 1) {
+                String remove = queue.remove();
+                int space = maxWidth - remove.length();
+                result.add(remove + " ".repeat(space));
+            } else {
+                for (String s : queue) {
+                    sb.append(s).append(" ");
+                }
+                int space = maxWidth - len;
+                sb.append(" ".repeat(Math.max(0, space)));
+                if (sb.length() > maxWidth) sb.deleteCharAt(sb.length() - 1);
+                result.add(sb.toString());
+            }
+        } else {
+            String last = result.removeLast();
+            len = 0;
+            String[] split = last.split(" ");
+            for (String s : split) {
+                len += s.length() + 1;
+                sb.append(s).append(" ");
+            }
+            int space = maxWidth - len;
+            sb.append(" ".repeat(Math.max(0, space)));
+            if (sb.length() > maxWidth) sb.deleteCharAt(sb.length() - 1);
+            result.add(sb.toString());
+        }
+
+        return result;
+    }
+
+    //69. x 的平方根
+    public int mySqrt(int x) {
+        if (x == 0 || x == 1) return x;
+
+        int i = 0;
+        int j = x / 2;
+        int mid;
+
+        while (i <= j) {
+            mid = (i + j) / 2;
+            long left = (long) mid * mid;
+            long right = (long) (mid + 1) * (mid + 1);
+
+            if (left <= x && x < right) return mid;
+
+            if (left > x) j = mid - 1;
+            if (right <= x) i = mid + 1;
+        }
+        return -1;
+    }
+
+    //70. 爬楼梯
+    public int climbStairs(int n) {
+        if (n == 1) return 1;
+        int[] f = new int[n];
+        f[0] = 1;
+        f[1] = 2;
+        for (int i = 2; i < n; i++) {
+            f[i] = f[i - 1] + f[i - 2];
+        }
+
+        return f[n - 1];
+    }
+
+    //71. 简化路径
+    public String simplifyPath(String path) {
+        String[] pathArray = path.split("/");
+
+        ArrayList<String> p = new ArrayList<>();
+
+        for (String s : pathArray) {
+            if (s.equals(".") || s.isEmpty()) continue;
+            if (s.equals("..")) {
+                if (!p.isEmpty()) p.removeLast();
+                continue;
+            }
+            p.add(s);
+        }
+        StringBuilder sb = new StringBuilder();
+        if (p.isEmpty()) return "/";
+        for (String s : p) {
+            sb.append("/").append(s);
+        }
+        return sb.toString();
+    }
+
+    //72. 编辑距离
+    public int minDistance(String word1, String word2) {
+        if (word1.isEmpty()) return word2.length();
+        if (word2.isEmpty()) return word1.length();
+        char[] word1CharArray = word1.toCharArray();
+        char[] word2CharArray = word2.toCharArray();
+
+        int[][] dp = new int[word1CharArray.length + 1][word2CharArray.length + 1];
+        for (int i = 1; i < word2CharArray.length + 1; i++) {
+            dp[0][i] = i;
+        }
+        for (int i = 1; i < word1CharArray.length + 1; i++) {
+            dp[i][0] = i;
+        }
+        for (int i = 1; i < word1CharArray.length + 1; i++)
+            for (int j = 1; j < word2CharArray.length + 1; j++) {
+                dp[i][j] = Integer.min(dp[i][j - 1], dp[i - 1][j]) + 1;
+                if (word1CharArray[i - 1] == word2CharArray[j - 1]) dp[i][j] = Integer.min(dp[i - 1][j - 1], dp[i][j]);
+                else dp[i][j] = Integer.min(dp[i - 1][j - 1] + 1, dp[i][j]);
+            }
+
+        return dp[word1CharArray.length][word2CharArray.length];
+    }
+
+    @SuppressWarnings("all")
+    //73. 矩阵置零
+    public void setZeroes(int[][] matrix) {
+        int m = matrix.length;
+        int n = matrix[0].length;
+        boolean[] column = new boolean[m];
+        boolean[] row = new boolean[n];
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (matrix[i][j] == 0) column[i] = row[j] = true;
+
+        for (int i = 0; i < m; i++)
+            for (int j = 0; j < n; j++)
+                if (column[i] || row[j]) matrix[i][j] = 0;
+    }
+
+    //74. 搜索二维矩阵
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int i = 0;
+        int j = matrix.length * matrix[0].length;
+
+        int mid;
+        while (i < j) {
+            mid = (i + j) / 2;
+            int num = matrix[mid / matrix[0].length][mid % matrix[0].length];
+            if (target == num) return true;
+            else if (target > num) i = mid + 1;
+            else j = mid;
+        }
+
+        return false;
+    }
+
+    @SuppressWarnings("all")
+    //75. 颜色分类
+    public void sortColors(int[] nums) {
+        int p0 = 0;
+        int p1 = nums.length - 1;
+
+        for (int i = 0; i < nums.length; i++) {
+            while (p1 >= i && nums[i] == 2) sortColorsSwap(nums, i, p1--);
+
+            if (nums[i] == 0) sortColorsSwap(nums, i, p0++);
+        }
+    }
+
+    private void sortColorsSwap(int[] nums, int i, int j) {
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+
+    //76. 最小覆盖子串
+    public String minWindow(String s, String t) {
+        int start = 0;
+        int end = Integer.MAX_VALUE;
+        int[] array = new int[128];
+        int need = 0;
+        for (int i = 0; i < t.length(); i++) {
+            array[t.charAt(i)]++;
+        }
+
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (array[c]-- > 0) need++;
+
+            while (need == t.length()) {
+                if (end - start > i - j) {
+                    start = j;
+                    end = i;
+                }
+                if (++array[s.charAt(j++)] > 0) need--;
+            }
+        }
+
+        if (end == Integer.MAX_VALUE) return "";
+        else return s.substring(start, end + 1);
+    }
+
+    @SuppressWarnings("all")
+    //77. 组合
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        combineDfs(k, n, 1, result, new ArrayList<>());
+        return result;
+    }
+
+    private void combineDfs(int k, int max, int min, List<List<Integer>> result, List<Integer> list) {
+        if (k == 0) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = min; i <= max; i++) {
+            if (max - i + 1 < k) return;
+
+            list.add(i);
+            combineDfs(k - 1, max, i + 1, result, list);
+            list.removeLast();
+        }
+    }
+
+    @SuppressWarnings("all")
+    //78. 子集
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        subsetsDfs(nums, 0, result, new ArrayList<>());
+        return result;
+    }
+
+    private void subsetsDfs(int[] nums, int start, List<List<Integer>> result, List<Integer> list) {
+        if (nums.length == start) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = start; i < nums.length; i++) {
+            list.add(nums[i]);
+            subsetsDfs(nums, i + 1, result, list);
+            list.removeLast();
+        }
+        subsetsDfs(nums, nums.length, result, list);
+    }
+
+    //79. 单词搜索
+    public boolean exist(char[][] board, String word) {
+        char[] charArray = word.toCharArray();
+        boolean[][] used = new boolean[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (existDfs(used, board, i, j, charArray, 0)) return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean existDfs(boolean[][] used, char[][] board, int i, int j, char[] word, int k) {
+
+        if (k == word.length) return true;
+
+        if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
+
+        if (used[i][j]) return false;
+
+        if (board[i][j] != word[k]) return false;
+
+        used[i][j] = true;
+        k++;
+
+        if (existDfs(used, board, i + 1, j, word, k)) return true;
+        if (existDfs(used, board, i - 1, j, word, k)) return true;
+        if (existDfs(used, board, i, j + 1, word, k)) return true;
+        if (existDfs(used, board, i, j - 1, word, k)) return true;
+
+        used[i][j] = false;
+        return false;
+    }
+
+    //80. 删除有序数组中的重复项 II
+    public int removeDuplicates2(int[] nums) {
+        int i = 0;
+        int len = 0;
+        int last = nums[0];
+        for (int num : nums) {
+            if (num == last) {
+                if (len < 2) {
+                    len++;
+                    nums[i++] = num;
+                }
+            } else {
+                len = 1;
+                nums[i++] = num;
+                last = num;
+            }
+        }
+
+        return i;
+    }
+
+    //81. 搜索旋转排序数组 II
+    public boolean search2(int[] nums, int target) {
+        int i = 0;
+        int j = nums.length - 1;
+        if (target >= nums[0]) {
+            while (i < nums.length) {
+                if (target == nums[i]) {
+                    return true;
+                }
+                if (target < nums[i] || nums[i] < nums[0]) {
+                    return false;
+                }
+                i++;
+            }
+        }
+        if (target <= nums[nums.length - 1]) {
+            while (j >= 0) {
+                if (target == nums[j]) {
+                    return true;
+                }
+
+                if (target > nums[j] || nums[j] > nums[nums.length - 1]) {
+                    return false;
+                }
+                j--;
+            }
+        }
+        return false;
+    }
+
+    @SuppressWarnings("all")
+    //82. 删除排序链表中的重复元素 II
+    public ListNode deleteDuplicates2(ListNode head) {
+        if (head == null || head.next == null) return head;
+        head = new ListNode(-101, head);
+        ListNode last = head;
+        ListNode p = last.next;
+
+        while (p != null && p.next != null) {
+            int val = p.val;
+            if (val == p.next.val) {
+                while (p != null && p.val == val) p = p.next;
+                last.next = p;
+            } else {
+                last = last.next;
+                p = p.next;
+            }
+        }
+
+        return head.next;
+    }
+
+    @SuppressWarnings("all")
+    //83. 删除排序链表中的重复元素
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode last = head;
+        ListNode p = head.next;
+
+        while (p != null) {
+            if (p.val != last.val) {
+                last.next = p;
+                last = p;
+            }
+            p = p.next;
+        }
+
+        last.next = null;
+
+        return head;
+    }
+
+    //84.柱状图中最大的矩形
+    public int largestRectangleArea(int[] heights) {
+        int result = 0;
+
+        int[] re = new int[heights.length];
+        int k = -1;
+        for (int i = 0; i < heights.length; i++) {
+            while (k != -1 && heights[i] < heights[re[k]]) {
+                int r = re[k--];
+                result = Integer.max(result, heights[r] * (i - (k == -1 ? -1 : re[k]) - 1));
+            }
+            re[++k] = i;
+        }
+
+        while (k != -1) {
+            int r = re[k--];
+            result = Integer.max(result, heights[r] * (heights.length - (k == -1 ? -1 : re[k]) - 1));
+        }
+
+        return result;
+    }
+
+    //85. 最大矩形
+    public int maximalRectangle(char[][] matrix) {
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        int[][] array = new int[rows][cols];
+        for (int i = 0; i < cols; i++) {
+            array[0][i] = matrix[0][i] - '0';
+        }
+        int result = largestRectangleArea(array[0]);
+        for (int i = 1; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (matrix[i][j] == '1') array[i][j] = array[i - 1][j] + 1;
+            }
+            result = Integer.max(result, largestRectangleArea(array[i]));
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //86. 分隔链表
+    public ListNode partition(ListNode head, int x) {
+        if (head == null || head.next == null) return head;
+        ListNode p = head;
+        ListNode big = new ListNode(0, null);
+        ListNode bigP = big;
+        ListNode small = new ListNode(0, null);
+        ListNode smallP = small;
+
+        while (p != null) {
+            if (p.val >= x) {
+                bigP.next = p;
+                bigP = p;
+            } else {
+                smallP.next = p;
+                smallP = p;
+            }
+            p = p.next;
+        }
+
+        head = small.next;
+        if (head != null) smallP.next = big.next;
+        else head = big.next;
+        bigP.next = null;
+        return head;
+    }
+
+    //87. 扰乱字符串
+    public boolean isScramble(String s1, String s2) {
+        int len = s1.length();
+        //第一个参数是s1的起始位置，第二个是s2，第三个是长度
+        //0 未计算 1 是 2 不是
+        int[][][] memory = new int[len][len][len + 1];
+        return isScrambleDfs(s1.toCharArray(), 0, s2.toCharArray(), 0, len, memory);
+    }
+
+    public boolean isScrambleDfs(char[] s1, int s1Start, char[] s2, int s2Start, int len, int[][][] memory) {
+        if (memory[s1Start][s2Start][len] != 0) return memory[s1Start][s2Start][len] == 1;
+
+        if (len == 1) {
+            memory[s1Start][s2Start][len] = s1[s1Start] == s2[s2Start] ? 1 : 2;
+            return memory[s1Start][s2Start][len] == 1;
+        }
+
+        if (len == 2) {
+            memory[s1Start][s2Start][len] = (s1[s1Start] == s2[s2Start] && s1[s1Start + 1] == s2[s2Start + 1] || s1[s1Start] == s2[s2Start + 1] && s1[s1Start + 1] == s2[s2Start]) ? 1 : 2;
+            return memory[s1Start][s2Start][len] == 1;
+        }
+
+        for (int i = 1; i < len; i++) {
+            memory[s1Start][s2Start][len] = (isScrambleDfs(s1, s1Start, s2, s2Start, i, memory) && isScrambleDfs(s1, s1Start + i, s2, s2Start + i, len - i, memory) || isScrambleDfs(s1, s1Start, s2, s2Start + len - i, i, memory) && isScrambleDfs(s1, s1Start + i, s2, s2Start, len - i, memory)) ? 1 : 2;
+            if (memory[s1Start][s2Start][len] == 1) return true;
+        }
+
+        return false;
+    }
+
+    @SuppressWarnings("all")
+    //88. 合并两个有序数组
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        if (n == 0) return;
+        int now = n + m - 1;
+        int i = m - 1;
+        int j = n - 1;
+        while (now >= 0) {
+            if (i < 0) {
+                nums1[now--] = nums2[j--];
+                continue;
+            }
+            if (j < 0) {
+                nums1[now--] = nums1[i--];
+                continue;
+            }
+            if (nums1[i] > nums2[j]) nums1[now--] = nums1[i--];
+            else nums1[now--] = nums2[j--];
+        }
+    }
+
+    @SuppressWarnings("all")
+    //89. 格雷编码
+    public List<Integer> grayCode(int n) {
+        List<Integer> result = new ArrayList<>();
+        int num = 1 << n;
+        for (int i = 0; i < num; i++) {
+            result.add((i >> 1) ^ i);
+        }
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //90. 子集 II
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        subsetsWithDupDfs(nums, new boolean[nums.length], 0, result, new ArrayList<>());
+        return result;
+    }
+
+    private void subsetsWithDupDfs(int[] nums, boolean[] used, int start, List<List<Integer>> result, List<Integer> list) {
+        if (start == nums.length) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+        subsetsWithDupDfs(nums, used, start + 1, result, list);
+        if (start != 0 && nums[start] == nums[start - 1] && !used[start - 1]) return;
+        list.add(nums[start]);
+        used[start] = true;
+        subsetsWithDupDfs(nums, used, start + 1, result, list);
+        used[start] = false;
+        list.removeLast();
+    }
+
+    //91. 解码方法
+    public int numDecodings(String s) {
+        int len = s.length();
+
+        int[] dp = new int[len + 1];
+        dp[0] = 1;
+        dp[1] = s.charAt(0) == '0' ? 0 : 1;
+
+        for (int i = 2; i <= len; i++) {
+            if (dp[i - 1] == 0) return 0;
+            char c = s.charAt(i - 1);
+            char last = s.charAt(i - 2);
+            if (last == '0') {
+                if (c == '0') return 0;
+                dp[i] = dp[i - 1];
+                continue;
+            }
+            if (c == '0') {
+                if (last == '1' || last == '2') dp[i] = dp[i - 2];
+                continue;
+            }
+            int n = (last - '0') * 10 + c - '0';
+            if (n <=26 && n>= 1) dp[i] = dp[i - 1] + dp[i - 2];
+            else dp[i] = dp[i - 1];
+        }
+
+        return dp[len];
+    }
+
 }

@@ -5,7 +5,7 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class SolutionTest {
 
-    Solution solution = new Solution();
+    private Solution solution = new Solution();
 
     @Test
     public void twoSumTest() {
@@ -284,15 +284,163 @@ public class SolutionTest {
 
     @Test
     public void getPermutationTest() {
+        Assert.assertEquals("12", solution.getPermutation(2, 1));
         Assert.assertEquals("213", solution.getPermutation(3, 3));
         Assert.assertEquals("2314", solution.getPermutation(4, 9));
         Assert.assertEquals("123", solution.getPermutation(3, 1));
         Assert.assertEquals("21", solution.getPermutation(2, 2));
         Assert.assertEquals("132", solution.getPermutation(3, 2));
+        Assert.assertEquals("312", solution.getPermutation(3, 5));
+    }
+
+    @Test
+    public void uniquePathsTest() {
+        Assert.assertEquals(28, solution.uniquePaths(3, 7));
+        Assert.assertEquals(3, solution.uniquePaths(3, 2));
+    }
+
+    @Test
+    public void uniquePathsWithObstaclesTest() {
+        Assert.assertEquals(2, solution.uniquePathsWithObstacles(new int[][]{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}}));
+
+        Assert.assertEquals(0, solution.uniquePathsWithObstacles(new int[][]{{0, 0}, {0, 1}}));
+
+        Assert.assertEquals(1, solution.uniquePathsWithObstacles(new int[][]{{0, 1}, {0, 0}}));
+    }
+
+    @Test
+    public void minPathSumTest() {
+        Assert.assertEquals(7, solution.minPathSum(new int[][]{{1, 3, 1}, {1, 5, 1}, {4, 2, 1}}));
+        Assert.assertEquals(12, solution.minPathSum(new int[][]{{1, 2, 3}, {4, 5, 6}}));
+        Assert.assertEquals(3, solution.minPathSum(new int[][]{{1, 2}, {1, 1}}));
+    }
+
+    @Test
+    public void isNumberTest() {
+        Assert.assertTrue(solution.isNumber("0"));
+        Assert.assertFalse(solution.isNumber("e"));
+        Assert.assertFalse(solution.isNumber("."));
+        Assert.assertTrue(solution.isNumber(".1"));
+        Assert.assertFalse(solution.isNumber("0e"));
+        Assert.assertFalse(solution.isNumber("4e+"));
+        Assert.assertFalse(solution.isNumber("e9"));
+        Assert.assertTrue(solution.isNumber("3."));
+        Assert.assertFalse(solution.isNumber(".e1"));
+        Assert.assertFalse(solution.isNumber("+"));
+    }
+
+    @Test
+    public void plusOneTest() {
+        Assert.assertArrayEquals(new int[]{1, 2, 4}, solution.plusOne(new int[]{1, 2, 3}));
+        Assert.assertArrayEquals(new int[]{4, 3, 2, 2}, solution.plusOne(new int[]{4, 3, 2, 1}));
+        Assert.assertArrayEquals(new int[]{1, 0}, solution.plusOne(new int[]{9}));
+        Assert.assertArrayEquals(new int[]{1, 0, 0}, solution.plusOne(new int[]{9, 9}));
+    }
+
+    @Test
+    public void addBinaryTest() {
+        Assert.assertEquals("100", solution.addBinary("11", "1"));
+        Assert.assertEquals("10101", solution.addBinary("1010", "1011"));
+    }
+
+    @Test
+    public void mySqrtTest() {
+        Assert.assertEquals(2, solution.mySqrt(4));
+        Assert.assertEquals(2, solution.mySqrt(8));
+    }
+
+    @Test
+    public void climbStairsTest() {
+        Assert.assertEquals(2, solution.climbStairs(2));
+        Assert.assertEquals(3, solution.climbStairs(3));
+    }
+
+    @Test
+    public void simplifyPathTest() {
+        Assert.assertEquals("/home", solution.simplifyPath("/home/"));
+        Assert.assertEquals("/home/foo", solution.simplifyPath("/home//foo/"));
+        Assert.assertEquals("/home/user/Pictures", solution.simplifyPath("/home/user/Documents/../Pictures"));
+        Assert.assertEquals("/", solution.simplifyPath("/../"));
+        Assert.assertEquals("/.../b/d", solution.simplifyPath("/.../a/../b/c/../d/./"));
+    }
+
+    @Test
+    public void minDistanceTest() {
+        Assert.assertEquals(3, solution.minDistance("horse", "ros"));
+        Assert.assertEquals(5, solution.minDistance("intention", "execution"));
+        Assert.assertEquals(1, solution.minDistance("", "a"));
+        Assert.assertEquals(27, solution.minDistance("pneumonoultramicroscopicsilicovolcanoconiosis", "ultramicroscopically"));
+    }
+
+    @Test
+    public void searchMatrixTest() {
+        Assert.assertTrue(solution.searchMatrix(new int[][]{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}}, 3));
+        Assert.assertFalse(solution.searchMatrix(new int[][]{{1, 3, 5, 7}, {10, 11, 16, 20}, {23, 30, 34, 60}}, 13));
+        Assert.assertFalse(solution.searchMatrix(new int[][]{{1}}, 2));
+        Assert.assertFalse(solution.searchMatrix(new int[][]{{1, 1}}, 0));
+    }
+
+    @Test
+    public void minWindowTest() {
+        Assert.assertEquals("BANC", solution.minWindow("ADOBECODEBANC", "ABC"));
+        Assert.assertEquals("a", solution.minWindow("a", "a"));
+        Assert.assertEquals("", solution.minWindow("a", "aa"));
+    }
+
+    @Test
+    public void existTest() {
+        Assert.assertTrue(solution.exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCCED"));
+        Assert.assertTrue(solution.exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "SEE"));
+        Assert.assertFalse(solution.exist(new char[][]{{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}}, "ABCB"));
+    }
+
+    @Test
+    public void removeDuplicates2Test() {
+        Assert.assertEquals(5, solution.removeDuplicates2(new int[]{1, 1, 1, 2, 2, 3}));
+        Assert.assertEquals(7, solution.removeDuplicates2(new int[]{0, 0, 1, 1, 1, 1, 2, 3, 3}));
+    }
+
+    @Test
+    public void search2Test() {
+        Assert.assertTrue(solution.search2(new int[]{2, 5, 6, 0, 0, 1, 2}, 0));
+        Assert.assertFalse(solution.search2(new int[]{2, 5, 6, 0, 0, 1, 2}, 3));
+    }
+
+    @Test
+    public void largestRectangleAreaTest() {
+        Assert.assertEquals(10, solution.largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3}));
+        Assert.assertEquals(4, solution.largestRectangleArea(new int[]{2, 4}));
+        Assert.assertEquals(4, solution.largestRectangleArea(new int[]{4, 2}));
+        Assert.assertEquals(3, solution.largestRectangleArea(new int[]{2, 1, 2}));
+    }
+
+    @Test
+    public void maximalRectangle() {
+        Assert.assertEquals(6, solution.maximalRectangle(new char[][]{{'1', '0', '1', '0', '0'}, {'1', '0', '1', '1', '1'}, {'1', '1', '1', '1', '1'}, {'1', '0', '0', '1', '0'}}));
+        Assert.assertEquals(0, solution.maximalRectangle(new char[][]{{'0'}}));
+        Assert.assertEquals(1, solution.maximalRectangle(new char[][]{{'1'}}));
+    }
+
+    @Test
+    public void isScrambleTest() {
+        Assert.assertFalse(solution.isScramble("abcde", "caebd"));
+        Assert.assertTrue(solution.isScramble("a", "a"));
+        Assert.assertTrue(solution.isScramble("great", "rgeat"));
+        Assert.assertTrue(solution.isScramble("abcdbdacbdac", "bdacabcdbdac"));
+        Assert.assertTrue(solution.isScramble("abca", "caba"));
+    }
+
+    @Test
+    public void numDecodingsTest() {
+        Assert.assertEquals(2, solution.numDecodings("12"));
+        Assert.assertEquals(3, solution.numDecodings("226"));
+        Assert.assertEquals(0, solution.numDecodings("06"));
+        Assert.assertEquals(1, solution.numDecodings("2101"));
+        Assert.assertEquals(5 , solution.numDecodings("1123"));
+        Assert.assertEquals(0 , solution.numDecodings("10011"));
     }
 
     @Test
     public void debug() {
-
     }
 }
