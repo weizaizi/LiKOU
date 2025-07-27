@@ -2487,11 +2487,242 @@ class Solution {
                 continue;
             }
             int n = (last - '0') * 10 + c - '0';
-            if (n <=26 && n>= 1) dp[i] = dp[i - 1] + dp[i - 2];
+            if (n <= 26 && n >= 1) dp[i] = dp[i - 1] + dp[i - 2];
             else dp[i] = dp[i - 1];
         }
 
         return dp[len];
     }
 
+    @SuppressWarnings("all")
+    //92. 反转链表 II
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        head = new ListNode(-1, head);
+
+        ListNode leftToRight;
+
+        ListNode pLeft = head;
+
+        ListNode pRight;
+        for (int i = 0; i < left - 1; i++) {
+            pLeft = pLeft.next;
+        }
+
+        leftToRight = pLeft;
+        pLeft = pLeft.next;
+        pRight = pLeft != null ? pLeft.next : null;
+
+        int go = right - left;
+
+        ListNode next;
+
+        for (int i = 0; i < go; i++) {
+            next = pRight.next;
+            pRight.next = pLeft;
+            pLeft = pRight;
+            pRight = next;
+        }
+
+        if (leftToRight.next != null) leftToRight.next.next = pRight;
+
+        leftToRight.next = pLeft;
+
+        return head.next;
+    }
+
+    @SuppressWarnings("all")
+    //93. 复原 IP 地址
+    public List<String> restoreIpAddresses(String s) {
+        if (s.length() > 12 || s.length() < 4) return new ArrayList<>();
+        List<String> result = new ArrayList<>();
+        restoreIpAddressesDfs(result, new StringBuilder(), 0, s, 0);
+        return result;
+    }
+
+    //0 - 还可以继续增加长度 ， 1 - 只有上一级不可以增加，2 - 上述都不可以再增加长度
+    private int restoreIpAddressesDfs(List<String> result, StringBuilder sb, int start, String s, int num) {
+        //收集结果
+        if (num == 4 && start == s.length()) {
+            result.add(sb.toString());
+            return 0;
+        }
+        // 如果已经遍历到了字符串的末尾，则返回1
+        if (start == s.length()) return 0;
+        //如果需要的最少位数比剩余的少，则返回1
+        if (4 - num > s.length() - start) return 1;
+        //如果需要的最多位数比剩余的多，则返回0
+        if ((4 - num) * 3 < s.length() - start) return 0;
+        int begin = sb.length();
+
+        if (num != 0) sb.append('.');
+        //如果是最后一次，则剩余的都要加入
+        if (num == 3) {
+            //处理最后一次前导0
+            if (s.length() - start != 1 && s.charAt(start) == '0') {
+                sb.delete(begin, sb.length());
+                return 0;
+            }
+            if (s.length() - start == 3) {
+                int ip = Integer.parseInt(s.substring(start));
+                if (ip > 255) {
+                    sb.delete(begin, sb.length());
+                    return 0;
+                }
+            }
+            sb.append(s.substring(start));
+            int re = restoreIpAddressesDfs(result, sb, s.length(), s, 4);
+            sb.delete(begin, sb.length());
+            return re;
+        }
+
+        if (s.charAt(start) == '0') {
+            sb.append(0);
+            restoreIpAddressesDfs(result, sb, start + 1, s, num + 1);
+            sb.delete(begin, sb.length());
+            return 0;
+        }
+        for (int i = 0; i < 2; i++) {
+            if (start >= s.length()) {
+                sb.delete(begin, sb.length());
+                return 0;
+            }
+            sb.append(s.charAt(start++));
+            int re = restoreIpAddressesDfs(result, sb, start, s, num + 1);
+            if (re == 1) {
+                sb.delete(begin, sb.length());
+                return 0;
+            }
+            if (re == 2) {
+                sb.delete(begin, sb.length());
+                return 2;
+            }
+        }
+        sb.delete(begin, sb.length());
+        if (num != 0) sb.append('.');
+        start++;
+        if (start > s.length()) return 0;
+        int ip = Integer.parseInt(s.substring(start - 3, start));
+        if (ip > 255) {
+            sb.delete(begin, sb.length());
+            return 0;
+        }
+        sb.append(ip);
+        restoreIpAddressesDfs(result, sb, start, s, num + 1);
+        sb.delete(begin, sb.length());
+        return 0;
+    }
+
+    @SuppressWarnings("all")
+    //94. 二叉树的中序遍历
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<Integer> result = new ArrayList<>();
+        inorderTraversalDfs(root, result);
+        return result;
+    }
+
+    private void inorderTraversalDfs(TreeNode treeNode, List<Integer> result) {
+        if (treeNode == null) return;
+        inorderTraversalDfs(treeNode.left, result);
+        result.add(treeNode.val);
+        inorderTraversalDfs(treeNode.right, result);
+    }
+
+
+    //95. 不同的二叉搜索树 II
+    @SuppressWarnings("all")
+    private ArrayList<TreeNode>[][] generateTreesArrayLists;
+
+    @SuppressWarnings("all")
+    public List<TreeNode> generateTrees(int n) {
+        generateTreesArrayLists = new ArrayList[n][n];
+        return generateTreesDfs(1, n);
+    }
+
+
+    private List<TreeNode> generateTreesDfs(int start, int end) {
+        if (start > end) return new ArrayList<>();
+        if (generateTreesArrayLists[start - 1][end - 1] != null) return generateTreesArrayLists[start - 1][end - 1];
+        List<TreeNode> result = new ArrayList<>();
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> leftNodes = generateTreesDfs(start, i - 1);
+            List<TreeNode> rightNodes = generateTreesDfs(i + 1, end);
+            for (TreeNode leftNode : leftNodes) {
+                for (TreeNode rightNode : rightNodes) {
+                    result.add(new TreeNode(i, leftNode, rightNode));
+                }
+            }
+            if (leftNodes.isEmpty() && !rightNodes.isEmpty()) {
+                for (TreeNode rightNode : rightNodes) {
+                    result.add(new TreeNode(i, null, rightNode));
+                }
+            }
+
+            if (rightNodes.isEmpty() && !leftNodes.isEmpty()) {
+                for (TreeNode leftNode : leftNodes) {
+                    result.add(new TreeNode(i, leftNode, null));
+                }
+            }
+
+            if (rightNodes.isEmpty() && leftNodes.isEmpty()) result.add(new TreeNode(i, null, null));
+        }
+
+        return result;
+    }
+
+    //96. 不同的二叉搜索树
+    private int[][] numTreesArray;
+
+    public int numTrees(int n) {
+        numTreesArray = new int[n + 1][n + 1];
+        return numTreesDfs(1, n);
+    }
+
+    private int numTreesDfs(int start, int end) {
+        if (start > end) return 1;
+        if (numTreesArray[start][end] != 0) return numTreesArray[start][end];
+        int result = 0;
+        for (int i = start; i <= end; i++) {
+            int add;
+            int left = numTreesDfs(start, i - 1);
+            int right = numTreesDfs(i + 1, end);
+            add = left * right;
+            result += add;
+        }
+        numTreesArray[start][end] = result;
+        return result;
+    }
+
+    //97. 交错字符串
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int l1 = s1.length();
+        int l2 = s2.length();
+        if (l1 + l2 != s3.length()) return false;
+
+        boolean[] dp = new boolean[l2 + 1];
+        dp[0] = true;
+
+        for (int i = 0; i <= l1; i++) {
+            for (int j = 0; j <= l2; j++) {
+                int p = i + j - 1;
+                if (i > 0) dp[j] &= (s1.charAt(i - 1) == s3.charAt(p));
+                if (j > 0) dp[j] |= (dp[j - 1] && s2.charAt(j - 1) == s3.charAt(p));
+
+            }
+        }
+
+        return dp[l2];
+    }
+
+    //98. 验证二叉搜索树
+    public boolean isValidBST(TreeNode root) {
+        return isValidBSTDfs(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean isValidBSTDfs(TreeNode treeNode, long min, long max) {
+        if (treeNode == null) return true;
+        int val = treeNode.val;
+        if (val >= max || val <= min) return false;
+        return isValidBSTDfs(treeNode.left, min, val) && isValidBSTDfs(treeNode.right, val, max);
+    }
 }

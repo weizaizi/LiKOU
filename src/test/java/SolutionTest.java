@@ -436,8 +436,29 @@ public class SolutionTest {
         Assert.assertEquals(3, solution.numDecodings("226"));
         Assert.assertEquals(0, solution.numDecodings("06"));
         Assert.assertEquals(1, solution.numDecodings("2101"));
-        Assert.assertEquals(5 , solution.numDecodings("1123"));
-        Assert.assertEquals(0 , solution.numDecodings("10011"));
+        Assert.assertEquals(5, solution.numDecodings("1123"));
+        Assert.assertEquals(0, solution.numDecodings("10011"));
+    }
+
+    @Test
+    public void numTreesTest() {
+        Assert.assertEquals(5, solution.numTrees(3));
+        Assert.assertEquals(1, solution.numTrees(1));
+    }
+
+    @Test
+    public void isInterleaveTest() {
+        Assert.assertTrue(solution.isInterleave("aabcc", "dbbca", "aadbbcbcac"));
+        Assert.assertFalse(solution.isInterleave("aabcc", "dbbca", "aadbbbaccc"));
+        Assert.assertTrue(solution.isInterleave("", "", ""));
+        Assert.assertFalse(solution.isInterleave("db", "b", "cbb"));
+    }
+
+    @Test
+    public void isValidBSTDfs() {
+        Assert.assertTrue(solution.isValidBST(new TreeNode(2, new TreeNode(1), new TreeNode(3))));
+        Assert.assertFalse(solution.isValidBST(new TreeNode(5, new TreeNode(4), new TreeNode(6, new TreeNode(3), new TreeNode(7)))));
+        Assert.assertFalse(solution.isValidBST(new TreeNode(5, new TreeNode(1), new TreeNode(4, new TreeNode(3), new TreeNode(6)))));
     }
 
     @Test
