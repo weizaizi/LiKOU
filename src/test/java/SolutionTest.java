@@ -462,6 +462,78 @@ public class SolutionTest {
     }
 
     @Test
+    public void isSameTreeTest() {
+        Assert.assertTrue(solution.isSameTree(new TreeNode(1, new TreeNode(2), new TreeNode(3)), new TreeNode(1, new TreeNode(2), new TreeNode(3))));
+        Assert.assertFalse(solution.isSameTree(new TreeNode(1, new TreeNode(2), null), new TreeNode(1, null, new TreeNode(2))));
+        Assert.assertFalse(solution.isSameTree(new TreeNode(1, new TreeNode(2), new TreeNode(1)), new TreeNode(1, new TreeNode(1), new TreeNode(2))));
+    }
+
+    @Test
+    public void isSymmetricTest() {
+        Assert.assertTrue(solution.isSymmetric(new TreeNode(1, new TreeNode(2, new TreeNode(3), new TreeNode(4)), new TreeNode(2, new TreeNode(4), new TreeNode(3)))));
+        Assert.assertFalse(solution.isSymmetric(new TreeNode(1, new TreeNode(2, null, new TreeNode(3)), new TreeNode(2, null, new TreeNode(3)))));
+    }
+
+    @Test
+    public void maxDepthTest() {
+        Assert.assertEquals(3, solution.maxDepth(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)))));
+        Assert.assertEquals(2, solution.maxDepth(new TreeNode(1, null, new TreeNode(2))));
+    }
+
+    @Test
+    public void isBalancedTest() {
+        Assert.assertTrue(solution.isBalanced(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)))));
+        Assert.assertTrue(solution.isBalanced(null));
+        Assert.assertFalse(solution.isBalanced(new TreeNode(1, new TreeNode(2, new TreeNode(3, new TreeNode(4), new TreeNode(4)), new TreeNode(3)), new TreeNode(2))));
+    }
+
+    @Test
+    public void minDepthTest() {
+        Assert.assertEquals(2, solution.minDepth(new TreeNode(3, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)))));
+        Assert.assertEquals(5, solution.minDepth(new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4, null, new TreeNode(5, null, new TreeNode(6)))))));
+    }
+
+    @Test
+    public void hasPathSumTest() {
+        Assert.assertTrue(solution.hasPathSum(new TreeNode(5, new TreeNode(4, new TreeNode(11, new TreeNode(7), new TreeNode(2)), null), new TreeNode(8, new TreeNode(13), new TreeNode(4, null, new TreeNode(1)))), 22));
+        Assert.assertFalse(solution.hasPathSum(new TreeNode(1, new TreeNode(2), new TreeNode(3)), 5));
+        Assert.assertFalse(solution.hasPathSum(null, 0));
+    }
+
+    @Test
+    public void numDistinctTest() {
+        Assert.assertEquals(3, solution.numDistinct("rabbbit", "rabbit"));
+        Assert.assertEquals(5, solution.numDistinct("babgbag", "bag"));
+    }
+
+    @Test
+    public void maxProfitTest() {
+        Assert.assertEquals(5, solution.maxProfit(new int[]{7, 1, 5, 3, 6, 4}));
+        Assert.assertEquals(0, solution.maxProfit(new int[]{7, 6, 4, 3, 1}));
+    }
+
+    @Test
+    public void maxProfit2Test() {
+        Assert.assertEquals(7, solution.maxProfit2(new int[]{7, 1, 5, 3, 6, 4}));
+        Assert.assertEquals(4, solution.maxProfit2(new int[]{1, 2, 3, 4, 5}));
+        Assert.assertEquals(0, solution.maxProfit2(new int[]{7, 6, 4, 3, 1}));
+        Assert.assertEquals(8, solution.maxProfit2(new int[]{3, 3, 5, 0, 0, 3, 1, 4}));
+    }
+
+    @Test
+    public void maxProfit3Test() {
+        Assert.assertEquals(6, solution.maxProfit3(new int[]{3, 3, 5, 0, 0, 3, 1, 4}));
+        Assert.assertEquals(4, solution.maxProfit3(new int[]{1, 2, 3, 4, 5}));
+        Assert.assertEquals(0, solution.maxProfit3(new int[]{7, 6, 4, 3, 1}));
+    }
+
+    @Test
+    public void maxPathSumTest() {
+        Assert.assertEquals(6 , solution.maxPathSum(new TreeNode(1 , new TreeNode(2) , new TreeNode(3))));
+        Assert.assertEquals(42 , solution.maxPathSum(new TreeNode(-10 , new TreeNode(9) , new TreeNode(20 , new TreeNode(15) ,new TreeNode(7)))));
+    }
+
+    @Test
     public void debug() {
     }
 }

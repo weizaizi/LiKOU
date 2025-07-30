@@ -2725,4 +2725,506 @@ class Solution {
         if (val >= max || val <= min) return false;
         return isValidBSTDfs(treeNode.left, min, val) && isValidBSTDfs(treeNode.right, val, max);
     }
+
+    @SuppressWarnings("all")
+    //99. 恢复二叉搜索树
+    public void recoverTree(TreeNode root) {
+        TreeNode x = null;
+        TreeNode y = null;
+        TreeNode pre = null;
+        TreeNode predecessor;
+
+        while (root != null) {
+            if (root.left != null) {
+                predecessor = root.left;
+                while (predecessor.right != null && predecessor.right != root) predecessor = predecessor.right;
+                if (predecessor.right == null) {
+                    predecessor.right = root;
+                    root = root.left;
+                } else {
+                    if (pre != null && pre.val > root.val) {
+                        y = root;
+                        if (x == null) x = pre;
+                    }
+                    pre = root;
+                    predecessor.right = null;
+                    root = root.right;
+                }
+            } else {
+                if (pre != null && pre.val > root.val) {
+                    y = root;
+                    if (x == null) x = pre;
+                }
+                pre = root;
+                root = root.right;
+            }
+        }
+
+        int t = x.val;
+        x.val = y.val;
+        y.val = t;
+    }
+
+    //100. 相同的树
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        if (p == null || q == null) return false;
+
+        if (p.val != q.val) return false;
+
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+    }
+
+    //101. 对称二叉树
+    public boolean isSymmetric(TreeNode root) {
+        return isSymmetricRecursion(root.left, root.right);
+    }
+
+    private boolean isSymmetricRecursion(TreeNode left, TreeNode right) {
+        if (left == null && right == null) return true;
+        if (left == null || right == null) return false;
+        if (left.val != right.val) return false;
+        return isSymmetricRecursion(left.left, right.right) && isSymmetricRecursion(left.right, right.left);
+    }
+
+    @SuppressWarnings("all")
+    //102. 二叉树的层序遍历
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        Queue<TreeNode> queue = new ArrayDeque<>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode remove = queue.remove();
+                list.add(remove.val);
+                if (remove.left != null) queue.add(remove.left);
+                if (remove.right != null) queue.add(remove.right);
+            }
+            result.add(list);
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //103. 二叉树的锯齿形层序遍历
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        boolean left = true;
+        stack.add(root);
+
+        while (!stack.isEmpty()) {
+            Stack<TreeNode> newStack = new Stack<>();
+            List<Integer> list = new ArrayList<>();
+            int size = stack.size();
+            for (int i = 0; i < size; i++) {
+                TreeNode pop = stack.pop();
+                list.add(pop.val);
+                if (left) {
+                    if (pop.left != null) newStack.add(pop.left);
+                    if (pop.right != null) newStack.add(pop.right);
+                } else {
+                    if (pop.right != null) newStack.add(pop.right);
+                    if (pop.left != null) newStack.add(pop.left);
+                }
+            }
+
+            stack = newStack;
+            left = !left;
+            result.add(list);
+        }
+
+        return result;
+    }
+
+    //104. 二叉树的最大深度
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return Integer.max(maxDepth(root.left), maxDepth(root.right)) + 1;
+    }
+
+    @SuppressWarnings("all")
+    //105. 从前序与中序遍历序列构造二叉树
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        return buildTreeDfs(preorder, 0, preorder.length, inorder, 0);
+    }
+
+    private TreeNode buildTreeDfs(int[] preorder, int begin, int len, int[] inorder, int left) {
+        if (len == 0) return null;
+
+        int num = preorder[begin];
+        int l = 0;
+        int repeat = len + left;
+        for (int i = left; i < repeat; i++) {
+            if (num == inorder[i]) {
+                l = i - left;
+                break;
+            }
+        }
+
+        return new TreeNode(num, buildTreeDfs(preorder, begin + 1, l, inorder, left), buildTreeDfs(preorder, begin + 1 + l, len - l - 1, inorder, left + 1 + l));
+    }
+
+    @SuppressWarnings("all")
+    //105. 从前序与中序遍历序列构造二叉树
+    public TreeNode buildTree2(int[] inorder, int[] postorder) {
+        return buildTree2Dfs(inorder, 0, inorder.length, postorder, postorder.length - 1);
+    }
+
+    private TreeNode buildTree2Dfs(int[] inorder, int begin, int len, int[] postorder, int right) {
+        if (len == 0) return null;
+
+        int num = postorder[right];
+        int l;
+        int i = begin;
+        while (inorder[i] != num) i++;
+        l = i - begin;
+        return new TreeNode(num, buildTree2Dfs(inorder, begin, l, postorder, right - (len - l)), buildTree2Dfs(inorder, begin + l + 1, len - l - 1, postorder, right - 1));
+    }
+
+    @SuppressWarnings("all")
+    //107. 二叉树的层序遍历 II
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = levelOrder(root);
+        Collections.reverse(result);
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //108. 将有序数组转换为二叉搜索树
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBSTRecursion(0, nums.length, nums);
+    }
+
+    private TreeNode sortedArrayToBSTRecursion(int start, int end, int[] nums) {
+        if (start >= end) return null;
+        int mid = (start + end) / 2;
+        return new TreeNode(nums[mid], sortedArrayToBSTRecursion(start, mid, nums), sortedArrayToBSTRecursion(mid + 1, end, nums));
+    }
+
+    //109. 有序链表转换二叉搜索树
+    @SuppressWarnings("all")
+    public TreeNode sortedListToBST(ListNode head) {
+        ListNode p = head;
+        int len = 0;
+        while (p != null) {
+            p = p.next;
+            len++;
+        }
+        return sortedListToBSTDfs(head, len);
+    }
+
+    private TreeNode sortedListToBSTDfs(ListNode root, int len) {
+        if (len == 0 || root == null) return null;
+        int mid = len / 2;
+        ListNode last = root;
+        for (int i = 0; i < mid; i++) root = root.next;
+
+        return new TreeNode(root.val, sortedListToBSTDfs(last, mid), sortedListToBSTDfs(root.next, len - mid - 1));
+    }
+
+    //110. 平衡二叉树
+    public boolean isBalanced(TreeNode root) {
+        return !(isBalancedDfs(root) == -1);
+    }
+
+    private int isBalancedDfs(TreeNode root) {
+        if (root == null) return 0;
+        int left = isBalancedDfs(root.left);
+        if (left == -1) return -1;
+        int right = isBalancedDfs(root.right);
+        if (right == -1) return -1;
+        int result = Math.abs(left - right);
+        return result >= 2 ? -1 : Math.max(left, right) + 1;
+    }
+
+    //111. 二叉树的最小深度
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left != null && root.right != null) return Integer.min(minDepth(root.left), minDepth(root.right)) + 1;
+        else if (root.left != null) return minDepth(root.left) + 1;
+        else return minDepth(root.right) + 1;
+    }
+
+    //112. 路径总和
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) return false;
+        return hasPathSumDfs(root, targetSum);
+    }
+
+    private boolean hasPathSumDfs(TreeNode treeNode, int targetSum) {
+        if (treeNode == null) return targetSum == 0;
+        if (treeNode.left != null && treeNode.right != null)
+            return hasPathSumDfs(treeNode.left, targetSum - treeNode.val) || hasPathSumDfs(treeNode.right, targetSum - treeNode.val);
+        else if (treeNode.left != null) return hasPathSumDfs(treeNode.left, targetSum - treeNode.val);
+        else return hasPathSumDfs(treeNode.right, targetSum - treeNode.val);
+    }
+
+    @SuppressWarnings("all")
+    //113. 路径总和 II
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        if (root == null) return new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        pathSumDfs(root, targetSum, result, new ArrayList<>());
+        return result;
+    }
+
+    private void pathSumDfs(TreeNode treeNode, int targetSum, List<List<Integer>> result, List<Integer> list) {
+        if (treeNode == null) {
+            if (targetSum == 0) result.add(new ArrayList<>(list));
+            return;
+        }
+        list.add(treeNode.val);
+        targetSum -= treeNode.val;
+        if (treeNode.left != null && treeNode.right != null) {
+            pathSumDfs(treeNode.left, targetSum, result, list);
+            pathSumDfs(treeNode.right, targetSum, result, list);
+        } else if (treeNode.right == null) pathSumDfs(treeNode.left, targetSum, result, list);
+        else pathSumDfs(treeNode.right, targetSum, result, list);
+
+        list.removeLast();
+    }
+
+    @SuppressWarnings("all")
+    //114. 二叉树展开为链表
+    public void flatten(TreeNode root) {
+        TreeNode predecessor;
+        while (root != null) {
+            if (root.left != null) {
+                predecessor = root.left;
+
+                while (predecessor.right != null && predecessor.right != root) predecessor = predecessor.right;
+
+                if (predecessor.right == null) {
+                    predecessor.right = root;
+                    root = root.left;
+                } else {
+                    TreeNode temp = predecessor.right;
+                    predecessor.right = temp.right;
+                    temp.right = temp.left;
+                    temp.left = null;
+                }
+            } else {
+                root = root.right;
+            }
+        }
+    }
+
+    //115. 不同的子序列
+    public int numDistinct(String s, String t) {
+        char[] sChar = s.toCharArray();
+        char[] tChar = t.toCharArray();
+        int sLen = sChar.length;
+        int tLen = tChar.length;
+        int[][] dp = new int[sLen + 1][tLen + 1];
+        for (int i = 0; i <= sLen; i++) dp[i][0] = 1;
+        for (int i = 1; i <= sLen; i++) {
+            for (int j = 1; j <= tLen; j++) {
+                if (sChar[i - 1] == tChar[j - 1]) dp[i][j] = dp[i - 1][j] + dp[i - 1][j - 1];
+                else dp[i][j] = dp[i - 1][j];
+            }
+        }
+
+        return dp[sLen][tLen];
+    }
+
+    @SuppressWarnings("all")
+    //116. 填充每个节点的下一个右侧节点指针
+    public Node connect(Node root) {
+        Node result = root;
+        Node head = root;
+        while (head != null) {
+            while (root != null) {
+                if (root.left != null) root.left.next = root.right;
+                Node right = root.right;
+                root = root.next;
+                if (root != null && right != null) right.next = root.left;
+            }
+            root = head.left;
+
+            head = root;
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //117. 填充每个节点的下一个右侧节点指针 II
+    public Node connect2(Node root) {
+        Node p = root;
+        Node head = root;
+        while (head != null) {
+            while (p != null) {
+                Node left = null;
+                while (p != null && left == null) {
+                    if (p.left != null && p.left.next == null) left = p.left;
+                    if (left == null) {
+                        left = p.right;
+                        p = p.next;
+                    }
+                }
+
+                Node right = null;
+                while (p != null && right == null) {
+                    if (p.left != left) right = p.left;
+                    if (right == null) {
+                        right = p.right;
+                        if (right == null) p = p.next;
+                    }
+                }
+
+                if (left != null) left.next = right;
+            }
+
+            while (p == null && head != null) {
+                p = head.left;
+                if (p == null) p = head.right;
+                head = head.next;
+            }
+
+            head = p;
+        }
+
+        return root;
+    }
+
+    @SuppressWarnings("all")
+    //118. 杨辉三角
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        ArrayList<Integer> a = new ArrayList<>();
+        a.add(1);
+        result.add(a);
+        for (int i = 2; i <= numRows; i++) {
+            List<Integer> last = result.getLast();
+            List<Integer> list = new ArrayList<>();
+            list.add(1);
+            for (int j = 1; j < i - 1; j++) list.add(last.get(j) + last.get(j - 1));
+            list.add(1);
+            result.add(new ArrayList<>(list));
+        }
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //119. 杨辉三角 II
+    public List<Integer> getRow(int rowIndex) {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(1);
+        for (int i = 2; i <= rowIndex + 1; i++) {
+            List<Integer> last = list;
+            list = new ArrayList<>();
+            list.add(1);
+            for (int j = 1; j < i - 1; j++) list.add(last.get(j) + last.get(j - 1));
+            list.add(1);
+        }
+        return list;
+    }
+
+    @SuppressWarnings("all")
+    //120. 三角形最小路径和
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int m = triangle.size();
+        int n = triangle.get(m - 1).size();
+        int[][] dp = new int[2][n + 1];
+        Arrays.fill(dp[0], Integer.MAX_VALUE);
+        Arrays.fill(dp[1], Integer.MAX_VALUE);
+        dp[0][1] = triangle.getFirst().getFirst();
+        for (int i = 2; i < m + 1; i++) {
+            List<Integer> list = triangle.get(i - 1);
+            for (int j = 1; j <= i; j++) {
+                dp[1][j] = Integer.min(dp[0][j], dp[0][j - 1]) + list.get(j - 1);
+            }
+            dp[0] = dp[1];
+            dp[1] = new int[n + 1];
+            Arrays.fill(dp[1], Integer.MAX_VALUE);
+        }
+
+        int min = Integer.MAX_VALUE;
+        for (int i = 1; i <= n; i++) min = Integer.min(dp[0][i], min);
+        return min;
+    }
+
+    //121. 买卖股票的最佳时机
+    public int maxProfit(int[] prices) {
+        int min = prices[0];
+        int result = 0;
+        for (int price : prices) {
+            min = Integer.min(min, price);
+            result = Integer.max(result, price - min);
+        }
+        return result;
+    }
+
+    //122. 买卖股票的最佳时机 II
+    public int maxProfit2(int[] prices) {
+        if (prices.length == 1) return 0;
+        int result = 0;
+        int now;
+        if (prices[1] < prices[0]) now = -1;
+        else now = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] < prices[i - 1]) {
+                if (now != -1) result += prices[i - 1] - now;
+                now = prices[i];
+            }
+        }
+
+        result += prices[prices.length - 1] - now;
+        return result;
+    }
+
+    //123. 买卖股票的最佳时机 III
+    public int maxProfit3(int[] prices) {
+        int buy1 = -prices[0];
+        int buy2 = -prices[0];
+        int sell1 = 0;
+        int sell2 = 0;
+
+
+        for (int i = 1; i < prices.length; i++) {
+            int price = prices[i];
+            buy1 = Integer.max(buy1, -price);
+            sell1 = Integer.max(sell1, price + buy1);
+
+            buy2 = Integer.max(buy2, sell1 - price);
+            sell2 = Integer.max(sell2, price + buy2);
+        }
+
+        return sell2;
+    }
+
+    //124. 二叉树中的最大路径和
+    private int maxPathSumResult;
+
+    public int maxPathSum(TreeNode root) {
+        maxPathSumResult = root.val;
+        maxPathSumDfs(root);
+        return maxPathSumResult;
+    }
+
+    private int maxPathSumDfs(TreeNode treeNode) {
+        if (treeNode == null) return 0;
+
+        int left = maxPathSumDfs(treeNode.left);
+        int right = maxPathSumDfs(treeNode.right);
+
+        int mid = left + right;
+        //两边加中间
+        maxPathSumResult = Integer.max(maxPathSumResult, mid + treeNode.val);
+
+        int max = Math.max(left, right);
+
+        if (max != 0) maxPathSumResult = Integer.max(maxPathSumResult, max + Math.max(0, treeNode.val));
+
+        return Math.max(max + treeNode.val, 0);
+    }
+
+
 }
