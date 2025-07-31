@@ -3226,5 +3226,185 @@ class Solution {
         return Math.max(max + treeNode.val, 0);
     }
 
+    //125. 验证回文串
+    public boolean isPalindrome(String s) {
+        char[] sCharArray = s.toCharArray();
+        int i = 0;
+        int j = s.length() - 1;
+        while (i < j) {
+            while (i < j) {
+                if (sCharArray[i] >= 'A' && sCharArray[i] <= 'Z') {
+                    sCharArray[i] += 32;
+                    break;
+                }
+                if ((sCharArray[i] > 'z' || sCharArray[i] < 'a') && (sCharArray[i] > '9' || sCharArray[i] < '0')) i++;
+                else break;
+            }
 
+            while (i < j) {
+
+                if (sCharArray[j] >= 'A' && sCharArray[j] <= 'Z') {
+                    sCharArray[j] += 32;
+                    break;
+                }
+                if ((sCharArray[j] > 'z' || sCharArray[j] < 'a') && (sCharArray[j] > '9' || sCharArray[j] < '0')) j--;
+                else break;
+            }
+
+            if (i < j && sCharArray[i++] != sCharArray[j--]) return false;
+        }
+        return true;
+    }
+
+    @SuppressWarnings("all")
+    //126. 单词接龙 II
+    public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
+        //结果
+        List<List<String>> result = new ArrayList<>();
+        //词典
+        HashSet<String> words = new HashSet<>(wordList);
+        if (!words.contains(endWord)) return result;
+        words.remove(beginWord);
+
+        int len = beginWord.length();
+        //记录需要继续演变的单词
+        Queue<String> queue = new ArrayDeque<>();
+        queue.add(beginWord);
+
+        //记录是否发现
+        boolean found = false;
+
+        //记录单词由哪个单词演变过来
+        HashMap<String, List<String>> hashWord = new HashMap<>();
+
+        //记录单词演变的速度
+        HashMap<String, Integer> hashStep = new HashMap<>();
+        hashStep.put(beginWord, 0);
+
+        int step = 1;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                char[] need = poll.toCharArray();
+
+                for (int j = 0; j < len; j++) {
+                    char origin = need[j];
+                    for (char c = 'a'; c <= 'z'; c++) {
+                        need[j] = c;
+                        String s = new String(need);
+                        //如果有其他单词演变过且步骤和这次一样 则加入需求
+                        if (hashStep.containsKey(s) && hashStep.get(s) == step) hashWord.get(s).add(poll);
+                        //如果词典中没有则继续
+                        if (!words.contains(s)) continue;
+                        words.remove(s);
+                        queue.add(s);
+
+                        hashWord.putIfAbsent(s, new ArrayList<>());
+
+                        hashWord.get(s).add(poll);
+                        hashStep.put(s, step);
+                        if (s.equals(endWord)) found = true;
+                    }
+                    need[j] = origin;
+                }
+            }
+            step++;
+            if (found) break;
+        }
+        if (found) {
+            List<String> path = new ArrayList<>();
+            path.add(endWord);
+            findLaddersDfs(result, path, hashWord, beginWord, endWord);
+        }
+
+        return result;
+    }
+
+    private void findLaddersDfs(List<List<String>> result, List<String> list, HashMap<String, List<String>> hashWord, String beginWord, String cur) {
+        if (cur.equals(beginWord)) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        List<String> stringList = hashWord.get(cur);
+        for (String s : stringList) {
+            list.addFirst(s);
+            findLaddersDfs(result, list, hashWord, beginWord, s);
+            list.removeFirst();
+        }
+    }
+
+    @SuppressWarnings("all")
+    //127. 单词接龙
+    //todo 优化
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+        HashSet<String> words = new HashSet<>(wordList);
+        if (!words.contains(endWord)) return 0;
+        int len = beginWord.length();
+        int step = 0;
+        words.remove(beginWord);
+        Queue<String> queue = new ArrayDeque<>();
+        queue.add(beginWord);
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            step++;
+            for (int i = 0; i < size; i++) {
+                String poll = queue.poll();
+                if (poll.equals(endWord)) return step;
+                ArrayList<String> deleted = new ArrayList<>();
+                for (String word : words) {
+                    int diff = 0;
+                    for (int j = 0; j < len; j++) {
+                        if (word.charAt(j) != poll.charAt(j)) diff++;
+                    }
+                    if (diff == 1) {
+                        deleted.add(word);
+                        queue.add(word);
+                    }
+                }
+
+                for (String s : deleted) {
+                    words.remove(s);
+                }
+                words.remove(poll);
+            }
+        }
+
+        return 0;
+    }
+
+    //128. 最长连续序列
+    public int longestConsecutive(int[] nums) {
+        if (nums.length == 0) return 0;
+        int result = 0;
+
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) set.add(num);
+
+        for (int num : nums) {
+            if (!set.contains(num)) continue;
+            set.remove(num);
+            int now = 1;
+
+            int add = 1;
+            while (set.contains(add + num)) {
+                set.remove(add + num);
+                now++;
+                add++;
+            }
+
+            add = -1;
+
+            while (set.contains(add + num)) {
+                set.remove(add + num);
+                now++;
+                add--;
+            }
+
+            result = Integer.max(result, now);
+        }
+
+        return result;
+    }
 }

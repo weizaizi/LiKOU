@@ -529,8 +529,23 @@ public class SolutionTest {
 
     @Test
     public void maxPathSumTest() {
-        Assert.assertEquals(6 , solution.maxPathSum(new TreeNode(1 , new TreeNode(2) , new TreeNode(3))));
-        Assert.assertEquals(42 , solution.maxPathSum(new TreeNode(-10 , new TreeNode(9) , new TreeNode(20 , new TreeNode(15) ,new TreeNode(7)))));
+        Assert.assertEquals(6, solution.maxPathSum(new TreeNode(1, new TreeNode(2), new TreeNode(3))));
+        Assert.assertEquals(42, solution.maxPathSum(new TreeNode(-10, new TreeNode(9), new TreeNode(20, new TreeNode(15), new TreeNode(7)))));
+    }
+
+    @Test
+    public void isPalindrome2Test() {
+        Assert.assertTrue(solution.isPalindrome("A man, a plan, a canal: Panama"));
+        Assert.assertFalse(solution.isPalindrome("race a car"));
+        Assert.assertTrue(solution.isPalindrome(" "));
+        Assert.assertFalse(solution.isPalindrome("0P"));
+    }
+
+    @Test
+    public void longestConsecutiveTest() {
+        Assert.assertEquals(4, solution.longestConsecutive(new int[]{100, 4, 200, 1, 3, 2}));
+        Assert.assertEquals(9, solution.longestConsecutive(new int[]{0, 3, 7, 2, 5, 8, 4, 6, 0, 1}));
+        Assert.assertEquals(3, solution.longestConsecutive(new int[]{1, 0, 1, 2}));
     }
 
     @Test
