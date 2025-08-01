@@ -3036,13 +3036,13 @@ class Solution {
 
     @SuppressWarnings("all")
     //116. 填充每个节点的下一个右侧节点指针
-    public Node connect(Node root) {
-        Node result = root;
-        Node head = root;
+    public ThreeTreeNode connect(ThreeTreeNode root) {
+        ThreeTreeNode result = root;
+        ThreeTreeNode head = root;
         while (head != null) {
             while (root != null) {
                 if (root.left != null) root.left.next = root.right;
-                Node right = root.right;
+                ThreeTreeNode right = root.right;
                 root = root.next;
                 if (root != null && right != null) right.next = root.left;
             }
@@ -3056,12 +3056,12 @@ class Solution {
 
     @SuppressWarnings("all")
     //117. 填充每个节点的下一个右侧节点指针 II
-    public Node connect2(Node root) {
-        Node p = root;
-        Node head = root;
+    public ThreeTreeNode connect2(ThreeTreeNode root) {
+        ThreeTreeNode p = root;
+        ThreeTreeNode head = root;
         while (head != null) {
             while (p != null) {
-                Node left = null;
+                ThreeTreeNode left = null;
                 while (p != null && left == null) {
                     if (p.left != null && p.left.next == null) left = p.left;
                     if (left == null) {
@@ -3070,7 +3070,7 @@ class Solution {
                     }
                 }
 
-                Node right = null;
+                ThreeTreeNode right = null;
                 while (p != null && right == null) {
                     if (p.left != left) right = p.left;
                     if (right == null) {
@@ -3406,5 +3406,121 @@ class Solution {
         }
 
         return result;
+    }
+
+    //129. 求根节点到叶节点数字之和
+    public int sumNumbers(TreeNode root) {
+        return sumNumbersDfs(root, 0);
+    }
+
+    private int sumNumbersDfs(TreeNode treeNode, int sum) {
+        if (treeNode == null) return 0;
+
+        sum = sum * 10 + treeNode.val;
+        if (treeNode.left == null && treeNode.right == null) return sum;
+
+        return sumNumbersDfs(treeNode.left, sum) + sumNumbersDfs(treeNode.right, sum);
+    }
+
+    @SuppressWarnings("all")
+    //130. 被围绕的区域
+    public void solve(char[][] board) {
+        int n = board.length;
+        int m = board[0].length;
+        for (int i = 0; i < m; i++) {
+            if (board[0][i] == 'O') solveDfs(board, 0, i);
+        }
+        for (int i = 0; i < n; i++) {
+            if (board[i][m - 1] == 'O') solveDfs(board, i, m - 1);
+        }
+
+        for (int i = 0; i < m; i++) {
+            if (board[n - 1][i] == 'O') solveDfs(board, n - 1, i);
+        }
+
+        for (int i = 0; i < n; i++) {
+            if (board[i][0] == 'O') solveDfs(board, i, 0);
+        }
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (board[i][j] == 'a') board[i][j] = 'O';
+                else if (board[i][j] == 'O') board[i][j] = 'X';
+            }
+        }
+    }
+
+    private void solveDfs(char[][] board, int i, int j) {
+        board[i][j] = 'a';
+
+        if (i > 0 && board[i - 1][j] == 'O') solveDfs(board, i - 1, j);
+        if (i < board.length - 1 && board[i + 1][j] == 'O') solveDfs(board, i + 1, j);
+        if (j > 0 && board[i][j - 1] == 'O') solveDfs(board, i, j - 1);
+        if (j < board[0].length - 1 && board[i][j + 1] == 'O') solveDfs(board, i, j + 1);
+    }
+
+    @SuppressWarnings("all")
+    //131. 分割回文串
+    public List<List<String>> partition(String s) {
+        List<List<String>> result = new ArrayList<>();
+        char[] sCharArray = s.toCharArray();
+        int len = sCharArray.length;
+        boolean[][] dp = new boolean[len][len];
+
+        for (int i = 0; i < len; i++) {
+            dp[i][i] = true;
+        }
+
+        for (int i = len - 1; i >= 0; i--) {
+            if (i + 1 < dp.length) dp[i][i + 1] = sCharArray[i] == sCharArray[i + 1];
+            for (int j = i + 2; j < len; j++) {
+                dp[i][j] = sCharArray[i] == sCharArray[j] && dp[i + 1][j - 1];
+            }
+        }
+        partitionDfs(result, new ArrayList<>(), sCharArray, dp, 0);
+        return result;
+    }
+
+    private void partitionDfs(List<List<String>> result, List<String> list, char[] sCharArray, boolean[][] dp, int start) {
+        if (start == dp.length) {
+            result.add(new ArrayList<>(list));
+            return;
+        }
+
+        for (int i = start; i < dp.length; i++) {
+            if (!dp[start][i]) continue;
+
+            list.add(String.copyValueOf(sCharArray, start, i - start + 1));
+            partitionDfs(result, list, sCharArray, dp, i + 1);
+            list.removeLast();
+        }
+    }
+
+    //132. 分割回文串 II
+    public int minCut(String s) {
+        int len = s.length();
+        boolean[][] dp = new boolean[len][len];
+
+        for (int i = 0; i < len; i++) Arrays.fill(dp[i], true);
+
+        for (int i = len - 2; i >= 0; i--) {
+            for (int j = i + 1; j < len; j++) {
+                dp[i][j] = s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1];
+            }
+        }
+
+        int[] arr = new int[len];
+
+        for (int i = 1; i < len; i++) {
+            if (dp[0][i]) continue;
+            arr[i] = arr[i - 1] + 1;
+            for (int j = i - 1; j > 0; j--) {
+                if (!dp[j][i]) continue;
+
+                arr[i] = Integer.min(arr[i], arr[j - 1] + 1);
+            }
+        }
+
+        return arr[len - 1];
     }
 }

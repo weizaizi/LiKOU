@@ -549,6 +549,21 @@ public class SolutionTest {
     }
 
     @Test
+    public void sumNumbersTest() {
+        Assert.assertEquals(25, solution.sumNumbers(new TreeNode(1, new TreeNode(2), new TreeNode(3))));
+        Assert.assertEquals(1026, solution.sumNumbers(new TreeNode(4, new TreeNode(9, new TreeNode(5), new TreeNode(1)), new TreeNode(0))));
+    }
+
+    @Test
+    public void minCutTest() {
+        Assert.assertEquals(1, solution.minCut("aab"));
+        Assert.assertEquals(0, solution.minCut("a"));
+        Assert.assertEquals(1, solution.minCut("ab"));
+        Assert.assertEquals(1, solution.minCut("cdd"));
+    }
+
+    @Test
     public void debug() {
+
     }
 }
