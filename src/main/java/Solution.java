@@ -3523,4 +3523,205 @@ class Solution {
 
         return arr[len - 1];
     }
+
+    //2561. 重排水果（八月二日每日一题）
+    public long minCost(int[] basket1, int[] basket2) {
+        Map<Integer, Integer> diff = new TreeMap<>();
+        int min = Integer.MAX_VALUE;
+        for (int i : basket1) {
+            diff.put(i, diff.getOrDefault(i, 0) + 1);
+            min = Integer.min(min, i);
+        }
+
+        for (int i : basket2) {
+            diff.put(i, diff.getOrDefault(i, 0) - 1);
+            min = Integer.min(min, i);
+        }
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        for (Map.Entry<Integer, Integer> entry : diff.entrySet()) {
+            int value = Math.abs(entry.getValue());
+            if (value % 2 != 0) return -1;
+            int repeat = value / 2;
+            for (int i = 0; i < repeat; i++) {
+                arrayList.add(entry.getKey());
+            }
+        }
+
+        Collections.sort(arrayList);
+        long result = 0;
+        int size = arrayList.size() / 2;
+        for (int i = 0; i < size; i++) {
+            result += Integer.min(arrayList.get(i), 2 * min);
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //133. 克隆图
+    public Node cloneGraph(Node node) {
+        if (node == null) return null;
+        Map<Integer, Node> map = new HashMap<>();
+        Node n = new Node(node.val, new ArrayList<>());
+        map.put(node.val, n);
+        cloneGraphDfs(map, node, n);
+        return n;
+    }
+
+    private void cloneGraphDfs(Map<Integer, Node> map, Node p, Node n) {
+        for (Node neighbor : p.neighbors) {
+            if (map.containsKey(neighbor.val)) {
+                n.neighbors.add(map.get(neighbor.val));
+                continue;
+            }
+            Node k = new Node(neighbor.val, new ArrayList<>());
+            map.put(neighbor.val, k);
+            n.neighbors.add(k);
+        }
+
+        int size = p.neighbors.size();
+        for (int i = 0; i < size; i++) {
+            if (!map.get(p.neighbors.get(i).val).neighbors.isEmpty()) continue;
+            cloneGraphDfs(map, p.neighbors.get(i), n.neighbors.get(i));
+        }
+    }
+
+    //134. 加油站
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        for (int i = 0; i < gas.length; i++) {
+            gas[i] -= cost[i];
+        }
+
+        int sum = 0;
+        int need = 0;
+        int i = 0;
+        int index = 0;
+        while (i < gas.length) {
+            sum += gas[i];
+            i++;
+            if (sum < 0) {
+                while (i < gas.length && gas[i] < 0) {
+                    sum += gas[i];
+                    i++;
+                }
+                index = i;
+                need += Math.abs(sum);
+                sum = 0;
+            }
+        }
+
+        return sum >= need ? index : -1;
+
+    }
+
+    //135. 分发糖果
+    public int candy(int[] ratings) {
+        int result = 1;
+        int now = 1;
+        int i = 1;
+        int dec = 0;
+        int last;
+        while (i < ratings.length) {
+            if (ratings[i] >= ratings[i - 1]) {
+                now = ratings[i] == ratings[i - 1] ? 1 : now + 1;
+                dec = 0;
+                result += now;
+                i++;
+            } else {
+                last = now;
+                while (i < ratings.length && ratings[i] < ratings[i - 1]) {
+                    dec++;
+                    i++;
+                }
+                now = 1;
+                result += ((1 + dec) * dec) / 2;
+                result += Integer.max(0, dec - last + 1);
+            }
+        }
+        return result;
+    }
+
+    //136. 只出现一次的数字
+    public int singleNumber(int[] nums) {
+        int single = 0;
+
+        for (int num : nums) {
+            single = single ^ num;
+        }
+        return single;
+    }
+
+    //191. 位1的个数
+    public int hammingWeight(int n) {
+        int ans = 0;
+        while (n != 0) {
+            n &= (n - 1);
+            ans++;
+        }
+        return ans;
+    }
+
+    //231. 2 的幂
+    public boolean isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+
+    //326. 3 的幂
+    public boolean isPowerOfThree(int n) {
+        while (n != 0 && n % 3 == 0) n /= 3;
+        return n == 1;
+    }
+
+    //342. 4的幂
+    public boolean isPowerOfFour(int n) {
+        return (n & (n - 1)) == 0 && n % 3 == 1;
+    }
+
+    //371. 两整数之和
+    public int getSum(int a, int b) {
+        if (b == 0) return a;
+        return getSum((a ^ b), ((a & b) << 1));
+    }
+
+    @SuppressWarnings("all")
+    //461. 汉明距离
+    public int hammingDistance(int x, int y) {
+        x ^= y;
+        return hammingWeight(x);
+    }
+
+    //693. 交替位二进制数
+    public boolean hasAlternatingBits(int n) {
+        int a = n ^ (n >> 1);
+        return (a & (a + 1)) == 0;
+    }
+
+    //1863. 找出所有子集的异或总和再求和
+    public int subsetXORSum(int[] nums) {
+        int len = nums.length;
+        int sum = 0;
+        for (int i = 0; i < 1 << len; i++) {
+            int ans = 0;
+            for (int j = 0; j < len; j++) {
+                if ((i & (1 << j)) != 0) ans ^= nums[j];
+            }
+            sum += ans;
+        }
+        return sum;
+    }
+
+    //面试题 05.01. 插入
+    public int insertBits(int N, int M, int i, int j) {
+        int mask = (0xffffffff << j << 1) + ((1 << i) - 1);
+        return N & mask | M << i;
+    }
+
+    //面试题 16.01. 交换数字
+    public int[] swapNumbers(int[] numbers) {
+        numbers[0] = numbers[0] + numbers[1];
+        numbers[1] = numbers[0] - numbers[1];
+        numbers[0] = numbers[0] - numbers[1];
+        return numbers;
+    }
 }

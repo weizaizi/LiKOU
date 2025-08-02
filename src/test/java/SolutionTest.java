@@ -563,6 +563,103 @@ public class SolutionTest {
     }
 
     @Test
+    public void minCostTest() {
+        Assert.assertEquals(1, solution.minCost(new int[]{4, 2, 2, 2}, new int[]{1, 4, 1, 2}));
+        Assert.assertEquals(-1, solution.minCost(new int[]{2, 3, 4, 1}, new int[]{3, 2, 5, 1}));
+    }
+
+    @Test
+    public void canCompleteCircuitTest() {
+        Assert.assertEquals(3, solution.canCompleteCircuit(new int[]{1, 2, 3, 4, 5}, new int[]{3, 4, 5, 1, 2}));
+        Assert.assertEquals(-1, solution.canCompleteCircuit(new int[]{2, 3, 4}, new int[]{3, 4, 3}));
+    }
+
+    @Test
+    public void candyTest() {
+        Assert.assertEquals(5, solution.candy(new int[]{1, 0, 2}));
+        Assert.assertEquals(4, solution.candy(new int[]{1, 2, 2}));
+        Assert.assertEquals(7, solution.candy(new int[]{1, 3, 2, 2, 1}));
+        Assert.assertEquals(11, solution.candy(new int[]{1, 3, 4, 5, 2}));
+        Assert.assertEquals(12, solution.candy(new int[]{29, 51, 87, 87, 72, 12}));
+        Assert.assertEquals(15, solution.candy(new int[]{0, 1, 2, 5, 3, 2, 7}));
+    }
+
+    @Test
+    public void singleNumberTest() {
+        Assert.assertEquals(1, solution.singleNumber(new int[]{2, 2, 1}));
+        Assert.assertEquals(4, solution.singleNumber(new int[]{4, 1, 2, 1, 2}));
+        Assert.assertEquals(1, solution.singleNumber(new int[]{1}));
+    }
+
+    @Test
+    public void hammingWeightTest() {
+        Assert.assertEquals(3, solution.hammingWeight(11));
+        Assert.assertEquals(1, solution.hammingWeight(128));
+        Assert.assertEquals(31, solution.hammingWeight(-3));
+    }
+
+    @Test
+    public void isPowerOfTwoTest() {
+        Assert.assertTrue(solution.isPowerOfTwo(1));
+        Assert.assertTrue(solution.isPowerOfTwo(16));
+        Assert.assertFalse(solution.isPowerOfTwo(3));
+    }
+
+    @Test
+    public void isPowerOfThreeTest() {
+        Assert.assertTrue(solution.isPowerOfThree(27));
+        Assert.assertFalse(solution.isPowerOfThree(0));
+        Assert.assertTrue(solution.isPowerOfThree(9));
+        Assert.assertFalse(solution.isPowerOfThree(45));
+    }
+
+    @Test
+    public void isPowerOfFourTest() {
+        Assert.assertTrue(solution.isPowerOfFour(16));
+        Assert.assertFalse(solution.isPowerOfFour(5));
+        Assert.assertTrue(solution.isPowerOfFour(1));
+    }
+
+    @Test
+    public void getSumTest() {
+        Assert.assertEquals(3, solution.getSum(1, 2));
+        Assert.assertEquals(5, solution.getSum(2, 3));
+    }
+
+
+    @Test
+    public void hammingDistanceTest() {
+        Assert.assertEquals(2, solution.hammingDistance(1, 4));
+        Assert.assertEquals(1, solution.hammingDistance(1, 3));
+    }
+
+    @Test
+    public void hasAlternatingBitsTest() {
+        Assert.assertTrue(solution.hasAlternatingBits(5));
+        Assert.assertFalse(solution.hasAlternatingBits(7));
+        Assert.assertFalse(solution.hasAlternatingBits(11));
+    }
+
+    @Test
+    public void subsetXORSumTest() {
+        Assert.assertEquals(6, solution.subsetXORSum(new int[]{1, 3}));
+        Assert.assertEquals(28, solution.subsetXORSum(new int[]{5, 1, 6}));
+        Assert.assertEquals(480, solution.subsetXORSum(new int[]{3, 4, 5, 6, 7, 8}));
+    }
+
+    @Test
+    public void insertBitsTest() {
+        Assert.assertEquals(1100, solution.insertBits(1024, 19, 2, 6));
+        Assert.assertEquals(31, solution.insertBits(0, 31, 0, 4));
+        Assert.assertEquals(2082885133, solution.insertBits(1143207437, 1017033, 11, 31));
+    }
+
+    @Test
+    public void swapNumbersTest() {
+        Assert.assertArrayEquals(new int[]{2147483647, 0}, solution.swapNumbers(new int[]{0, 2147483647}));
+    }
+
+    @Test
     public void debug() {
 
     }
