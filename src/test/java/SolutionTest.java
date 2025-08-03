@@ -592,6 +592,12 @@ public class SolutionTest {
     }
 
     @Test
+    public void singleNumber2Test() {
+        Assert.assertEquals(3 , solution.singleNumber2(new int[]{2,2,3,2}));
+        Assert.assertEquals(99 , solution.singleNumber2(new int[]{0,1,0,1,0,1,99}));
+    }
+
+    @Test
     public void hammingWeightTest() {
         Assert.assertEquals(3, solution.hammingWeight(11));
         Assert.assertEquals(1, solution.hammingWeight(128));
@@ -645,6 +651,17 @@ public class SolutionTest {
         Assert.assertEquals(6, solution.subsetXORSum(new int[]{1, 3}));
         Assert.assertEquals(28, solution.subsetXORSum(new int[]{5, 1, 6}));
         Assert.assertEquals(480, solution.subsetXORSum(new int[]{3, 4, 5, 6, 7, 8}));
+    }
+
+    @Test
+    public void maxTotalFruitsTest() {
+        Assert.assertEquals(9, solution.maxTotalFruits(new int[][]{{2, 8}, {6, 3}, {8, 6}}, 5, 4));
+        Assert.assertEquals(14, solution.maxTotalFruits(new int[][]{{0, 9}, {4, 1}, {5, 7}, {6, 2}, {7, 4}, {10, 9}}, 5, 4));
+        Assert.assertEquals(0, solution.maxTotalFruits(new int[][]{{0, 3}, {6, 4}, {8, 5}}, 3, 2));
+        Assert.assertEquals(54, solution.maxTotalFruits(new int[][]{{0, 7}, {1, 9}, {2, 3}, {4, 10}, {5, 10}, {10, 7}, {12, 9}, {13, 6}, {14, 5}, {16, 5}, {18, 4}, {23, 7}, {25, 5}, {33, 10}, {34, 3}, {35, 2}, {39, 3}}, 34, 23));
+        Assert.assertEquals(15, solution.maxTotalFruits(new int[][]{{1, 2}, {2, 3}, {4, 1}, {6, 6}, {8, 1}, {21, 1}, {24, 2}, {26, 1}, {29, 10}}, 27, 23));
+        Assert.assertEquals(40, solution.maxTotalFruits(new int[][]{{0, 1}, {13, 9}, {14, 10}, {15, 5}, {18, 1}, {21, 1}, {23, 6}, {26, 10}, {27, 7}, {30, 1}, {31, 10}, {32, 6}, {38, 6}, {40, 6}}, 31, 10));
+        Assert.assertEquals(16, solution.maxTotalFruits(new int[][]{{0, 2}, {4, 1}, {11, 1}, {15, 9}, {18, 8}, {19, 10}, {20, 2}, {24, 5}, {25, 6}, {27, 7}, {28, 8}, {29, 1}, {31, 5}, {38, 4}, {40, 6}}, 30, 3));
     }
 
     @Test

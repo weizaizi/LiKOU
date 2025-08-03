@@ -3560,22 +3560,22 @@ class Solution {
 
     @SuppressWarnings("all")
     //133. 克隆图
-    public Node cloneGraph(Node node) {
-        if (node == null) return null;
-        Map<Integer, Node> map = new HashMap<>();
-        Node n = new Node(node.val, new ArrayList<>());
-        map.put(node.val, n);
-        cloneGraphDfs(map, node, n);
+    public GraphNode cloneGraph(GraphNode graphNode) {
+        if (graphNode == null) return null;
+        Map<Integer, GraphNode> map = new HashMap<>();
+        GraphNode n = new GraphNode(graphNode.val, new ArrayList<>());
+        map.put(graphNode.val, n);
+        cloneGraphDfs(map, graphNode, n);
         return n;
     }
 
-    private void cloneGraphDfs(Map<Integer, Node> map, Node p, Node n) {
-        for (Node neighbor : p.neighbors) {
+    private void cloneGraphDfs(Map<Integer, GraphNode> map, GraphNode p, GraphNode n) {
+        for (GraphNode neighbor : p.neighbors) {
             if (map.containsKey(neighbor.val)) {
                 n.neighbors.add(map.get(neighbor.val));
                 continue;
             }
-            Node k = new Node(neighbor.val, new ArrayList<>());
+            GraphNode k = new GraphNode(neighbor.val, new ArrayList<>());
             map.put(neighbor.val, k);
             n.neighbors.add(k);
         }
@@ -3652,6 +3652,95 @@ class Solution {
         return single;
     }
 
+    //137. 只出现一次的数字 II
+    public int singleNumber2(int[] nums) {
+        int ans = 0;
+
+        for (int i = 0; i < 32; i++) {
+            int total = 0;
+            for (int num : nums) {
+                total += ((num >> i) & 1);
+            }
+            ans += (total % 3 == 1 ? 1 : 0) << i;
+        }
+
+        return ans;
+    }
+
+    @SuppressWarnings("all")
+    //138. 随机链表的复制
+    public Node copyRandomList(Node head) {
+        if (head == null) return null;
+
+        for (Node p = head; p != null; p = p.next.next) {
+            Node newNode = new Node(p.val);
+            newNode.next = p.next;
+            p.next = newNode;
+        }
+
+        for (Node p = head; p != null; p = p.next.next) {
+            Node next = p.next;
+            next.random = p.random == null ? null : p.random.next;
+        }
+
+        Node newHead = head.next;
+        for (Node p = head; p != null; p = p.next) {
+            Node newNode = p.next;
+            p.next = p.next.next;
+            newNode.next = newNode.next == null ? null : newNode.next.next;
+        }
+
+        return newHead;
+    }
+
+    @SuppressWarnings("all")
+    //139. 单词拆分
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> wordSet = new HashSet<>(wordDict);
+
+        int len = s.length();
+
+        boolean[] dp = new boolean[len + 1];
+        dp[0] = true;
+        for (int i = 1; i <= len; i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+
+        return dp[len];
+    }
+
+
+    @SuppressWarnings("all")
+    //140. 单词拆分 II
+    public List<String> wordBreak2(String s, List<String> wordDict) {
+        List<String> result = new ArrayList<>();
+        wordBreak2Dfs(result, s, new StringBuilder(), 0, 1, new HashSet<>(wordDict));
+        return result;
+    }
+
+    private void wordBreak2Dfs(List<String> result, String s, StringBuilder sb, int start, int end, HashSet<String> wordDict) {
+        if (end == s.length() + 1) {
+            if (start == s.length()) result.add(sb.deleteCharAt(sb.length() - 1).toString());
+            return;
+        }
+
+        if (end - start > 10) return;
+        String newString = s.substring(start, end);
+        if (!wordDict.contains(newString)) wordBreak2Dfs(result, s, sb, start, end + 1, wordDict);
+        else {
+            int len = sb.length();
+            sb.append(newString).append(" ");
+            wordBreak2Dfs(result, s, sb, end, end + 1, wordDict);
+            sb.delete(len, sb.length());
+            wordBreak2Dfs(result, s, sb, start, end + 1, wordDict);
+        }
+    }
+
     //191. 位1的个数
     public int hammingWeight(int n) {
         int ans = 0;
@@ -3709,6 +3798,53 @@ class Solution {
             sum += ans;
         }
         return sum;
+    }
+
+    //2106. 摘水果
+    public int maxTotalFruits(int[][] fruits, int startPos, int k) {
+        int index = 0;
+        int after = 0;
+        int before = 0;
+        int result;
+        int now = 0;
+        for (int i = 0; i < fruits.length; i++) {
+            int[] fruit = fruits[i];
+            if (fruit[0] < startPos) {
+                before++;
+            } else if (fruit[0] == startPos) now = fruit[1];
+            else {
+                if (startPos + k >= fruit[0]) {
+                    now += fruit[1];
+                    index = i;
+                    after++;
+                } else break;
+            }
+        }
+        before--;
+        result = now;
+
+        while (before >= 0 && after != 0 && k >= Integer.min(startPos - fruits[before][0], fruits[index][0] - startPos) + fruits[index][0] - fruits[before][0]) {
+            now += fruits[before--][1];
+            result = Integer.max(result, now);
+        }
+
+        while (before >= 0 && after > 0) {
+            now -= fruits[index--][1];
+            after--;
+
+            while (before >= 0 && after > 0 && k >= Integer.min(startPos - fruits[before][0], fruits[index][0] - startPos) + fruits[index][0] - fruits[before][0]) {
+                now += fruits[before--][1];
+                result = Integer.max(result, now);
+            }
+        }
+
+        while (before >= 0 && k >= startPos - fruits[before][0]) {
+            now += fruits[before--][1];
+            result = Integer.max(result, now);
+        }
+
+
+        return result;
     }
 
     //面试题 05.01. 插入
