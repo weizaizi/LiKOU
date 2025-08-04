@@ -593,8 +593,8 @@ public class SolutionTest {
 
     @Test
     public void singleNumber2Test() {
-        Assert.assertEquals(3 , solution.singleNumber2(new int[]{2,2,3,2}));
-        Assert.assertEquals(99 , solution.singleNumber2(new int[]{0,1,0,1,0,1,99}));
+        Assert.assertEquals(3, solution.singleNumber2(new int[]{2, 2, 3, 2}));
+        Assert.assertEquals(99, solution.singleNumber2(new int[]{0, 1, 0, 1, 0, 1, 99}));
     }
 
     @Test
@@ -644,6 +644,15 @@ public class SolutionTest {
         Assert.assertTrue(solution.hasAlternatingBits(5));
         Assert.assertFalse(solution.hasAlternatingBits(7));
         Assert.assertFalse(solution.hasAlternatingBits(11));
+    }
+
+    @Test
+    public void totalFruitTest() {
+        Assert.assertEquals(3, solution.totalFruit(new int[]{1, 2, 1}));
+        Assert.assertEquals(3, solution.totalFruit(new int[]{0, 1, 2, 1}));
+        Assert.assertEquals(4, solution.totalFruit(new int[]{1, 2, 3, 2, 2}));
+        Assert.assertEquals(5, solution.totalFruit(new int[]{3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4}));
+        Assert.assertEquals(5 , solution.totalFruit(new int[]{1,0,1,4,1,4,1,2,3}));
     }
 
     @Test

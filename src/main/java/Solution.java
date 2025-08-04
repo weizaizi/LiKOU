@@ -3741,6 +3741,107 @@ class Solution {
         }
     }
 
+    @SuppressWarnings("all")
+    //141. 环形链表
+    public boolean hasCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        boolean result = false;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    @SuppressWarnings("all")
+    //142. 环形链表 II
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+        boolean hasCycle = false;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == slow) {
+                hasCycle = true;
+                break;
+            }
+        }
+
+        if (!hasCycle) return null;
+
+        slow = head;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+
+        return slow;
+    }
+
+    @SuppressWarnings("all")
+    //143. 重排链表
+    public void reorderList(ListNode head) {
+        ListNode p = head;
+        int len = 0;
+        while (p != null) {
+            len++;
+            p = p.next;
+        }
+
+        int repeat = len / 2;
+
+        p = head;
+        for (int i = 0; i < repeat; i++) p = p.next;
+
+        ListNode last = p;
+        ListNode now = p.next;
+        while (now != null) {
+            ListNode next = now.next;
+            now.next = last;
+            last = now;
+            now = next;
+        }
+
+        ListNode before = head;
+        ListNode after = last;
+
+        while (before.next != after && before != after) {
+            ListNode lastNext = after.next;
+            after.next = before.next;
+            before.next = after;
+            after = lastNext;
+            before = before.next.next;
+        }
+
+        p.next = null;
+    }
+
+
+    @SuppressWarnings("all")
+    //144. 二叉树的前序遍历
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null) {
+            ans.add(root.val);
+            stack.add(root);
+            if (root.left != null) root = root.left;
+            else {
+                do root = stack.pop().right;
+                while (!stack.isEmpty() && root == null);
+            }
+        }
+
+        return ans;
+    }
+
     //191. 位1的个数
     public int hammingWeight(int n) {
         int ans = 0;
@@ -3786,6 +3887,50 @@ class Solution {
         return (a & (a + 1)) == 0;
     }
 
+    //904. 水果成篮（8.4每日一题）
+    public int totalFruit(int[] fruits) {
+        int i = 0;
+        int j = 1;
+        int[][] basket = new int[2][2];
+        basket[0][0] = fruits[0];
+        basket[0][1] = 1;
+        while (j < fruits.length && fruits[j] == basket[0][0]) {
+            basket[0][1]++;
+            j++;
+        }
+        if (j < fruits.length) {
+            basket[1][0] = fruits[j];
+            basket[1][1] = 1;
+            j++;
+        }
+        int ans = basket[0][1] + basket[1][1];
+
+        while (j < fruits.length) {
+            if (fruits[j] == basket[0][0]) basket[0][1]++;
+            else if (fruits[j] == basket[1][0]) basket[1][1]++;
+            else {
+                ans = Integer.max(ans, basket[0][1] + basket[1][1]);
+                while (basket[0][1] != 0 && basket[1][1] != 0) {
+                    if (basket[0][0] == fruits[i]) basket[0][1]--;
+                    else if (basket[1][0] == fruits[i]) basket[1][1]--;
+                    i++;
+                }
+
+                if (basket[0][1] == 0) {
+                    basket[0][1] = 1;
+                    basket[0][0] = fruits[j];
+                } else {
+                    basket[1][1] = 1;
+                    basket[1][0] = fruits[j];
+                }
+            }
+
+            j++;
+        }
+        ans = Integer.max(ans, basket[0][1] + basket[1][1]);
+        return ans;
+    }
+
     //1863. 找出所有子集的异或总和再求和
     public int subsetXORSum(int[] nums) {
         int len = nums.length;
@@ -3800,7 +3945,7 @@ class Solution {
         return sum;
     }
 
-    //2106. 摘水果
+    //2106. 摘水果（8.3每日一题）
     public int maxTotalFruits(int[][] fruits, int startPos, int k) {
         int index = 0;
         int after = 0;
