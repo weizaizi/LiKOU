@@ -3834,12 +3834,94 @@ class Solution {
             stack.add(root);
             if (root.left != null) root = root.left;
             else {
-                do root = stack.pop().right;
-                while (!stack.isEmpty() && root == null);
+                do root = stack.pop().right; while (!stack.isEmpty() && root == null);
             }
         }
 
         return ans;
+    }
+
+    @SuppressWarnings("all")
+    //145. 二叉树的后序遍历
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        while (root != null) {
+            int val = root.val;
+            stack.add(root);
+            if (root.left != null) root = root.left;
+            else {
+                do root = stack.pop().right; while (!stack.isEmpty() && root == null);
+            }
+
+            ans.add(val);
+        }
+
+        return ans;
+    }
+
+    @SuppressWarnings("all")
+    //147. 对链表进行插入排序
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode lastSorted = head, curr = head.next;
+        while (curr != null) {
+            if (lastSorted.val <= curr.val) {
+                lastSorted = lastSorted.next;
+            } else {
+                ListNode prev = dummyHead;
+                while (prev.next.val <= curr.val) {
+                    prev = prev.next;
+                }
+                lastSorted.next = curr.next;
+                curr.next = prev.next;
+                prev.next = curr;
+            }
+            curr = lastSorted.next;
+        }
+        return dummyHead.next;
+    }
+
+    //148. 排序链表
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode fast = head.next;
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        ListNode next = slow.next;
+        slow.next = null;
+        ListNode left = sortList(head);
+        ListNode right = sortList(next);
+
+        return sortListMerge(left, right);
+    }
+
+    private ListNode sortListMerge(ListNode left, ListNode right) {
+        ListNode head = new ListNode(-1);
+        ListNode p = head;
+        while (left != null && right != null) {
+            if (left.val > right.val) {
+                p.next = right;
+                right = right.next;
+            } else {
+                p.next = left;
+                left = left.next;
+            }
+            p = p.next;
+        }
+
+        if (left != null) p.next = left;
+        if (right != null) p.next = right;
+
+        return head.next;
     }
 
     //191. 位1的个数
@@ -3990,6 +4072,27 @@ class Solution {
 
 
         return result;
+    }
+
+    //3477. 水果成篮 II(8.5每日一题)
+    public int numOfUnplacedFruits(int[] fruits, int[] baskets) {
+        int ans = 0;
+        int bLen = baskets.length;
+        boolean[] used = new boolean[bLen];
+        for (int fruit : fruits) {
+            for (int j = 0; j < bLen; j++) {
+                if (used[j]) continue;
+                if (baskets[j] >= fruit) {
+                    used[j] = true;
+                    break;
+                }
+            }
+        }
+
+        for (boolean b : used) {
+            if (!b) ans++;
+        }
+        return ans;
     }
 
     //面试题 05.01. 插入

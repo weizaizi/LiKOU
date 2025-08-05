@@ -652,7 +652,7 @@ public class SolutionTest {
         Assert.assertEquals(3, solution.totalFruit(new int[]{0, 1, 2, 1}));
         Assert.assertEquals(4, solution.totalFruit(new int[]{1, 2, 3, 2, 2}));
         Assert.assertEquals(5, solution.totalFruit(new int[]{3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4}));
-        Assert.assertEquals(5 , solution.totalFruit(new int[]{1,0,1,4,1,4,1,2,3}));
+        Assert.assertEquals(5, solution.totalFruit(new int[]{1, 0, 1, 4, 1, 4, 1, 2, 3}));
     }
 
     @Test
@@ -674,6 +674,12 @@ public class SolutionTest {
     }
 
     @Test
+    public void numOfUnplacedFruitsTest() {
+        Assert.assertEquals(1, solution.numOfUnplacedFruits(new int[]{4, 2, 5}, new int[]{3, 5, 4}));
+        Assert.assertEquals(0, solution.numOfUnplacedFruits(new int[]{3, 6, 1}, new int[]{6, 4, 7}));
+    }
+
+    @Test
     public void insertBitsTest() {
         Assert.assertEquals(1100, solution.insertBits(1024, 19, 2, 6));
         Assert.assertEquals(31, solution.insertBits(0, 31, 0, 4));
@@ -686,7 +692,18 @@ public class SolutionTest {
     }
 
     @Test
-    public void debug() {
+    public void LRUCacheTest() {
+        LRUCache lruCache = new LRUCache(2);
+        lruCache.put(2, 1);
+        lruCache.put(2, 2);
+        Assert.assertEquals(2, lruCache.get(2));
+        lruCache.put(1, 1);
+        lruCache.put(4, 1);
+        Assert.assertEquals(-1, lruCache.get(2));
+    }
 
+    @Test
+    public void debug() {
+        solution.sortList(new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3)))));
     }
 }
