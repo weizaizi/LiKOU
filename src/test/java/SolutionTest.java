@@ -598,6 +598,47 @@ public class SolutionTest {
     }
 
     @Test
+    public void maxPointsTest() {
+        Assert.assertEquals(3, solution.maxPoints(new int[][]{{1, 1}, {2, 2}, {3, 3}}));
+        Assert.assertEquals(4, solution.maxPoints(new int[][]{{1, 1}, {3, 2}, {5, 3}, {4, 1}, {2, 3}, {1, 4}}));
+    }
+
+    @Test
+    public void evalRPNTest() {
+        Assert.assertEquals(9, solution.evalRPN(new String[]{"2", "1", "+", "3", "*"}));
+        Assert.assertEquals(6, solution.evalRPN(new String[]{"4", "13", "5", "/", "+"}));
+        Assert.assertEquals(22, solution.evalRPN(new String[]{"10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"}));
+    }
+
+    @Test
+    public void reverseWordsTest() {
+        Assert.assertEquals("blue is sky the", solution.reverseWords("the sky is blue"));
+        Assert.assertEquals("world hello", solution.reverseWords("  hello world  "));
+        Assert.assertEquals("example good a", solution.reverseWords("a good   example"));
+    }
+
+    @Test
+    public void maxProductTest() {
+        Assert.assertEquals(6, solution.maxProduct(new int[]{2, 3, -2, 4}));
+        Assert.assertEquals(0, solution.maxProduct(new int[]{-2, 0, -1}));
+    }
+
+    @Test
+    public void findMinTest() {
+        Assert.assertEquals(1, solution.findMin(new int[]{3, 4, 5, 1, 2}));
+        Assert.assertEquals(0, solution.findMin(new int[]{4, 5, 6, 7, 0, 1, 2}));
+        Assert.assertEquals(11, solution.findMin(new int[]{11, 13, 15, 17}));
+        Assert.assertEquals(1, solution.findMin(new int[]{2, 1}));
+    }
+
+    @Test
+    public void findMin2Test() {
+        Assert.assertEquals(1, solution.findMin2(new int[]{1, 3, 5}));
+        Assert.assertEquals(0, solution.findMin2(new int[]{2, 2, 2, 0, 1}));
+        Assert.assertEquals(1, solution.findMin2(new int[]{3, 1}));
+    }
+
+    @Test
     public void hammingWeightTest() {
         Assert.assertEquals(3, solution.hammingWeight(11));
         Assert.assertEquals(1, solution.hammingWeight(128));
@@ -674,6 +715,13 @@ public class SolutionTest {
     }
 
     @Test
+    public void maxCollectedFruitsTest() {
+        Assert.assertEquals(100, solution.maxCollectedFruits(new int[][]{{1, 2, 3, 4}, {5, 6, 8, 7}, {9, 10, 11, 12}, {13, 14, 15, 16}}));
+        Assert.assertEquals(4, solution.maxCollectedFruits(new int[][]{{1, 1}, {1, 1}}));
+        Assert.assertEquals(105, solution.maxCollectedFruits(new int[][]{{16, 3, 11, 14, 14}, {3, 0, 10, 13, 14}, {7, 18, 8, 7, 18}, {7, 8, 5, 7, 5}, {0, 14, 8, 1, 0}}));
+    }
+
+    @Test
     public void numOfUnplacedFruitsTest() {
         Assert.assertEquals(1, solution.numOfUnplacedFruits(new int[]{4, 2, 5}, new int[]{3, 5, 4}));
         Assert.assertEquals(0, solution.numOfUnplacedFruits(new int[]{3, 6, 1}, new int[]{6, 4, 7}));
@@ -703,7 +751,37 @@ public class SolutionTest {
     }
 
     @Test
+    public void findPeakElementTest() {
+        Assert.assertEquals(2, solution.findPeakElement(new int[]{1, 2, 3, 1}));
+        int a = solution.findPeakElement(new int[]{1, 2, 1, 3, 5, 6, 4});
+        Assert.assertTrue(a == 1 || a == 5);
+        int b = solution.findPeakElement(new int[]{6, 5, 4, 3, 2, 3, 2});
+        Assert.assertTrue(b == 0 || b == 5);
+    }
+
+    @Test
+    public void maximumGapTest() {
+        Assert.assertEquals(3, solution.maximumGap(new int[]{3, 6, 9, 1}));
+        Assert.assertEquals(0, solution.maximumGap(new int[]{10}));
+    }
+
+    @Test
+    public void compareVersionTest() {
+        Assert.assertEquals(-1, solution.compareVersion("1.2", "1.10"));
+        Assert.assertEquals(0, solution.compareVersion("1.01", "1.001"));
+        Assert.assertEquals(0, solution.compareVersion("1.0", "1.0.0.0"));
+    }
+
+    @Test
+    public void fractionToDecimalTest() {
+        Assert.assertEquals("0.5", solution.fractionToDecimal(1, 2));
+        Assert.assertEquals("2", solution.fractionToDecimal(2, 1));
+        Assert.assertEquals("0.(012)", solution.fractionToDecimal(4, 333));
+        Assert.assertEquals("-6.25", solution.fractionToDecimal(-50, 8));
+        Assert.assertEquals("0.0000000004656612873077392578125", solution.fractionToDecimal(-1, -2147483648));
+    }
+
+    @Test
     public void debug() {
-        solution.sortList(new ListNode(4, new ListNode(2, new ListNode(1, new ListNode(3)))));
     }
 }

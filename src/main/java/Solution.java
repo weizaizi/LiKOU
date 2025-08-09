@@ -3886,6 +3886,7 @@ class Solution {
         return dummyHead.next;
     }
 
+    @SuppressWarnings("all")
     //148. 排序链表
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
@@ -3922,6 +3923,300 @@ class Solution {
         if (right != null) p.next = right;
 
         return head.next;
+    }
+
+    //149. 直线上最多的点数
+    public int maxPoints(int[][] points) {
+        int n = points.length;
+        if (n <= 2) return n;
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            Map<Integer, Integer> hashMap = new HashMap<>();
+            if (ans >= n - i || ans > n / 2) break;
+
+            for (int j = i + 1; j < n; j++) {
+                int x = points[i][0] - points[j][0];
+                int y = points[i][1] - points[j][1];
+                if (x == 0) {
+                    y = 1;
+                } else if (y == 0) {
+                    x = 1;
+                } else {
+                    int gcd = gcd(x, y);
+                    x = x / gcd;
+                    y = y / gcd;
+                }
+
+                int key = x * 10001 + y;
+                hashMap.put(key, hashMap.getOrDefault(key, 0) + 1);
+            }
+
+            for (Map.Entry<Integer, Integer> entry : hashMap.entrySet()) {
+                ans = Integer.max(ans, entry.getValue());
+            }
+        }
+
+        return ans + 1;
+    }
+
+    @SuppressWarnings("all")
+    private int gcd(int x, int y) {
+        return y == 0 ? x : gcd(y, x % y);
+    }
+
+    //150. 逆波兰表达式求值
+    public int evalRPN(String[] tokens) {
+        Stack<Integer> stack = new Stack<>();
+        for (String token : tokens) {
+            switch (token) {
+                case "+" -> {
+                    int value = stack.pop() + stack.pop();
+                    stack.add(value);
+                }
+                case "-" -> {
+                    int value = -(stack.pop() - stack.pop());
+                    stack.add(value);
+                }
+                case "*" -> {
+                    int value = stack.pop() * stack.pop();
+                    stack.add(value);
+                }
+                case "/" -> {
+                    int pop = stack.pop();
+                    int value = stack.pop() / pop;
+                    stack.add(value);
+                }
+                default -> stack.add(Integer.valueOf(token));
+            }
+        }
+        return stack.peek();
+    }
+
+    //151. 反转字符串中的单词
+    public String reverseWords(String s) {
+        s = s.trim();
+        Stack<String> stack = new Stack<>();
+        int i = 0;
+        int j = 0;
+        while (j < s.length()) {
+            if (s.charAt(j) == ' ') {
+                stack.add(s.substring(i, j));
+                while (s.charAt(j) == ' ') j++;
+                i = j;
+            }
+            j++;
+        }
+
+        stack.add(s.substring(i));
+        StringBuilder ans = new StringBuilder();
+        while (!stack.isEmpty()) {
+            ans.append(stack.pop());
+            ans.append(" ");
+        }
+        ans.deleteCharAt(ans.length() - 1);
+        return ans.toString();
+    }
+
+    //152. 乘积最大子数组
+    public int maxProduct(int[] nums) {
+        int min = nums[0];
+        int max = nums[0];
+        int ans = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            int a = max * nums[i];
+            int b = min * nums[i];
+            min = Integer.min(a, b);
+            min = Integer.min(min, nums[i]);
+            max = Integer.max(a, b);
+            max = Integer.max(max, nums[i]);
+            ans = Integer.max(ans, max);
+        }
+
+        return ans;
+    }
+
+    //153. 寻找旋转排序数组中的最小值
+    public int findMin(int[] nums) {
+        int first = nums[0];
+        if (first < nums[nums.length - 1]) return first;
+        int i = 1;
+        int j = nums.length - 1;
+        int mid = 0;
+        while (i <= j) {
+            mid = (i + j) / 2;
+            if (nums[mid] > first) i = mid + 1;
+            else {
+                j = mid;
+                if (j == i) return nums[mid];
+            }
+        }
+
+        return nums[mid];
+    }
+
+    //154. 寻找旋转排序数组中的最小值 II
+    public int findMin2(int[] nums) {
+        int first = nums[0];
+        int len = nums.length - 1;
+        while (len > 0 && nums[len] == first) len--;
+        if (first < nums[len]) return first;
+        int i = 1;
+        int j = len;
+        int mid = 0;
+        while (i <= j) {
+            mid = (i + j) / 2;
+            if (nums[mid] >= first) i = mid + 1;
+            else {
+                j = mid;
+                if (j == i) return nums[mid];
+            }
+        }
+
+        return nums[mid];
+    }
+
+    @SuppressWarnings("all")
+    //160. 相交链表
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+        ListNode pA = headA;
+        ListNode pB = headB;
+
+        while (pA != pB) {
+            pA = pA == null ? headB : pA.next;
+            pB = pB == null ? headA : pB.next;
+        }
+
+        return pA;
+    }
+
+    //162. 寻找峰值
+    public int findPeakElement(int[] nums) {
+        int i = 0;
+        int j = nums.length - 1;
+        int mid = 0;
+        while (i <= j) {
+            mid = (i + j) / 2;
+            if ((mid - 1 < 0 || nums[mid] > nums[mid - 1]) && (mid + 1 > nums.length - 1 || nums[mid] > nums[mid + 1]))
+                return mid;
+            else if (mid - 1 >= 0 && nums[mid] < nums[mid - 1]) j = mid - 1;
+            else i = mid + 1;
+        }
+
+        return mid;
+    }
+
+    //164. 最大间距
+    public int maximumGap(int[] nums) {
+        if (nums.length == 1) return 0;
+
+        int ans = 0;
+
+        @SuppressWarnings("all") int max = Arrays.stream(nums).max().getAsInt();
+        int min = Arrays.stream(nums).min().getAsInt();
+
+        int gap = Integer.max(1, (max - min) / (nums.length - 1));
+
+        int bucketSize = (max - min) / gap + 1;
+
+        int[][] bucket = new int[bucketSize][2];
+        for (int i = 0; i < bucketSize; i++) {
+            bucket[i][0] = bucket[i][1] = -1;
+        }
+        for (int num : nums) {
+            int idx = (num - min) / gap;
+
+            if (bucket[idx][0] == -1) bucket[idx][0] = bucket[idx][1] = num;
+            else {
+                bucket[idx][0] = Integer.min(bucket[idx][0], num);
+                bucket[idx][1] = Integer.max(bucket[idx][1], num);
+            }
+        }
+
+        int pre = 0;
+
+        for (int i = 0; i < bucket.length; i++) {
+            if (bucket[i][0] == -1) continue;
+
+            ans = Integer.max(ans, bucket[i][0] - bucket[pre][1]);
+            pre = i;
+        }
+
+        return ans;
+    }
+
+    //165. 比较版本号
+    public int compareVersion(String version1, String version2) {
+        return compareVersionDfs(0, 0, version1, version2);
+    }
+
+    private int compareVersionDfs(int i, int j, String version1, String version2) {
+        int ans = 0;
+
+        while (i < version1.length() && version1.charAt(i) == '0') i++;
+        while (j < version2.length() && version2.charAt(j) == '0') j++;
+
+        if (i >= version1.length() && j >= version2.length()) return 0;
+
+        while (i < version1.length() && j < version2.length()) {
+            char v1 = version1.charAt(i);
+            char v2 = version2.charAt(j);
+            if (v1 == '.' || v2 == '.') break;
+            if (v1 != v2 && ans == 0) {
+                ans = v1 > v2 ? 1 : -1;
+            }
+            i++;
+            j++;
+        }
+
+        if (i < version1.length() && version1.charAt(i) != '.') ans = 1;
+        else if (j < version2.length() && version2.charAt(j) != '.') ans = -1;
+
+
+        while (i < version1.length() && version1.charAt(i) != '.') i++;
+        while (j < version2.length() && version2.charAt(j) != '.') j++;
+
+        if (ans != 0) return ans;
+
+        return compareVersionDfs(i + 1, j + 1, version1, version2);
+    }
+
+    //166. 分数到小数
+    public String fractionToDecimal(int numerator, int denominator) {
+        if (numerator == 0) return "0";
+        StringBuilder ans = new StringBuilder();
+        if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) ans.append("-");
+        long numeratorLong = Math.abs((long)numerator);
+        long denominatorLong = Math.abs((long)denominator);
+
+        if (numeratorLong % denominatorLong == 0) return ans.append(numeratorLong / denominatorLong).toString();
+
+
+        ans.append(numeratorLong / denominatorLong);
+        ans.append('.');
+
+        numeratorLong = numeratorLong % denominatorLong;
+
+        Map<Long, Integer> map = new HashMap<>();
+        int index = ans.length();
+
+        while (numeratorLong != 0 && !map.containsKey(numeratorLong)) {
+            map.put(numeratorLong, index);
+            numeratorLong *= 10;
+            ans.append(numeratorLong / denominatorLong);
+            numeratorLong = numeratorLong % denominatorLong;
+
+            index++;
+        }
+
+        if (numeratorLong != 0) {
+            int insert = map.get(numeratorLong);
+            ans.insert(insert, '(');
+            ans.append(')');
+        }
+
+        return ans.toString();
     }
 
     //191. 位1的个数
@@ -4074,6 +4369,48 @@ class Solution {
         return result;
     }
 
+    //3363. 最多可收集的水果数目（8.7每日一题）
+    public int maxCollectedFruits(int[][] fruits) {
+        int ans = 0;
+        int len = fruits.length;
+
+        for (int i = 0; i < len; i++) {
+            ans += fruits[i][i];
+        }
+
+        int[][] dp = new int[2][len + 1];
+        dp[0][len - 1] = fruits[len - 1][0];
+        for (int i = 1; i < len - 1; i++) {
+            for (int j = len - 1; j > i && j >= len - i - 1; j--) {
+                dp[1][j] = Integer.max(dp[0][j - 1], dp[0][j]);
+                dp[1][j] = Integer.max(dp[1][j], dp[0][j + 1]);
+                dp[1][j] += fruits[j][i];
+            }
+            System.arraycopy(dp[1], 0, dp[0], 0, len);
+            Arrays.fill(dp[1], 0);
+        }
+
+        ans += dp[0][len - 1];
+
+        Arrays.fill(dp[0], 0);
+
+        dp[0][len - 1] = fruits[0][len - 1];
+
+        for (int i = 1; i < len - 1; i++) {
+            for (int j = len - 1; j > i && j >= len - 1 - i; j--) {
+                dp[1][j] = Integer.max(dp[0][j - 1], dp[0][j]);
+                dp[1][j] = Integer.max(dp[1][j], dp[0][j + 1]);
+                dp[1][j] += fruits[i][j];
+            }
+
+            System.arraycopy(dp[1], 0, dp[0], 0, len);
+            Arrays.fill(dp[1], 0);
+        }
+
+        ans += dp[0][len - 1];
+        return ans;
+    }
+
     //3477. 水果成篮 II(8.5每日一题)
     public int numOfUnplacedFruits(int[] fruits, int[] baskets) {
         int ans = 0;
@@ -4093,6 +4430,47 @@ class Solution {
             if (!b) ans++;
         }
         return ans;
+    }
+
+    @SuppressWarnings("all")
+    //3479. 水果成篮 III(8.6每日一题)
+    public int numOfUnplacedFruits3(int[] fruits, int[] baskets) {
+        int n = baskets.length;
+        int m = (int) Math.sqrt(n);
+        int section = (n + m - 1) / m;
+        int count = 0;
+        int[] maxV = new int[section];
+        Arrays.fill(maxV, 0);
+
+        for (int i = 0; i < n; i++) {
+            maxV[i / m] = Math.max(maxV[i / m], baskets[i]);
+        }
+
+        for (int fruit : fruits) {
+            int sec;
+            int unset = 1;
+            for (sec = 0; sec < section; sec++) {
+                if (maxV[sec] < fruit) {
+                    continue;
+                }
+                int choose = 0;
+                maxV[sec] = 0;
+                for (int i = 0; i < m; i++) {
+                    int pos = sec * m + i;
+                    if (pos < n && baskets[pos] >= fruit && choose == 0) {
+                        baskets[pos] = 0;
+                        choose = 1;
+                    }
+                    if (pos < n) {
+                        maxV[sec] = Math.max(maxV[sec], baskets[pos]);
+                    }
+                }
+                unset = 0;
+                break;
+            }
+            count += unset;
+        }
+        return count;
     }
 
     //面试题 05.01. 插入
