@@ -781,6 +781,24 @@ public class SolutionTest {
         Assert.assertEquals("0.0000000004656612873077392578125", solution.fractionToDecimal(-1, -2147483648));
     }
 
+
+    @Test
+    public void reorderedPowerOf2Dfs() {
+        Assert.assertTrue(solution.reorderedPowerOf2(1));
+        Assert.assertFalse(solution.reorderedPowerOf2(10));
+    }
+
+    @Test
+    public void productQueriesTest() {
+        Assert.assertArrayEquals(new int[]{2, 4, 64}, solution.productQueries(15, new int[][]{{0, 1}, {2, 2}, {0, 3}}));
+        Assert.assertArrayEquals(new int[]{2}, solution.productQueries(2, new int[][]{{0, 0}}));
+    }
+
+    @Test
+    public void calculateMinimumHPTest() {
+        Assert.assertEquals(7, solution.calculateMinimumHP(new int[][]{{-2, -3, 3}, {-5, -10, 1}, {10, 30, -5}}));
+    }
+
     @Test
     public void debug() {
     }

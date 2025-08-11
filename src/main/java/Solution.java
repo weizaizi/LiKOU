@@ -1,5 +1,6 @@
 import java.util.*;
 
+@SuppressWarnings("all")
 class Solution {
 
 
@@ -19,7 +20,7 @@ class Solution {
     }
 
     //2. 两数相加
-    @SuppressWarnings("all")
+
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         if (l1 == null && l2 == null) return null;
         int sum = 0;
@@ -239,7 +240,7 @@ class Solution {
     private final char[] romanToIntArray1 = {'I', 'X', 'C', 'M'};
     private final char[] romanToIntArray2 = {'V', 'L', 'D'};
 
-    @SuppressWarnings("all")
+
     public int romanToInt(String s) {
         char[] charArray = s.toCharArray();
         int result;
@@ -314,7 +315,7 @@ class Solution {
     }
 
     //15. 三数之和
-    @SuppressWarnings("all")
+
     public List<List<Integer>> threeSum(int[] nums) {
         if (nums == null || nums.length == 0) return new ArrayList<>();
         Arrays.sort(nums);
@@ -368,7 +369,7 @@ class Solution {
     }
 
     //17. 电话号码的字母组合
-    @SuppressWarnings("all")
+
     public List<String> letterCombinations(String digits) {
         if (digits == null || digits.isEmpty()) return new ArrayList<>();
         char[][] chars = {{'a', 'b', 'c'}, {'d', 'e', 'f'}, {'g', 'h', 'i'}, {'j', 'k', 'l'}, {'m', 'n', 'o'}, {'p', 'q', 'r', 's'}, {'t', 'u', 'v'}, {'w', 'x', 'y', 'z'}};
@@ -394,7 +395,7 @@ class Solution {
 
     }
 
-    @SuppressWarnings("all")
+
     //18. 四数之和
     public List<List<Integer>> fourSum(int[] nums, int target) {
         if (nums == null || nums.length < 4) {
@@ -453,7 +454,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //19. 删除链表的倒数第 N 个结点
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode p = head;
@@ -493,7 +494,7 @@ class Solution {
     }
 
     //21. 合并两个有序链表
-    @SuppressWarnings("all")
+
     public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
         if (list1 == null) return list2;
         if (list2 == null) return list1;
@@ -523,7 +524,7 @@ class Solution {
         return list1.next;
     }
 
-    @SuppressWarnings("all")
+
     //22. 括号生成
     public List<String> generateParenthesis(int n) {
         List<String> result = new ArrayList<>();
@@ -551,7 +552,6 @@ class Solution {
     }
 
 
-    @SuppressWarnings("all")
     //23. 合并 K 个升序链表
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists == null || lists.length == 0) return null;
@@ -573,7 +573,7 @@ class Solution {
         return lists[0];
     }
 
-    @SuppressWarnings("all")
+
     //24. 两两交换链表中的节点
     public ListNode swapPairs(ListNode head) {
         if (head == null || head.next == null) return head;
@@ -598,7 +598,6 @@ class Solution {
     }
 
 
-    @SuppressWarnings("all")
     //25. K 个一组翻转链表
     public ListNode reverseKGroup(ListNode head, int k) {
         if (head == null || k == 0 || k == 1) return head;
@@ -746,7 +745,7 @@ class Solution {
         return f ? -result : result;
     }
 
-    @SuppressWarnings("all")
+
     //30. 串联所有单词的子串
     public List<Integer> findSubstring(String s, String[] words) {
         int n = words.length;
@@ -786,7 +785,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //31. 下一个排列
     public void nextPermutation(int[] nums) {
         if (nums.length == 0 || nums.length == 1) return;
@@ -978,7 +977,7 @@ class Solution {
     private final ArrayList<int[]> solveSudokuList = new ArrayList<>();
     private boolean solveSudokuValid = false;
 
-    @SuppressWarnings("all")
+
     public void solveSudoku(char[][] board) {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -1057,7 +1056,7 @@ class Solution {
     //39. 组合总和
     private final List<List<Integer>> combinationSumList = new ArrayList<>();
 
-    @SuppressWarnings("all")
+
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         Arrays.sort(candidates);
         combinationSumDfs(candidates, target, 0, 0, new ArrayList<>());
@@ -1085,7 +1084,7 @@ class Solution {
     //40. 组合总和 II
     private final List<List<Integer>> combinationSum2List = new ArrayList<>();
 
-    @SuppressWarnings("all")
+
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
         combinationSum2Dfs(candidates, target, 0, 0, new ArrayList<>());
@@ -1295,7 +1294,6 @@ class Solution {
     }
 
 
-    @SuppressWarnings("all")
     //46. 全排列
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -1323,7 +1321,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //47. 全排列 II
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -1352,7 +1350,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //48. 旋转图像
     public void rotate(int[][] matrix) {
         int n = matrix.length;
@@ -1377,7 +1375,7 @@ class Solution {
     }
 
     //49. 字母异位词分组
-    @SuppressWarnings("all")
+
     public List<List<String>> groupAnagrams(String[] strs) {
         List<List<String>> result = new ArrayList<>();
         HashMap<String, List<String>> re = new HashMap<>();
@@ -1417,7 +1415,7 @@ class Solution {
     }
 
     //51. N 皇后
-    @SuppressWarnings("all")
+
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> result = new ArrayList<>();
         List<String> list = new ArrayList<>();
@@ -1511,7 +1509,7 @@ class Solution {
         return ans;
     }
 
-    @SuppressWarnings("all")
+
     //54. 螺旋矩阵
     public List<Integer> spiralOrder(int[][] matrix) {
         int m = matrix.length;
@@ -1728,7 +1726,7 @@ class Solution {
         return sb.toString();
     }
 
-    @SuppressWarnings("all")
+
     //61. 旋转链表
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null) return null;
@@ -1905,7 +1903,7 @@ class Solution {
         return sb.reverse().toString();
     }
 
-    @SuppressWarnings("all")
+
     //68. 文本左右对齐
     public List<String> fullJustify(String[] words, int maxWidth) {
         List<String> result = new ArrayList<>();
@@ -2057,7 +2055,7 @@ class Solution {
         return dp[word1CharArray.length][word2CharArray.length];
     }
 
-    @SuppressWarnings("all")
+
     //73. 矩阵置零
     public void setZeroes(int[][] matrix) {
         int m = matrix.length;
@@ -2091,7 +2089,7 @@ class Solution {
         return false;
     }
 
-    @SuppressWarnings("all")
+
     //75. 颜色分类
     public void sortColors(int[] nums) {
         int p0 = 0;
@@ -2138,7 +2136,7 @@ class Solution {
         else return s.substring(start, end + 1);
     }
 
-    @SuppressWarnings("all")
+
     //77. 组合
     public List<List<Integer>> combine(int n, int k) {
         List<List<Integer>> result = new ArrayList<>();
@@ -2161,7 +2159,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //78. 子集
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -2268,7 +2266,7 @@ class Solution {
         return false;
     }
 
-    @SuppressWarnings("all")
+
     //82. 删除排序链表中的重复元素 II
     public ListNode deleteDuplicates2(ListNode head) {
         if (head == null || head.next == null) return head;
@@ -2290,7 +2288,7 @@ class Solution {
         return head.next;
     }
 
-    @SuppressWarnings("all")
+
     //83. 删除排序链表中的重复元素
     public ListNode deleteDuplicates(ListNode head) {
         if (head == null || head.next == null) return head;
@@ -2352,7 +2350,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //86. 分隔链表
     public ListNode partition(ListNode head, int x) {
         if (head == null || head.next == null) return head;
@@ -2410,7 +2408,7 @@ class Solution {
         return false;
     }
 
-    @SuppressWarnings("all")
+
     //88. 合并两个有序数组
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         if (n == 0) return;
@@ -2431,7 +2429,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //89. 格雷编码
     public List<Integer> grayCode(int n) {
         List<Integer> result = new ArrayList<>();
@@ -2442,7 +2440,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //90. 子集 II
     public List<List<Integer>> subsetsWithDup(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -2494,7 +2492,7 @@ class Solution {
         return dp[len];
     }
 
-    @SuppressWarnings("all")
+
     //92. 反转链表 II
     public ListNode reverseBetween(ListNode head, int left, int right) {
         head = new ListNode(-1, head);
@@ -2530,7 +2528,7 @@ class Solution {
         return head.next;
     }
 
-    @SuppressWarnings("all")
+
     //93. 复原 IP 地址
     public List<String> restoreIpAddresses(String s) {
         if (s.length() > 12 || s.length() < 4) return new ArrayList<>();
@@ -2612,7 +2610,7 @@ class Solution {
         return 0;
     }
 
-    @SuppressWarnings("all")
+
     //94. 二叉树的中序遍历
     public List<Integer> inorderTraversal(TreeNode root) {
         if (root == null) return new ArrayList<>();
@@ -2630,10 +2628,10 @@ class Solution {
 
 
     //95. 不同的二叉搜索树 II
-    @SuppressWarnings("all")
+
     private ArrayList<TreeNode>[][] generateTreesArrayLists;
 
-    @SuppressWarnings("all")
+
     public List<TreeNode> generateTrees(int n) {
         generateTreesArrayLists = new ArrayList[n][n];
         return generateTreesDfs(1, n);
@@ -2726,7 +2724,7 @@ class Solution {
         return isValidBSTDfs(treeNode.left, min, val) && isValidBSTDfs(treeNode.right, val, max);
     }
 
-    @SuppressWarnings("all")
+
     //99. 恢复二叉搜索树
     public void recoverTree(TreeNode root) {
         TreeNode x = null;
@@ -2787,7 +2785,7 @@ class Solution {
         return isSymmetricRecursion(left.left, right.right) && isSymmetricRecursion(left.right, right.left);
     }
 
-    @SuppressWarnings("all")
+
     //102. 二叉树的层序遍历
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) return new ArrayList<>();
@@ -2810,7 +2808,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //103. 二叉树的锯齿形层序遍历
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         if (root == null) return new ArrayList<>();
@@ -2849,7 +2847,7 @@ class Solution {
         return Integer.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 
-    @SuppressWarnings("all")
+
     //105. 从前序与中序遍历序列构造二叉树
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         return buildTreeDfs(preorder, 0, preorder.length, inorder, 0);
@@ -2871,7 +2869,7 @@ class Solution {
         return new TreeNode(num, buildTreeDfs(preorder, begin + 1, l, inorder, left), buildTreeDfs(preorder, begin + 1 + l, len - l - 1, inorder, left + 1 + l));
     }
 
-    @SuppressWarnings("all")
+
     //105. 从前序与中序遍历序列构造二叉树
     public TreeNode buildTree2(int[] inorder, int[] postorder) {
         return buildTree2Dfs(inorder, 0, inorder.length, postorder, postorder.length - 1);
@@ -2888,7 +2886,7 @@ class Solution {
         return new TreeNode(num, buildTree2Dfs(inorder, begin, l, postorder, right - (len - l)), buildTree2Dfs(inorder, begin + l + 1, len - l - 1, postorder, right - 1));
     }
 
-    @SuppressWarnings("all")
+
     //107. 二叉树的层序遍历 II
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
         List<List<Integer>> result = levelOrder(root);
@@ -2896,7 +2894,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //108. 将有序数组转换为二叉搜索树
     public TreeNode sortedArrayToBST(int[] nums) {
         return sortedArrayToBSTRecursion(0, nums.length, nums);
@@ -2909,7 +2907,7 @@ class Solution {
     }
 
     //109. 有序链表转换二叉搜索树
-    @SuppressWarnings("all")
+
     public TreeNode sortedListToBST(ListNode head) {
         ListNode p = head;
         int len = 0;
@@ -2966,7 +2964,7 @@ class Solution {
         else return hasPathSumDfs(treeNode.right, targetSum - treeNode.val);
     }
 
-    @SuppressWarnings("all")
+
     //113. 路径总和 II
     public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
         if (root == null) return new ArrayList<>();
@@ -2991,7 +2989,7 @@ class Solution {
         list.removeLast();
     }
 
-    @SuppressWarnings("all")
+
     //114. 二叉树展开为链表
     public void flatten(TreeNode root) {
         TreeNode predecessor;
@@ -3034,7 +3032,7 @@ class Solution {
         return dp[sLen][tLen];
     }
 
-    @SuppressWarnings("all")
+
     //116. 填充每个节点的下一个右侧节点指针
     public ThreeTreeNode connect(ThreeTreeNode root) {
         ThreeTreeNode result = root;
@@ -3054,7 +3052,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //117. 填充每个节点的下一个右侧节点指针 II
     public ThreeTreeNode connect2(ThreeTreeNode root) {
         ThreeTreeNode p = root;
@@ -3094,7 +3092,7 @@ class Solution {
         return root;
     }
 
-    @SuppressWarnings("all")
+
     //118. 杨辉三角
     public List<List<Integer>> generate(int numRows) {
         List<List<Integer>> result = new ArrayList<>();
@@ -3112,7 +3110,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //119. 杨辉三角 II
     public List<Integer> getRow(int rowIndex) {
         ArrayList<Integer> list = new ArrayList<>();
@@ -3127,7 +3125,7 @@ class Solution {
         return list;
     }
 
-    @SuppressWarnings("all")
+
     //120. 三角形最小路径和
     public int minimumTotal(List<List<Integer>> triangle) {
         int m = triangle.size();
@@ -3256,7 +3254,7 @@ class Solution {
         return true;
     }
 
-    @SuppressWarnings("all")
+
     //126. 单词接龙 II
     public List<List<String>> findLadders(String beginWord, String endWord, List<String> wordList) {
         //结果
@@ -3335,7 +3333,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //127. 单词接龙
     //todo 优化
     public int ladderLength(String beginWord, String endWord, List<String> wordList) {
@@ -3422,7 +3420,7 @@ class Solution {
         return sumNumbersDfs(treeNode.left, sum) + sumNumbersDfs(treeNode.right, sum);
     }
 
-    @SuppressWarnings("all")
+
     //130. 被围绕的区域
     public void solve(char[][] board) {
         int n = board.length;
@@ -3459,7 +3457,7 @@ class Solution {
         if (j < board[0].length - 1 && board[i][j + 1] == 'O') solveDfs(board, i, j + 1);
     }
 
-    @SuppressWarnings("all")
+
     //131. 分割回文串
     public List<List<String>> partition(String s) {
         List<List<String>> result = new ArrayList<>();
@@ -3558,7 +3556,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //133. 克隆图
     public GraphNode cloneGraph(GraphNode graphNode) {
         if (graphNode == null) return null;
@@ -3667,7 +3665,7 @@ class Solution {
         return ans;
     }
 
-    @SuppressWarnings("all")
+
     //138. 随机链表的复制
     public Node copyRandomList(Node head) {
         if (head == null) return null;
@@ -3693,7 +3691,7 @@ class Solution {
         return newHead;
     }
 
-    @SuppressWarnings("all")
+
     //139. 单词拆分
     public boolean wordBreak(String s, List<String> wordDict) {
         Set<String> wordSet = new HashSet<>(wordDict);
@@ -3715,7 +3713,6 @@ class Solution {
     }
 
 
-    @SuppressWarnings("all")
     //140. 单词拆分 II
     public List<String> wordBreak2(String s, List<String> wordDict) {
         List<String> result = new ArrayList<>();
@@ -3741,7 +3738,7 @@ class Solution {
         }
     }
 
-    @SuppressWarnings("all")
+
     //141. 环形链表
     public boolean hasCycle(ListNode head) {
         ListNode fast = head;
@@ -3759,7 +3756,7 @@ class Solution {
         return result;
     }
 
-    @SuppressWarnings("all")
+
     //142. 环形链表 II
     public ListNode detectCycle(ListNode head) {
         ListNode fast = head;
@@ -3785,7 +3782,7 @@ class Solution {
         return slow;
     }
 
-    @SuppressWarnings("all")
+
     //143. 重排链表
     public void reorderList(ListNode head) {
         ListNode p = head;
@@ -3824,7 +3821,6 @@ class Solution {
     }
 
 
-    @SuppressWarnings("all")
     //144. 二叉树的前序遍历
     public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
@@ -3841,7 +3837,7 @@ class Solution {
         return ans;
     }
 
-    @SuppressWarnings("all")
+
     //145. 二叉树的后序遍历
     public List<Integer> postorderTraversal(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
@@ -3860,7 +3856,7 @@ class Solution {
         return ans;
     }
 
-    @SuppressWarnings("all")
+
     //147. 对链表进行插入排序
     public ListNode insertionSortList(ListNode head) {
         if (head == null) {
@@ -3886,7 +3882,7 @@ class Solution {
         return dummyHead.next;
     }
 
-    @SuppressWarnings("all")
+
     //148. 排序链表
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null) return head;
@@ -3959,7 +3955,7 @@ class Solution {
         return ans + 1;
     }
 
-    @SuppressWarnings("all")
+
     private int gcd(int x, int y) {
         return y == 0 ? x : gcd(y, x % y);
     }
@@ -4076,7 +4072,7 @@ class Solution {
         return nums[mid];
     }
 
-    @SuppressWarnings("all")
+
     //160. 相交链表
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) return null;
@@ -4113,7 +4109,7 @@ class Solution {
 
         int ans = 0;
 
-        @SuppressWarnings("all") int max = Arrays.stream(nums).max().getAsInt();
+        int max = Arrays.stream(nums).max().getAsInt();
         int min = Arrays.stream(nums).min().getAsInt();
 
         int gap = Integer.max(1, (max - min) / (nums.length - 1));
@@ -4187,8 +4183,8 @@ class Solution {
         if (numerator == 0) return "0";
         StringBuilder ans = new StringBuilder();
         if ((numerator < 0 && denominator > 0) || (numerator > 0 && denominator < 0)) ans.append("-");
-        long numeratorLong = Math.abs((long)numerator);
-        long denominatorLong = Math.abs((long)denominator);
+        long numeratorLong = Math.abs((long) numerator);
+        long denominatorLong = Math.abs((long) denominator);
 
         if (numeratorLong % denominatorLong == 0) return ans.append(numeratorLong / denominatorLong).toString();
 
@@ -4217,6 +4213,94 @@ class Solution {
         }
 
         return ans.toString();
+    }
+
+
+    //167. 两数之和 II - 输入有序数组
+    public int[] twoSum2(int[] numbers, int target) {
+        int i = 0;
+        int j = numbers.length - 1;
+        int sum;
+        while (i < j) {
+            sum = numbers[i] + numbers[j];
+            if (sum == target) return new int[]{i + 1, j + 1};
+            else if (sum > target) j--;
+            else i++;
+        }
+        return null;
+    }
+
+    //168. Excel 表列名称
+    public String convertToTitle(int columnNumber) {
+        StringBuilder sb = new StringBuilder();
+        while (columnNumber != 0) {
+            columnNumber--;
+            sb.append((char) (columnNumber % 26 + 'A'));
+            columnNumber /= 26;
+        }
+        return sb.reverse().toString();
+    }
+
+    //169. 多数元素
+    public int majorityElement(int[] nums) {
+        int x = 0;
+        int count = 0;
+        for (int num : nums) {
+            if (count == 0) x = num;
+            count += x == num ? 1 : -1;
+        }
+
+        return x;
+    }
+
+    //171. Excel 表列序号
+    public int titleToNumber(String columnTitle) {
+        int ans = 0;
+        int len = columnTitle.length();
+
+        for (int i = 0; i < len; i++) {
+            ans *= 26;
+
+            ans += columnTitle.charAt(i) - 'A' + 1;
+        }
+
+        return ans;
+    }
+
+    //172. 阶乘后的零
+    public int trailingZeroes(int n) {
+        int ans = 0;
+        for (int i = 5; i <= n; i += 5) {
+            int k = i;
+
+            while (k % 5 == 0) {
+                ans++;
+                k /= 5;
+            }
+        }
+
+        return ans;
+    }
+
+    //174. 地下城游戏
+    public int calculateMinimumHP(int[][] dungeon) {
+        int n = dungeon.length;
+        int m = dungeon[0].length;
+        int[] dp = new int[m + 1];
+
+        Arrays.fill(dp, Integer.MAX_VALUE);
+
+        dp[m - 1] = 1;
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+                int needMin = Integer.min(dp[j], dp[j + 1]);
+
+                dp[j] = Integer.max(needMin - dungeon[i][j], 1);
+            }
+        }
+
+        return dp[0];
     }
 
     //191. 位1的个数
@@ -4251,7 +4335,7 @@ class Solution {
         return getSum((a ^ b), ((a & b) << 1));
     }
 
-    @SuppressWarnings("all")
+
     //461. 汉明距离
     public int hammingDistance(int x, int y) {
         x ^= y;
@@ -4262,6 +4346,35 @@ class Solution {
     public boolean hasAlternatingBits(int n) {
         int a = n ^ (n >> 1);
         return (a & (a + 1)) == 0;
+    }
+
+    //869. 重新排序得到 2 的幂（8.10）
+    public boolean reorderedPowerOf2(int n) {
+        char[] charArray = String.valueOf(n).toCharArray();
+        boolean[] used = new boolean[charArray.length];
+        for (int i = 0; i < charArray.length; i++) {
+            char c = charArray[i];
+            if (c == '0') continue;
+            used[i] = true;
+            if (reorderedPowerOf2Dfs(charArray, used, 1, c - '0')) return true;
+            used[i] = false;
+        }
+
+        return false;
+    }
+
+    private boolean reorderedPowerOf2Dfs(char[] number, boolean[] used, int nowLen, int n) {
+        if (nowLen == number.length) return (n & (n - 1)) == 0;
+
+        for (int i = 0; i < number.length; i++) {
+            if (used[i]) continue;
+
+            used[i] = true;
+            if (reorderedPowerOf2Dfs(number, used, nowLen + 1, n * 10 + number[i] - '0')) return true;
+            used[i] = false;
+        }
+
+        return false;
     }
 
     //904. 水果成篮（8.4每日一题）
@@ -4369,6 +4482,31 @@ class Solution {
         return result;
     }
 
+    //2438. 二的幂数组中查询范围内的乘积
+    public int[] productQueries(int n, int[][] queries) {
+        ArrayList<Integer> arrayList = new ArrayList<>();
+        int[] ans = new int[queries.length];
+        arrayList.add(0);
+        char[] charArray = Integer.toBinaryString(n).toCharArray();
+        for (int i = 0; i < charArray.length; i++) {
+            if (charArray[charArray.length - i - 1] == '1') arrayList.add(i + arrayList.getLast());
+        }
+
+        for (int i = 0; i < queries.length; i++) {
+            int pow = arrayList.get(queries[i][1] + 1) - arrayList.get(queries[i][0]);
+            ans[i] = (int) fastPow(pow);
+        }
+        return ans;
+    }
+
+    private long fastPow(int n) {
+        if (n == 0) return 1;
+        long pow = fastPow(n / 2);
+        int MOD = 1000000007;
+        if (n % 2 == 1) return (pow * pow * 2) % MOD;
+        else return (pow * pow) % MOD;
+    }
+
     //3363. 最多可收集的水果数目（8.7每日一题）
     public int maxCollectedFruits(int[][] fruits) {
         int ans = 0;
@@ -4432,7 +4570,7 @@ class Solution {
         return ans;
     }
 
-    @SuppressWarnings("all")
+
     //3479. 水果成篮 III(8.6每日一题)
     public int numOfUnplacedFruits3(int[] fruits, int[] baskets) {
         int n = baskets.length;
